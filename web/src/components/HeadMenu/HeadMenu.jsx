@@ -18,14 +18,14 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
     sessionStorage.getItem("idClientSelect") !== "null"
       ? true
       : false;
-  useEffect(()=>{
-    console.log(context.popUp)
-  },context)
+  useEffect(() => {
+    console.log(context.popUp);
+  }, [context]);
   return (
     <>
       {state === "home" ? (
         <div className={styles.HeadMenu}>
-          <button onClick={()=> context.setpopUp("PopUpNewAplication")}>
+          <button onClick={() => context.setpopUp("PopUpNewAplication")}>
             <img src="./img/add.svg" alt="View" />
             Создать заказ
           </button>
@@ -51,7 +51,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Добавить машину
           </button>
-          <button onClick={()=> context.setpopUp("PopUpNewClient")}>
+          <button onClick={() => context.setpopUp("PopUpNewClient")}>
             <img src="./img/add.svg" alt="View" />
             Добавить клиента
           </button>
