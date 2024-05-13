@@ -1,0 +1,49 @@
+@import "./../../styles/color.scss";
+@import "./../../styles/mixins.scss";
+
+.List{
+    display: flex;
+    justify-content: center;
+    input{
+        @include input-text(420px, 8px);
+        margin-bottom: 18px;
+        font-size: 18px;
+        margin-left: 10px;
+        color: #000;
+        &:hover{
+            cursor: pointer;
+        }
+        height:16px;
+    }
+    label{
+        margin-left: 10px;
+    }
+    span{
+        cursor: pointer;
+    }
+    .arrowBot img{
+        position: relative;
+        z-index: 10;
+        left: -30px;
+        transform: rotate(-90deg)
+    }
+    .ListData{
+        width: 440px;
+        position: relative;
+        top: -25px;
+        margin-left: 10px;
+        padding-top: 10px;
+        padding-left: 10px;
+        border-radius: 0px 0px 8px 8px;
+        border-left: 1px solid #ADADAD;
+        border-right: 1px solid #ADADAD;
+        border-bottom: 1px solid #ADADAD;
+        .NameForList{
+            font-size: 18px;
+            cursor: pointer;
+            &:hover{
+                color: var(--turquoise-color);
+            }
+        }
+    }
+}
