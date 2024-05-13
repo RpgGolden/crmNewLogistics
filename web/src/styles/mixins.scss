@@ -45,8 +45,8 @@
   outline: none;
   background-color: #fff;
   color: #353535;
-  padding: 10px 15px;
-  border: 1px solid #afbbbd;
+  padding: 15px 15px;
+  border: 1px solid #ADADAD;
   margin-top: 3px;
   border-radius: $border-radius;
   &::placeholder {
@@ -95,14 +95,12 @@
 }
 @mixin buttonSave($background-color) {
   display: flex;
-  background-color: $background-color;
+  background-color: $background-color!important;
   outline: none;
   border-radius: 8px;
   padding: 10px 35px;
-  // font-weight: 700;
-  border: none;
   &:hover {
-    opacity: 80%;
+    opacity: 0.8;
     transition: all 0.15s;
   }
 }

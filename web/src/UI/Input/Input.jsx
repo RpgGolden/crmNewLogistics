@@ -5,9 +5,11 @@ function Input({Textlabel}) {
     return (
         <div className={styles.input}>
             <div>
-                <label>{Textlabel}</label>
+                <div>
+                    <label>{Textlabel}</label>
+                </div>
+                <input/>
             </div>
-            <input/>
         </div>
     );
 }

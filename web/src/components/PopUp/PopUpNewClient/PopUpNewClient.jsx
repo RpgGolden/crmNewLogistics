@@ -5,7 +5,7 @@ import Input from "../../../UI/Input/Input";
 
 function PopUpNewClient() {
     return (
-        <PopUpContainer title={"Новый клиент"}>
+        <PopUpContainer title={"Новый клиент"} mT={200}>
             <div>
                <Input Textlabel={"Фио"}/>
                <Input Textlabel={"Телефон"}/>

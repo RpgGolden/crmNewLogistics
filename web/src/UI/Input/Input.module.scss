@@ -2,9 +2,13 @@
 @import "./../../styles/mixins.scss";
 
 .input{
-    display: block;
+    display: flex;
+    justify-content: center;
+    label{
+        font-size: 14px
+    }
     input{
-        @include input-text(360px, 8px);
-        margin-bottom: 15px;
+        @include input-text(420px, 8px);
+        margin-bottom: 18px;
     }
 }

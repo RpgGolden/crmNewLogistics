@@ -29,6 +29,18 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Создать заказ
           </button>
+          <button onClick={() => context.setpopUp("PopUpNewDriver")}>
+            <img src="./img/Add_ring.png" alt="View" />
+            Добавить водителя
+          </button>
+          <button onClick={() => context.setpopUp("PopUpNewCar")}>
+            <img src="./img/add.svg" alt="View" />
+            Добавить машину
+          </button>
+          <button onClick={() => context.setpopUp("PopUpNewClient")}>
+            <img src="./img/add.svg" alt="View" />
+            Добавить клиента
+          </button>
           <Link to={flag && "./EditOrder"}>
             <button>
               <img src="./img/Edit.png" alt="View" />
@@ -38,23 +50,9 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
           <Link to={flag && "./MakeAppointmentRegistrar"}>
             <button>
               <img src="./img/File_dock.png" alt="View" />
-              Удалить
+              Удалить заказ
             </button>
           </Link>
-          <Link to="./../Registrar/PatientRegistr">
-            <button>
-              <img src="./img/Add_ring.png" alt="View" />
-              Добавить водителя
-            </button>
-          </Link>
-          <button onClick={deletePatien}>
-            <img src="./img/add.svg" alt="View" />
-            Добавить машину
-          </button>
-          <button onClick={() => context.setpopUp("PopUpNewClient")}>
-            <img src="./img/add.svg" alt="View" />
-            Добавить клиента
-          </button>
         </div>
       ) : state === "register" ? (
         <div className={styles.HeadMenu}>
