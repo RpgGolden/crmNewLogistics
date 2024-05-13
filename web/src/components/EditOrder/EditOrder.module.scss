@@ -37,15 +37,15 @@
       div {
         display: flex;
         width: 100% !important;
-        padding: 0;
-
         margin: 0 !important;
       }
       input {
-        @include input-text(414px, 8px);
+        @include input-text(382px, 8px);
         margin: 5px !important;
         margin-left: 0 !important;
-        // box-sizing: content-box;
+        box-sizing: content-box;
+        height: auto !important;
+        padding: 13px 15px;
       }
     }
   }

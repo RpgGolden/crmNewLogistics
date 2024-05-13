@@ -8,18 +8,18 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
   const accessToken = localStorage.getItem("accessToken");
 
   const deletePatien = () => {};
-  console.log(
-    "d",
-    context.selectedTr,
-    sessionStorage.getItem("idClientSelect")
-  );
+  // console.log(
+  //   "d",
+  //   context.selectedTr,
+  //   sessionStorage.getItem("idClientSelect")
+  // );
   const flag =
     context.selectedTr !== "null" &&
     sessionStorage.getItem("idClientSelect") !== "null"
       ? true
       : false;
   useEffect(() => {
-    console.log(context.popUp);
+    // console.log(context.popUp);
   }, [context]);
   return (
     <>

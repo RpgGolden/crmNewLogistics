@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./EditOrder.module.scss";
 import HeadMenu from "../HeadMenu/HeadMenu";
-import axios from "axios";
 import { AddressSuggestions } from "react-dadata";
 import "react-dadata/dist/react-dadata.css";
 import {
@@ -12,12 +11,51 @@ import {
   SearchControl,
   TrafficControl,
   ZoomControl,
+  Placemark,
+  Polyline,
+  RoutePanel,
+  RouteEditor,
 } from "react-yandex-maps";
+import { Route } from "react-router-dom";
 
 const EditOredr = () => {
   const [cardData, setCardData] = useState([]);
   const [adressA, setAdressA] = useState("");
   const [adressB, setAdressB] = useState("");
+  const [pointCoor, setpointCoor] = useState([]);
+
+  const [coordinates, setCoordinates] = useState([]);
+  const map = useRef(null);
+
+  useEffect(() => {
+    console.log("coordinates", coordinates);
+    if (map.current && coordinates) {
+      console.log("coor", coordinates);
+      map.current.setCenter([...coordinates]);
+      if (pointCoor.length > 0) {
+        setpointCoor([...pointCoor, [...coordinates]]);
+      } else {
+        setpointCoor([[...coordinates]]);
+      }
+    }
+  }, [coordinates]);
+
+  const rotPan = useRef(null);
+  useEffect(() => {
+    console.log("rotPan", rotPan);
+    if (rotPan.current) {
+      rotPan.current.state.set("from", [47.222531, 39.718705]);
+      rotPan.current.state.set("to", [47.20958, 38.935194]);
+    }
+  }, [rotPan, pointCoor]);
+
+  useEffect(() => {
+    console.log("pointCoor", pointCoor);
+    if (rotPan.current) {
+      console.log("from", rotPan.current.state._data.from);
+      console.log("to", rotPan.current.state._data.to);
+    }
+  }, [pointCoor]);
 
   const handleInput = (el, key) => {
     const query = el.target.value;
@@ -27,23 +65,6 @@ const EditOredr = () => {
   };
 
   useEffect(() => {
-    const longitude = 38.830598; // Замените этими координатами на свои
-    const latitude = 47.270719; // Замените этими координатами на свои
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
-        );
-        console.log(response);
-        setAdressA(
-          `${response.data.address.state}, ${response.data.address.suburb}, ${response.data.address.road}, ${response.data.address.house_number}`
-        );
-      } catch (error) {
-        console.log("Error fetching address:", error);
-      }
-    };
-    fetchData();
-
     const inputs = document.querySelectorAll(".react-dadata__input");
     // Установить placeholder для каждого элемента
     let text = "Загрузка";
@@ -58,20 +79,30 @@ const EditOredr = () => {
     zoom: 12,
   };
 
-  const map = useRef(null);
-
-  //изменнение центра карты при клике
-  const handleClick = (e, id) => {
-    const placemarkCoords = e.get("coords");
-    if (map.current) {
-      map.current.setCenter(placemarkCoords);
+  const funSetAddress = (e) => {
+    console.log(e);
+    if (e.data.geo_lat) {
+      const coor = [e.data.geo_lat, e.data.geo_lon];
+      setCoordinates([...coor]);
+    }
+    if (e.value) {
+      setAdressA(e.value);
+    }
+  };
+  const funSetAddress2 = (e) => {
+    console.log(e);
+    if (e.data.geo_lat) {
+      const coor = [e.data.geo_lat, e.data.geo_lon];
+      setCoordinates([...coor]);
+    }
+    if (e.value) {
+      setAdressB(e.value);
     }
   };
 
   return (
     <div>
       <HeadMenu state={"register"} />
-
       <div className={styles.EditPatient}>
         <div>
           <h1>Редактирование заказа</h1>
@@ -116,7 +147,7 @@ const EditOredr = () => {
                   key={"adress"}
                   token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
                   value={adressA}
-                  onChange={setAdressA}
+                  onChange={funSetAddress}
                 />
               </div>
               <div className={styles.address}>
@@ -124,7 +155,7 @@ const EditOredr = () => {
                   key={"adressB"}
                   token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
                   value={adressB}
-                  onChange={setAdressB}
+                  onChange={funSetAddress2}
                 />
               </div>
 
@@ -261,6 +292,19 @@ const EditOredr = () => {
                   <SearchControl options={{ float: "right" }} />
                   <TrafficControl options={{ float: "right" }} />
                   <ZoomControl options={{ float: "right" }} />
+                  {pointCoor.map((item, index) => (
+                    <Placemark key={index} geometry={item} />
+                  ))}
+                  <RoutePanel
+                    instanceRef={rotPan}
+                    options={{
+                      showRouteMarkers: true, // показывать маркеры начала и конца маршрута
+                      showTraffic: true, // показывать информацию о пробках
+                      viaPoints: [], // дополнительные точки маршрута (если нужно)
+                      routeType: "auto", // тип маршрута: auto, masstransit, pedestrian
+                      // и другие опции
+                    }}
+                  />
                 </Map>
               </YMaps>
             </div>
