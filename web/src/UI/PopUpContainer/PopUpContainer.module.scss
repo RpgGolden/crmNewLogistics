@@ -1,0 +1,44 @@
+@import "./../../styles/color.scss";
+@import "./../../styles/mixins.scss";
+
+    .PopUpContainer{
+        background-color: rgba(0, 0, 0, 0.518);
+        width: 100%;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        .PopUpContainerflex{
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            .PopUpContainerInner{
+                border-radius: 8px;
+                width: auto;
+                height: auto;
+                padding: 20px;
+                background-color: #fff;
+                margin-top: 300px;
+                button {
+                    background-color: #fff;
+                    border: none;
+                    font-size: 20px;
+                    position: relative;
+                    transition: 0.1s linear all;
+                    &:hover {
+                        color: var(--turquoise-color);
+                        cursor: pointer;
+                    }
+                }
+                
+                .HeaderPopUp{
+                    display: flex;
+                    justify-content: space-between;
+                    .HeaderPopUpTitle{
+                        position: relative;
+                        top: -20px;
+                    }
+                }
+            }
+        }
+    }

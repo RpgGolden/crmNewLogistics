@@ -1,0 +1,88 @@
+@import "./../../styles/color.scss";
+@import "./../../styles/mixins.scss";
+
+.EditPatient {
+  width: 100%;
+  box-sizing: border-box;
+  @include container;
+  margin-top: 15px;
+  .data_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    @include font(21px, 700);
+  }
+  .leftbox {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      @include input-text(382px, 8px);
+      margin: 5px;
+      margin-left: 0;
+    }
+  }
+  .centerbox {
+    display: flex;
+    flex-direction: column;
+    input {
+      @include input-text(382px, 8px);
+      margin: 5px;
+      margin-left: 0;
+    }
+  }
+  .rightbox {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      @include input-text(382px, 8px);
+      margin: 5px;
+      margin-left: 0;
+    }
+  }
+  .bottom_box {
+    display: flex;
+    flex-direction: column;
+  }
+  .label_box {
+    label {
+      padding-right: 20px;
+      @include font(16px, 400);
+    }
+  }
+  .button_box {
+    display: flex;
+    flex-direction: row;
+    padding-top: 20px;
+    .but_left {
+      @include button(var(--dark-grey-color));
+      margin-right: 20px;
+    }
+    .but_rig {
+      @include button(var(--turquoise-color));
+    }
+  }
+
+  .zakazgrup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .summa {
+    display: flex;
+    flex-direction: column;
+    .summa_inner {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .map {
+    display: flex;
+    width: 50vw;
+    height: 500px;
+    margin-right: 7px;
+    margin-top: 65px;
+  }
+}

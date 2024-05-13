@@ -1,0 +1,10 @@
+@import "./../../styles/color.scss";
+@import "./../../styles/mixins.scss";
+
+.input{
+    display: block;
+    input{
+        @include input-text(360px, 8px);
+        margin-bottom: 15px;
+    }
+}

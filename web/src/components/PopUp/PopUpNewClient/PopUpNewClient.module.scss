@@ -1,0 +1,11 @@
+@import "./../../../styles/color.scss";
+@import "./../../../styles/mixins.scss";
+
+.button{
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    .buttonSave{
+        @include buttonSave(var(--green-color));
+    }
+}
