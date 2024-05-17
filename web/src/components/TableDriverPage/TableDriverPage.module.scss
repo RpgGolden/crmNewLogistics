@@ -1,0 +1,43 @@
+@import "./../../styles/color.scss";
+@import "./../../styles/mixins.scss";
+
+.Table {
+  width: 100%;
+  display: flex;
+
+  .TableInner {
+    width: 100vw;
+
+    th:nth-child(1) {
+      border-radius: 8px 0 0 0;
+    }
+
+    th:nth-last-child(1) {
+      border-radius: 0 8px 0 0;
+    }
+
+    tr {
+      background-color: var(--tableTdBg);
+      &:hover td {
+        background-color: var(--tableTrHover);
+        cursor: pointer;
+      }
+    }
+    th {
+      padding: 10px;
+      background-color: var(--tableTh);
+      @include font(14px, 500);
+    }
+    td {
+      text-align: center;
+      padding: 10px;
+    }
+
+    .setectedTr {
+      background-color: var(--selectedTr);
+      &:hover td {
+        background-color: var(--selectedTr);
+      }
+    }
+  }
+}

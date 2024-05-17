@@ -19,8 +19,9 @@ function Authorization() {
 
   const handleLogin = () => {
     Login(formData).then((LoginUserData) => {
-      if (LoginUserData) {
-        console.log(LoginUserData);
+      if (LoginUserData.role === "DRIVER") {
+        navigate("/DriverPage");
+      } else {
         navigate("/AdminPage");
       }
     });
@@ -45,9 +46,11 @@ function Authorization() {
             value={formData.password}
             onChange={handleInputChange}
           />
-            <button className={styles.button} onClick={handleLogin}>Войти</button>
+          <button className={styles.button} onClick={handleLogin}>
+            Войти
+          </button>
           <Link to="/Register">
-            <button className={styles.buttonReg} >Зарегестрироваться</button>
+            <button className={styles.buttonReg}>Зарегестрироваться</button>
           </Link>
         </div>
       </div>

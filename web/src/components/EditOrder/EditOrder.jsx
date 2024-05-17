@@ -193,7 +193,7 @@ const EditOredr = () => {
   const [tarif, setTarif] = useState({
     klHors: 1000,
     klKm: 25,
-    ispHors: 600,
+    ispHors: 400,
     ispKm: 25,
   });
 

@@ -63,23 +63,21 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             </button>
           </Link>
         </div>
-      ) : state === "HomeClient" ? (
+      ) : state === "driverPage" ? (
         <div className={styles.HeadMenu}>
-          <Link to="MakeAppointment">
-            <button>
-              <img src="./img/add.svg" alt="View" />
-              Записаться на прием
-            </button>
-          </Link>
           <Link to="ViewMyAppointment">
             <button>
               <img src="./img/View.png" alt="View" />
-              Мои записи на прием
+              Посмотреть
             </button>
           </Link>
+          <button onClick={() => context.setpopUp("PopUpNewCar")}>
+            <img src="./img/add.svg" alt="View" />
+            Добавить машину
+          </button>
           <Link to="AccounClient">
             <button>
-              <img src="./img/Home.png" alt="View" />
+              <img src="./img/Edit.png" alt="View" />
               Редактировать аккаунт
             </button>
           </Link>

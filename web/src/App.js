@@ -9,6 +9,8 @@ import "./styles/style.css";
 import EditOredr from "./components/EditOrder/EditOrder";
 import HomePageAdmin from "./pages/AdminPages/HomePageAdmin/HomePageAdmin";
 import AdminPage from "./pages/AdminPages/HomePage/AdminPage";
+import DriverPage from "./pages/DriverPage/HomePage/DriverPage";
+import HomePageDriver from "./pages/DriverPage/HomePageDriver/HomePageDriver";
 
 function App() {
   const [tableData, setTableData] = useState(testData); // данные таблицы
@@ -27,13 +29,16 @@ function App() {
     selectedTable,
     setSelectedTable,
     setsearchDataForTable,
-    searchDataForTable
+    searchDataForTable,
   };
 
+  const [carTableData, setCarTableData] = useState([]); // таблиычные данные всех машин у diver
+  const drivCon = { carTableData, setCarTableData };
   return (
     <DataContext.Provider
       value={{
         context,
+        drivCon,
       }}
     >
       <BrowserRouter>
@@ -44,6 +49,9 @@ function App() {
             <Route path="/AdminPage/*" element={<AdminPage />}>
               <Route path="*" element={<HomePageAdmin />}></Route>
               <Route path="EditOrder" element={<EditOredr />}></Route>
+            </Route>
+            <Route path="/DriverPage/*" element={<DriverPage />}>
+              <Route path="*" element={<HomePageDriver />}></Route>
             </Route>
           </Routes>
         </main>

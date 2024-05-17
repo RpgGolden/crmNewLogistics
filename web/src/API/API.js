@@ -90,31 +90,49 @@ export const Login = async (UserData) => {
 
 //! Запрос на добавление клиента
 export const AddClient = async (ClientData) => {
-    try {
-        const response = await axios.post(`${server}/customer/createCustomer`, ClientData, {
-            headers: {
-              Authorization: `${localStorage.getItem("accessToken")}`,
-            },
-          });
-    
-    
-      return response;
-    } catch (error) {
-      alert("Возникла ошибка при добавлении нового клиента!");
-    }
-  };
+  try {
+    const response = await axios.post(
+      `${server}/customer/createCustomer`,
+      ClientData,
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при добавлении нового клиента!");
+  }
+};
 
 //! Запрос на получение заявок
 export const getAllCustomers = async () => {
-    try {
-        const response = await axios.get(`${server}/customer/getAllCustomers`, {
-            headers: {
-              Authorization: `${localStorage.getItem("accessToken")}`,
-            },
-          });
-    
-      return response;
-    } catch (error) {
-      alert("Возникла ошибка при добавлении нового клиента!");
-    }
-  };
+  try {
+    const response = await axios.get(`${server}/customer/getAllCustomers`, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при добавлении нового клиента!");
+  }
+};
+
+//! Запрос на получение всех машшин
+export const apiGetAllCar = async (driverId) => {
+  try {
+    console.log("получить машины водителя", driverId);
+    const response = await axios.get(`${server}/car/getCars/${driverId}`, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Пользователь не найден!");
+  }
+};
