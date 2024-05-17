@@ -10,6 +10,7 @@ export const fetchSuggestions = async (value) => {
     console.error("Error fetching suggestions:", error);
   }
 };
+
 // const getCoordinates = async () => {
 //   console.log(adressA);
 //   const response = await fetch(

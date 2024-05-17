@@ -3,20 +3,42 @@ import styles from "./EditOrder.module.scss";
 import HeadMenu from "../HeadMenu/HeadMenu";
 import { AddressSuggestions } from "react-dadata";
 import "react-dadata/dist/react-dadata.css";
+
 import {
-  YMaps,
-  Map,
-  GeolocationControl,
-  RouteButton,
-  SearchControl,
-  TrafficControl,
-  ZoomControl,
-  Placemark,
+  MapContainer,
+  TileLayer,
   Polyline,
-  RoutePanel,
-  RouteEditor,
-} from "react-yandex-maps";
-import { Route } from "react-router-dom";
+  Marker,
+  Popup,
+} from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import "leaflet-routing-machine";
+import L from "leaflet";
+
+import markerIconPng from "leaflet/dist/images/marker-icon.png";
+const markerIcon = new L.Icon({
+  iconUrl: markerIconPng,
+  iconSize: [25, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
+});
+
+// import {
+//   YMaps,
+//   Map,
+//   GeolocationControl,
+//   RouteButton,
+//   SearchControl,
+//   TrafficControl,
+//   ZoomControl,
+//   Placemark,
+//   // Polyline,
+//   RoutePanel,
+//   RouteEditor,
+// } from "react-yandex-maps";
+// import { Route } from "react-router-dom";
+// import { funGetWay } from "./Function";
 
 const EditOredr = () => {
   const [cardData, setCardData] = useState([]);
@@ -25,18 +47,21 @@ const EditOredr = () => {
   const [pointCoor, setpointCoor] = useState([]);
 
   const [coordinates, setCoordinates] = useState([]);
-  const map = useRef(null);
+  // const map = useRef(null);
 
   useEffect(() => {
     console.log("coordinates", coordinates);
-    if (map.current && coordinates) {
+    if (coordinates.length > 0) {
       console.log("coor", coordinates);
-      map.current.setCenter([...coordinates]);
+      // map.current.setCenter([...coordinates]);
       if (pointCoor.length > 0) {
-        setpointCoor([...pointCoor, [...coordinates]]);
+        let mass = [...pointCoor];
+        mass.push([...coordinates]);
+        setpointCoor(mass);
       } else {
         setpointCoor([[...coordinates]]);
       }
+      setCoordinates([]);
     }
   }, [coordinates]);
 
@@ -100,9 +125,69 @@ const EditOredr = () => {
     }
   };
 
+  //! ставим маркеры по координатам
+  const renderMarkers = () => {
+    return pointCoor.length > 0 ? (
+      pointCoor.map((item, index) => (
+        <Marker key={index} position={item} icon={markerIcon}>
+          <Popup>Маркер на координатах: {item}</Popup>
+        </Marker>
+      ))
+    ) : (
+      <Marker position={[51.505, -0.09]} icon={markerIcon}>
+        <Popup>
+          A pretty CSS3 popup. <br /> Easily customizable.
+        </Popup>
+      </Marker>
+    );
+  };
+  const mapRef = useRef(null);
+  const [map, setMap] = useState(null);
+
+  useEffect(() => {
+    if (mapRef.current) {
+      const leafletMap = mapRef.current.leafletElement;
+      setMap(leafletMap);
+    }
+  }, []);
+
+  const [route, setRoute] = useState(null);
+  useEffect(() => {
+    const fetchRoute = async () => {
+      const startPoint = L.latLng(pointCoor[0][0], pointCoor[0][1]); // Сан-Франциско
+      const endPoint = L.latLng(pointCoor[1][0], pointCoor[1][1]); // Сан-Хосе
+      console.log("p", startPoint, endPoint);
+
+      const routingControl = L.Routing.control({
+        waypoints: [startPoint, endPoint],
+        router: L.Routing.osrmv1({
+          serviceUrl: "https://router.project-osrm.org/route/v1/",
+        }),
+      });
+      console.log("routingControl", routingControl);
+
+      routingControl.on("routesfound", function (e) {
+        setRoute(e.routes[0]);
+      });
+      if (mapRef.current && routingControl) {
+        // Добавляем routingControl на карту
+        console.log(mapRef.current);
+        routingControl.addTo(mapRef.current);
+      }
+    };
+    if (mapRef && pointCoor.length >= 2) {
+      fetchRoute();
+    }
+  }, [map, pointCoor]);
+
+  useEffect(() => {
+    console.log("rout", route);
+  }, [route]);
+
   return (
     <div>
       <HeadMenu state={"register"} />
+
       <div className={styles.EditPatient}>
         <div>
           <h1>Редактирование заказа</h1>
@@ -279,8 +364,8 @@ const EditOredr = () => {
                 <div>30%</div>
               </div>
             </div>
-            <div className={styles.map}>
-              <YMaps query={{ apikey: "f3c78576-996b-4eaa-84f8-12a8520d276a" }}>
+            {/* <div className={styles.map}>
+              <YMaps query={{ apikey: "cacdb0d3-ecc2-4d64-924d-9aa0c9cc9699" }}>
                 <Map
                   instanceRef={map}
                   defaultState={mapState}
@@ -307,9 +392,30 @@ const EditOredr = () => {
                   />
                 </Map>
               </YMaps>
-            </div>
+            </div> */}
           </div>
         </div>
+      </div>
+      <div style={{ height: "400px", width: "100%" }}>
+        <MapContainer
+          ref={mapRef}
+          center={[47.222531, 39.718705]}
+          zoom={10}
+          scrollWheelZoom={false}
+          style={{ height: "100%", width: "100%" }}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {renderMarkers()}
+          {route && (
+            <Polyline
+              pathOptions={{ color: "blue" }}
+              positions={route.coordinates}
+            />
+          )}
+        </MapContainer>
       </div>
     </div>
   );

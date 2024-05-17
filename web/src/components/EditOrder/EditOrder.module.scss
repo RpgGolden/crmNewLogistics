@@ -1,6 +1,9 @@
 @import "./../../styles/color.scss";
 @import "./../../styles/mixins.scss";
-
+.newmap {
+  width: 60vw;
+  height: 400px;
+}
 .EditPatient {
   width: 100%;
   box-sizing: border-box;
