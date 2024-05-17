@@ -13,7 +13,8 @@ import AdminPage from "./pages/AdminPages/HomePage/AdminPage";
 function App() {
   const [tableData, setTableData] = useState(testData); // данные таблицы
   const [selectedTr, setSelectedTr] = useState(null); // выбранная строка
-  const [selectedTable, setSelectedTable] = useState("Заказы"); // выбранная строка
+  const [selectedTable, setSelectedTable] = useState("Заказы"); // выбранная таблица
+  const [searchDataForTable, setsearchDataForTable] = useState(" "); // поиск по таблице
 
   const [popUp, setpopUp] = useState("");
   const context = {
@@ -24,7 +25,9 @@ function App() {
     setpopUp,
     popUp,
     selectedTable,
-    setSelectedTable
+    setSelectedTable,
+    setsearchDataForTable,
+    searchDataForTable
   };
 
   return (
