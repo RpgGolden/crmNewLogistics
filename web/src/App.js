@@ -19,6 +19,19 @@ function App() {
   const [searchDataForTable, setsearchDataForTable] = useState(" "); // поиск по таблице
 
   const [popUp, setpopUp] = useState("");
+
+  const [carData, setCarData] = useState({
+    numberCar: null,
+    markCar: null,
+    typeCar: null,
+    heightCar: null,
+    widthCar: null,
+    lengthCar: null,
+    volumecare: null,
+    loadCapacity: null,
+    numberOfPallet: null,
+  });
+
   const context = {
     tableData,
     setTableData,
@@ -30,6 +43,8 @@ function App() {
     setSelectedTable,
     setsearchDataForTable,
     searchDataForTable,
+    setCarData,
+    carData,
   };
 
   const [carTableData, setCarTableData] = useState([]); // таблиычные данные всех машин у diver
