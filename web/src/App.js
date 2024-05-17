@@ -13,6 +13,8 @@ import AdminPage from "./pages/AdminPages/HomePage/AdminPage";
 function App() {
   const [tableData, setTableData] = useState(testData); // данные таблицы
   const [selectedTr, setSelectedTr] = useState(null); // выбранная строка
+  const [selectedTable, setSelectedTable] = useState("Заказы"); // выбранная строка
+
   const [popUp, setpopUp] = useState("");
   const context = {
     tableData,
@@ -20,7 +22,9 @@ function App() {
     selectedTr,
     setSelectedTr,
     setpopUp,
-    popUp
+    popUp,
+    selectedTable,
+    setSelectedTable
   };
 
   return (

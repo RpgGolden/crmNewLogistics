@@ -21,16 +21,19 @@
     span{
         cursor: pointer;
     }
-    .arrowBot img{
+    .ListCont{
         position: relative;
-        z-index: 10;
-        left: -30px;
+    }
+    .arrowBot img{
+        position: absolute;
+        right: 10px;
+        top: 22px;
         transform: rotate(-90deg)
     }
     .ListData{
-        width: 440px;
+        width: auto;
         position: relative;
-        top: -25px;
+        top: -16px;
         margin-left: 10px;
         padding-top: 10px;
         padding-left: 10px;
@@ -38,6 +41,7 @@
         border-left: 1px solid #ADADAD;
         border-right: 1px solid #ADADAD;
         border-bottom: 1px solid #ADADAD;
+        background-color: #fff;
         .NameForList{
             font-size: 18px;
             cursor: pointer;

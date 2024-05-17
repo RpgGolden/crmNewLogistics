@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./Table.module.scss";
 import { tableHead } from "./Data";
 import DataContext from "../../context";
@@ -12,6 +12,11 @@ function Table() {
     console.log(row.id);
     context.setSelectedTr(row.id);
   };
+
+  useEffect(()=>{
+    console.log(context.selectedTable)
+    //добавить обновление таблицы в зависимости от выбранного пунка
+  },[context.selectedTable] )
 
   return (
     <div className={styles.Table}>
