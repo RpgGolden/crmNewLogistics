@@ -1,16 +1,14 @@
+// Input.js
 import React, { useState } from "react";
 import styles from "./Input.module.scss";
 import DataContext from "../../context";
 
-function Input({Textlabel, placeholder, settextSearchTableData}) {
+function Input({Textlabel, placeholder, handleInputChange, name}) {
     const [textInput, settextInput] = useState("")
 
     const InputText = (e)=>{
         settextInput(e.target.value)
-        if(settextSearchTableData != undefined){
-            settextSearchTableData(e.target.value)
-        }
-
+        handleInputChange(name, e.target.value);
     }
     
     return (

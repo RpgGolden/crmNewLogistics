@@ -1,28 +1,30 @@
 import React, { useState } from "react";
 import styles from "./Authorization.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Login } from "../../../API/API";
 function Authorization() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     login: "",
     password: "",
   });
 
   const handleInputChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setFormData({ ...formData, [name]: value });
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
-  // const handleLogin = () => {
-  //   Login(formData).then((LoginUserData) => {
-  //     if (LoginUserData) {
-  //       if (LoginUserData.role != "PATIENT") {
-  //         navigate("/Registrar");
-  //       } else {
-  //         alert("Воспользуйтесь Клиентским входом!");
-  //       }
-  //     }
-  //   });
-  // };
+
+  const handleLogin = () => {
+    Login(formData).then((LoginUserData) => {
+      if (LoginUserData) {
+        console.log(LoginUserData);
+        navigate("/AdminPage");
+      }
+    });
+  };
 
   return (
     <div className={styles.AuthorRegistrar}>
@@ -43,11 +45,9 @@ function Authorization() {
             value={formData.password}
             onChange={handleInputChange}
           />
-          <Link to="/AdminPage">
-            <button className={styles.button}>Войти</button>
-          </Link>
+            <button className={styles.button} onClick={handleLogin}>Войти</button>
           <Link to="/Register">
-            <button className={styles.buttonReg}>Зарегестрироваться</button>
+            <button className={styles.buttonReg} >Зарегестрироваться</button>
           </Link>
         </div>
       </div>
