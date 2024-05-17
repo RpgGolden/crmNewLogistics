@@ -172,7 +172,7 @@ const EditOredr = () => {
         routingControl.addTo(mapRef.current);
       }
     };
-    if (mapRef && pointCoor.length >= 2) {
+    if (mapRef && pointCoor.length === 2) {
       fetchRoute();
     }
   }, [map, pointCoor]);
@@ -210,21 +210,25 @@ const EditOredr = () => {
   useEffect(() => {
     if (route) {
       const km = (route.summary.totalDistance / 1000).toFixed(2);
+      const hours = (route.summary.totalTime / 60 / 60).toFixed(2);
+      console.log(hours);
       let sz = { ...summZakaz };
-      sz.kl = km * tarif.klHors + km * tarif.klKm;
-      sz.isp = km * tarif.ispHors + km * tarif.ispKm;
+      sz.kl = hours * tarif.klHors + km * tarif.klKm;
+      sz.isp = hours * tarif.ispHors + km * tarif.ispKm;
       let prib = { ...pribil };
-      prib.sum = sz.kl - sz.isp;
+      prib.sum = (sz.kl - sz.isp).toFixed(2);
       prib.prc = (prib.sum / (sz.kl / 100)).toFixed(2);
       setSummZakaz(sz);
       setPribil(prib);
     }
-  }, [route]);
+  }, [route, tarif]);
 
   const funSetTarif = (el, key) => {
     let tr = { ...tarif };
     if (Number(el.target.value)) {
       tr[key] = Number(el.target.value);
+    } else {
+      tr[key] = 0;
     }
     setTarif(tr);
   };
@@ -233,6 +237,8 @@ const EditOredr = () => {
     let tr = { ...summZakaz };
     if (Number(el.target.value)) {
       tr[key] = Number(el.target.value);
+    } else {
+      tr[key] = 0;
     }
     setSummZakaz(tr);
   };
