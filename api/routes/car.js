@@ -21,7 +21,6 @@ router
         asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
         asyncRoute(carController.createCar)
     );
-// getCarByIdDriver
 router
     .route('/getCars/:driverId')
     .get(

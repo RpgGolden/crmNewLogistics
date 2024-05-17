@@ -35,11 +35,8 @@ export default {
     },
     
     async getCarByIdDriver({params: {driverId}}, res) {
-        const driver = await Driver.findOne({ where: { id: driverId } });
-        if(!driver) {
-            throw new Error('Driver not found');
-        }
-        const car = await Car.findAll({ where: { driverId: driver.id } });
+       
+        const car = await Car.findAll({ where: { driverId } });
         
         const carDto = new CarDto(car);
 

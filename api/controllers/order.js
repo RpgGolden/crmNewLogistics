@@ -135,4 +135,13 @@ export default {
         const orderDto = new OrderDto(order);
         res.json(orderDto);
     },
+
+    async getOrderByDriverId({ params: { driverId } }, res) {
+        const order = await Order.findAll({ where: { driverId } });
+        if (!order) {
+            throw new AppErrorMissing('Order not found');
+        }
+        const orderDto = new OrderDto(order);
+        res.json(orderDto);
+    },
 };
