@@ -23,19 +23,11 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
   }, [context]);
   return (
     <>
-      {state === "home" ? (
+      {  context.selectedTable==="Заказы" ? (
         <div className={styles.HeadMenu}>
           <button onClick={() => context.setpopUp("PopUpNewAplication")}>
             <img src="./img/add.svg" alt="View" />
             Создать заказ
-          </button>
-          <button onClick={() => context.setpopUp("PopUpNewDriver")}>
-            <img src="./img/Add_ring.png" alt="View" />
-            Добавить водителя
-          </button>
-          <button onClick={() => context.setpopUp("PopUpNewCar")}>
-            <img src="./img/add.svg" alt="View" />
-            Добавить машину
           </button>
           <button onClick={() => context.setpopUp("PopUpNewClient")}>
             <img src="./img/add.svg" alt="View" />
@@ -54,7 +46,53 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             </button>
           </Link>
         </div>
-      ) : state === "register" ? (
+      ) : context.selectedTable==="Клиенты"? ( <div className={styles.HeadMenu}>
+        <button onClick={() => context.setpopUp("PopUpNewAplication")}>
+          <img src="./img/add.svg" alt="View" />
+          Создать заказ
+        </button>
+        <button onClick={() => context.setpopUp("PopUpNewClient")}>
+          <img src="./img/add.svg" alt="View" />
+          Добавить клиента
+        </button>
+        <Link to={flag && "./EditOrder"}>
+          <button>
+            <img src="./img/Edit.png" alt="View" />
+            Редактировать
+          </button>
+        </Link>
+        <Link to={flag && "./MakeAppointmentRegistrar"}>
+          <button>
+            <img src="./img/File_dock.png" alt="View" />
+            Удалить клиента
+          </button>
+        </Link>
+      </div>) : context.selectedTable==="Водители"? ( <div className={styles.HeadMenu}>
+        <button onClick={() => context.setpopUp("PopUpNewAplication")}>
+          <img src="./img/add.svg" alt="View" />
+          Создать заказ
+        </button>
+        <button onClick={() => context.setpopUp("PopUpNewCar")}>
+            <img src="./img/add.svg" alt="View" />
+            Добавить машину
+          </button>
+        <button onClick={() => context.setpopUp("PopUpNewClient")}>
+          <img src="./img/add.svg" alt="View" />
+          Добавить клиента
+        </button>
+        <Link to={flag && "./EditOrder"}>
+          <button>
+            <img src="./img/Edit.png" alt="View" />
+            Редактировать
+          </button>
+        </Link>
+        <Link to={flag && "./MakeAppointmentRegistrar"}>
+          <button>
+            <img src="./img/File_dock.png" alt="View" />
+            Удалить водителя
+          </button>
+        </Link>
+      </div>)   : state === "register" ? (
         <div className={styles.HeadMenu}>
           <Link to="./..">
             <button>
