@@ -4,12 +4,10 @@ import { tableHead } from "./Data";
 import DataContext from "../../context";
 function Table() {
   const { context } = React.useContext(DataContext);
-
   const tableHeader = tableHead;
-  console.log(tableHeader);
+  
 
   const trClick = (row) => {
-    console.log(row.id);
     context.setSelectedTr(row.id);
   };
 

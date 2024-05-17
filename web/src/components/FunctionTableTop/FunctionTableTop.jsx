@@ -6,7 +6,7 @@ import DataContext from "../../context";
 import { testData } from "../../DataApi";
 
 function FunctionTableTop() {
-    const TableData= [
+    const TableName= [
         {
             id: 1,
             name: "Заказы"
@@ -48,7 +48,7 @@ function FunctionTableTop() {
         <>
             <div className={styles.FunctionTableTop}>
                 <div className={styles.container}>
-                    <List  defaultValue={defaultValue}/>
+                    <List  data={TableName} defaultValue={defaultValue}/>
                     <div className={styles.searchForTable}>
                         <Input placeholder={"Поиск..."} settextSearchTableData={settextSearchTableData}/>
                         <img src="./img/Search_light.png"/>
