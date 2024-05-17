@@ -154,3 +154,22 @@ export const apiGetAllOrdersDriver = async (driverId) => {
     console.error("Пользователь не найден!");
   }
 };
+
+//! запрос добавить машину
+export const apiAddCar = async (data) => {
+  try {
+    console.log("добавить машину", data);
+    const response = await axios.post(
+      `${server}/car/createCar`,
+      { data },
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Пользователь не найден!");
+  }
+};

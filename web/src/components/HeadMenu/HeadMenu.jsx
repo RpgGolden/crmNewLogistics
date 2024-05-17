@@ -67,8 +67,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
         <div className={styles.HeadMenu}>
           <Link to="ViewMyAppointment">
             <button>
-              <img src="./img/View.png" alt="View" />
-              Посмотреть
+              <img src="./img/View.png" alt="View" />В путь
             </button>
           </Link>
           <button onClick={() => context.setpopUp("PopUpNewCar")}>
