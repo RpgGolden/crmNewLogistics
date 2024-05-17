@@ -1,12 +1,12 @@
 import { mapObjectKeys } from '../utils/map.js';
 
-const roles = {
+const status = {
     Создан: 1,
     Подтвержден: 2,
     Отклонен: 3,
     Завершен: 4,
 };
 
-export default roles;
+export default status;
 
-export const map = mapObjectKeys(roles);
+export const map = mapObjectKeys(status);
