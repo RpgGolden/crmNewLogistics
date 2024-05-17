@@ -13,7 +13,6 @@ function Input({
   itemKey,
 }) {
   // const [textInput, settextInput] = useState("");
-
   // const InputText = (e) => {
   //   settextInput(e.target.value);
   //   handleInputChange && handleInputChange(name, e.target.value);
