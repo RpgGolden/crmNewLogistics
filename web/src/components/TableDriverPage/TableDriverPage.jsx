@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./TableDriverPage.module.scss";
-import { tableHeadCar, tableHeadClient } from "./Data";
+import { tableHeadCar, tableHeadClient, tableHeadOrders } from "./Data";
 import DataContext from "../../context";
-import { apiGetAllCar, getAllCustomers } from "../../API/API";
+import {
+  apiGetAllCar,
+  apiGetAllOrdersDriver,
+  getAllCustomers,
+} from "../../API/API";
 import { testData } from "../../DataApi";
 function TableDriverPage() {
   const { drivCon, context } = React.useContext(DataContext);
@@ -17,6 +21,12 @@ function TableDriverPage() {
     const id = userData.id;
     apiGetAllCar(id).then((data) => {
       console.log("машины", data);
+      drivCon.setCarTableData(data);
+    });
+
+    apiGetAllOrdersDriver(id).then((data) => {
+      console.log("заказы", data);
+      drivCon.setOrdersTableData(data);
     });
   }, []);
 
@@ -27,12 +37,12 @@ function TableDriverPage() {
         if (response) {
           console.log(response.data);
           context.setTableData(response.data);
-          settableHeader(tableHeadClient);
+          settableHeader(tableHeadCar);
         }
       });
     }
     if (context.selectedTable === "Заказы") {
-      settableHeader(tableHeadCar);
+      settableHeader(tableHeadOrders);
       context.setTableData(testData);
     }
   }, [context.selectedTable]);

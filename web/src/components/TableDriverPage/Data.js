@@ -11,9 +11,15 @@ export const tableHeadCar = [
   { key: "cost", value: "Колличесвто палет" },
 ];
 
-export const tableHeadClient = [
-  { key: "fio", value: "ФИО" },
-  { key: "phoneNumber", value: "Номер телефона" },
-  { key: "additionalPhoneNumber", value: "Доп-телефон" },
-  { key: "login", value: "Почта" },
+export const tableHeadOrders = [
+  { key: "id", value: "Статус" },
+  { key: "status", value: "Период заказа" },
+  { key: "client", value: "Клиент" },
+  { key: "loading", value: "Загрузка" },
+  { key: "unloading", value: "Разгрузка" },
+  { key: "typeCargo", value: "Груз" },
+  { key: "executor", value: "Исполнитель" },
+  { key: "numberCar", value: "Гос номер" },
+  { key: "driver", value: "Водитель" },
+  { key: "cost", value: "Сумма" },
 ];

@@ -33,7 +33,13 @@ function App() {
   };
 
   const [carTableData, setCarTableData] = useState([]); // таблиычные данные всех машин у diver
-  const drivCon = { carTableData, setCarTableData };
+  const [ordersTableData, setOrdersTableData] = useState([]); // таблиычные данные всех машин у diver
+  const drivCon = {
+    carTableData,
+    setCarTableData,
+    ordersTableData,
+    setOrdersTableData,
+  };
   return (
     <DataContext.Provider
       value={{
