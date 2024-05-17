@@ -21,5 +21,4 @@ router
         asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
         asyncRoute(driverController.updateProfile)
     );
-
 export default router;

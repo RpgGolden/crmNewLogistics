@@ -21,5 +21,13 @@ router
         asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
         asyncRoute(carController.createCar)
     );
+// getCarByIdDriver
+router
+    .route('/getCars/:driverId')
+    .get(
+        authenticateToken,
+        asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
+        asyncRoute(carController.getCarByIdDriver)
+    );
 
 export default router;
