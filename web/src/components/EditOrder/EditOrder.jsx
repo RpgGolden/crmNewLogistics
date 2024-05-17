@@ -24,42 +24,28 @@ const markerIcon = new L.Icon({
   popupAnchor: [0, -32],
 });
 
-// import {
-//   YMaps,
-//   Map,
-//   GeolocationControl,
-//   RouteButton,
-//   SearchControl,
-//   TrafficControl,
-//   ZoomControl,
-//   Placemark,
-//   // Polyline,
-//   RoutePanel,
-//   RouteEditor,
-// } from "react-yandex-maps";
-// import { Route } from "react-router-dom";
-// import { funGetWay } from "./Function";
-
 const EditOredr = () => {
+  const [center, setCenter] = useState([47.222531, 39.718705]);
+
   const [cardData, setCardData] = useState([]);
   const [adressA, setAdressA] = useState("");
   const [adressB, setAdressB] = useState("");
   const [pointCoor, setpointCoor] = useState([]);
 
   const [coordinates, setCoordinates] = useState([]);
-  // const map = useRef(null);
 
   useEffect(() => {
     console.log("coordinates", coordinates);
     if (coordinates.length > 0) {
       console.log("coor", coordinates);
-      // map.current.setCenter([...coordinates]);
       if (pointCoor.length > 0) {
         let mass = [...pointCoor];
         mass.push([...coordinates]);
         setpointCoor(mass);
+        setCenter([...coordinates]);
       } else {
         setpointCoor([[...coordinates]]);
+        setCenter([...coordinates]);
       }
       setCoordinates([]);
     }
@@ -125,6 +111,17 @@ const EditOredr = () => {
     }
   };
 
+  const handleWheelScroll = (event) => {
+    const map = mapRef.current.leafletElement;
+    const currentZoom = map.getZoom();
+    const delta = Math.sign(event.deltaY);
+    const newZoom = currentZoom + delta;
+
+    if (newZoom >= 0 && newZoom <= 18) {
+      map.flyTo(map.getCenter(), newZoom);
+    }
+  };
+
   //! ставим маркеры по координатам
   const renderMarkers = () => {
     return pointCoor.length > 0 ? (
@@ -183,6 +180,62 @@ const EditOredr = () => {
   useEffect(() => {
     console.log("rout", route);
   }, [route]);
+
+  useEffect(() => {
+    const attributionControl = document.querySelector(
+      ".leaflet-control-attribution.leaflet-control"
+    );
+    if (attributionControl) {
+      attributionControl.style.display = "none";
+    }
+  }, [mapRef]);
+
+  const [tarif, setTarif] = useState({
+    klHors: 1000,
+    klKm: 25,
+    ispHors: 600,
+    ispKm: 25,
+  });
+
+  const [summZakaz, setSummZakaz] = useState({
+    kl: 0,
+    isp: 0,
+  });
+
+  const [pribil, setPribil] = useState({
+    sum: 0,
+    prc: 30,
+  });
+
+  useEffect(() => {
+    if (route) {
+      const km = (route.summary.totalDistance / 1000).toFixed(2);
+      let sz = { ...summZakaz };
+      sz.kl = km * tarif.klHors + km * tarif.klKm;
+      sz.isp = km * tarif.ispHors + km * tarif.ispKm;
+      let prib = { ...pribil };
+      prib.sum = sz.kl - sz.isp;
+      prib.prc = (prib.sum / (sz.kl / 100)).toFixed(2);
+      setSummZakaz(sz);
+      setPribil(prib);
+    }
+  }, [route]);
+
+  const funSetTarif = (el, key) => {
+    let tr = { ...tarif };
+    if (Number(el.target.value)) {
+      tr[key] = Number(el.target.value);
+    }
+    setTarif(tr);
+  };
+
+  const funSetSumZakaz = (el, key) => {
+    let tr = { ...summZakaz };
+    if (Number(el.target.value)) {
+      tr[key] = Number(el.target.value);
+    }
+    setSummZakaz(tr);
+  };
 
   return (
     <div>
@@ -285,137 +338,123 @@ const EditOredr = () => {
             <div className={styles.summa}>
               <h2>Расчет стоимости</h2>
               <div className={styles.summa_inner}>
-                <div>
+                <div className={styles.put_km}>
                   КМ =
                   <input
                     type="text"
-                    placeholder="76"
+                    placeholder="0"
                     onChange={(el) => handleInput(el, "km")}
-                    value={cardData.birthDate}
+                    value={
+                      route && (route.summary.totalDistance / 1000).toFixed(2)
+                    }
                   />
                 </div>
-                <div>
+                <div className={styles.tarif}>
                   <h3>Тарифы</h3>
-                  <div>
-                    <h4>Клиент</h4>
-                    <div>
-                      1 час =
-                      <input
-                        type="text"
-                        placeholder="1000р"
-                        onChange={(el) => handleInput(el, "priceHoursKlient")}
-                        value={cardData.birthDate}
-                      />
-                      1 км =
-                      <input
-                        type="text"
-                        placeholder="25р"
-                        onChange={(el) => handleInput(el, "priceKmKlient")}
-                        value={cardData.birthDate}
-                      />
+                  <div className={styles.tarif_container}>
+                    <div className={styles.tarif_inner}>
+                      <div className={styles.tarif_inner_box}>
+                        <h4>Клиент</h4>
+                        <div className={styles.input_box}>
+                          1 час
+                          <input
+                            type="text"
+                            onChange={(el) => funSetTarif(el, "klHors")}
+                            value={tarif.klHors}
+                          />
+                          1 км
+                          <input
+                            type="text"
+                            onChange={(el) => funSetTarif(el, "klKm")}
+                            value={tarif.klKm}
+                          />
+                        </div>
+                      </div>
+                      <div className={styles.tarif_inner_box}>
+                        <h4>Исполнитель</h4>
+                        <div className={styles.input_box}>
+                          1 час
+                          <input
+                            type="text"
+                            onChange={(el) => funSetTarif(el, "ispHors")}
+                            value={tarif.ispHors}
+                          />
+                          1 км
+                          <input
+                            type="text"
+                            onChange={(el) => funSetTarif(el, "ispKm")}
+                            value={tarif.ispKm}
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <h4>Исполнитель</h4>
-                    <div>
-                      1 час =
-                      <input
-                        type="text"
-                        placeholder="1000р"
-                        onChange={(el) => handleInput(el, "birthDateIsp")}
-                        value={cardData.birthDate}
-                      />
-                      1 км =
-                      <input
-                        type="text"
-                        placeholder="25р"
-                        onChange={(el) => handleInput(el, "birthDateIsp")}
-                        value={cardData.birthDate}
-                      />
+                    <div className={styles.summ_zakaz_container}>
+                      <div className={styles.summ_zakaz}>
+                        <h4>Сумма заказа</h4>
+                        <div className={styles.summ_zakaz_inner}>
+                          <input
+                            type="text"
+                            onChange={(el) => funSetSumZakaz(el, "kl")}
+                            value={summZakaz.kl}
+                          />
+                          <div className={styles.checkbox}>
+                            <span>Оплачено</span>
+                            <input type="checkbox" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className={styles.ispolnitel_summ}>
+                        <h4>Исполнителю</h4>
+                        <div className={styles.summ_zakaz_inner}>
+                          <input
+                            type="text"
+                            onChange={(el) => funSetSumZakaz(el, "isp")}
+                            value={summZakaz.isp}
+                          />
+                          <div className={styles.checkbox}>
+                            <span>Оплачено</span>
+                            <input type="checkbox" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div>
-                <h4>Сумма заказа</h4>
-                <input
-                  type="text"
-                  placeholder="250 000"
-                  onChange={(el) => handleInput(el, "AllSumm")}
-                  value={cardData.birthDate}
-                />
-                <span>Оплачено</span>
-                <input type="checkbox" />
-              </div>
-              <div>
-                <h4>Исполнителю</h4>
-                <input
-                  type="text"
-                  placeholder="100 000"
-                  onChange={(el) => handleInput(el, "ispSumm")}
-                  value={cardData.birthDate}
-                />
-                <span>Оплачено</span>
-                <input type="checkbox" />
-              </div>
-              <div>
-                <h4>Прибыль</h4>
-                <div>110 000 р</div>
-                <div>30%</div>
+              <div className={styles.pribil}>
+                <h2>Прибыль</h2>
+                <div className={styles.pribil_inner}>
+                  <div className={styles.pribil_summ}>{pribil.sum} р</div>
+                  <div className={styles.pribil_prch}>{pribil.prc}%</div>
+                </div>
               </div>
             </div>
-            {/* <div className={styles.map}>
-              <YMaps query={{ apikey: "cacdb0d3-ecc2-4d64-924d-9aa0c9cc9699" }}>
-                <Map
-                  instanceRef={map}
-                  defaultState={mapState}
-                  modules={["templateLayoutFactory", "layout.ImageWithContent"]}
-                  style={{ width: "100%", height: "100%" }}
-                >
-                  <GeolocationControl options={{ float: "right" }} />
-                  <RouteButton options={{ float: "right" }} />
-                  <SearchControl options={{ float: "right" }} />
-                  <TrafficControl options={{ float: "right" }} />
-                  <ZoomControl options={{ float: "right" }} />
-                  {pointCoor.map((item, index) => (
-                    <Placemark key={index} geometry={item} />
-                  ))}
-                  <RoutePanel
-                    instanceRef={rotPan}
-                    options={{
-                      showRouteMarkers: true, // показывать маркеры начала и конца маршрута
-                      showTraffic: true, // показывать информацию о пробках
-                      viaPoints: [], // дополнительные точки маршрута (если нужно)
-                      routeType: "auto", // тип маршрута: auto, masstransit, pedestrian
-                      // и другие опции
-                    }}
+            <div
+              className={styles.map}
+              style={{ height: "400px", width: "60%" }}
+            >
+              <MapContainer
+                ref={mapRef}
+                center={center}
+                zoom={10}
+                style={{ height: "100%", width: "100%" }}
+                scrollWheelZoom={handleWheelScroll}
+              >
+                <TileLayer
+                  attribution=""
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {renderMarkers()}
+                {route && (
+                  <Polyline
+                    pathOptions={{ color: "blue" }}
+                    positions={route.coordinates}
                   />
-                </Map>
-              </YMaps>
-            </div> */}
+                )}
+              </MapContainer>
+            </div>
           </div>
         </div>
-      </div>
-      <div style={{ height: "400px", width: "100%" }}>
-        <MapContainer
-          ref={mapRef}
-          center={[47.222531, 39.718705]}
-          zoom={10}
-          scrollWheelZoom={false}
-          style={{ height: "100%", width: "100%" }}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          {renderMarkers()}
-          {route && (
-            <Polyline
-              pathOptions={{ color: "blue" }}
-              positions={route.coordinates}
-            />
-          )}
-        </MapContainer>
       </div>
     </div>
   );
