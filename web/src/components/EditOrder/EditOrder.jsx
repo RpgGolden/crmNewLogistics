@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./EditOrder.module.scss";
 import HeadMenu from "../HeadMenu/HeadMenu";
 import axios from "axios";
+import { AddressSuggestions } from "react-dadata";
+import "react-dadata/dist/react-dadata.css";
 import {
   YMaps,
   Map,
@@ -14,7 +16,8 @@ import {
 
 const EditOredr = () => {
   const [cardData, setCardData] = useState([]);
-  const [adress, setAdress] = useState("");
+  const [adressA, setAdressA] = useState("");
+  const [adressB, setAdressB] = useState("");
 
   const handleInput = (el, key) => {
     const query = el.target.value;
@@ -32,7 +35,7 @@ const EditOredr = () => {
           `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
         );
         console.log(response);
-        setAdress(
+        setAdressA(
           `${response.data.address.state}, ${response.data.address.suburb}, ${response.data.address.road}, ${response.data.address.house_number}`
         );
       } catch (error) {
@@ -40,6 +43,14 @@ const EditOredr = () => {
       }
     };
     fetchData();
+
+    const inputs = document.querySelectorAll(".react-dadata__input");
+    // Установить placeholder для каждого элемента
+    let text = "Загрузка";
+    inputs.forEach((input) => {
+      input.placeholder = text; // Текст placeholder
+      text = "Разгрузка";
+    });
   }, []);
 
   const mapState = {
@@ -60,6 +71,7 @@ const EditOredr = () => {
   return (
     <div>
       <HeadMenu state={"register"} />
+
       <div className={styles.EditPatient}>
         <div>
           <h1>Редактирование заказа</h1>
@@ -87,7 +99,7 @@ const EditOredr = () => {
               <input
                 type="text"
                 placeholder="Телефон"
-                onChange={(el) => handleInput(el, "passport")}
+                onChange={(el) => handleInput(el, "tel")}
                 value={cardData.passport}
               />
             </div>
@@ -96,25 +108,30 @@ const EditOredr = () => {
               <input
                 type="text"
                 placeholder="Тип транспорта"
-                onChange={(el) => handleInput(el, "snils")}
+                onChange={(el) => handleInput(el, "CarType")}
                 value={cardData.snils}
               />
-              <input
-                type="text"
-                placeholder="Загрузка"
-                onChange={(el) => handleInput(el, "oms")}
-                value={cardData.oms}
-              />
-              <input
-                type="text"
-                placeholder={adress}
-                onChange={(el) => handleInput(el, "phoneNumber")}
-                value={cardData.phoneNumber}
-              />
+              <div className={styles.address}>
+                <AddressSuggestions
+                  key={"adress"}
+                  token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
+                  value={adressA}
+                  onChange={setAdressA}
+                />
+              </div>
+              <div className={styles.address}>
+                <AddressSuggestions
+                  key={"adressB"}
+                  token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
+                  value={adressB}
+                  onChange={setAdressB}
+                />
+              </div>
+
               <input
                 type="text"
                 placeholder="Период выполнения с ... по ..."
-                onChange={(el) => handleInput(el, "birthDate")}
+                onChange={(el) => handleInput(el, "period")}
                 value={cardData.birthDate}
               />
             </div>
@@ -124,25 +141,25 @@ const EditOredr = () => {
               <input
                 type="text"
                 placeholder="Тип груза"
-                onChange={(el) => handleInput(el, "snils")}
+                onChange={(el) => handleInput(el, "gruz")}
                 value={cardData.snils}
               />
               <input
                 type="text"
                 placeholder="Мест"
-                onChange={(el) => handleInput(el, "oms")}
+                onChange={(el) => handleInput(el, "mest")}
                 value={cardData.oms}
               />
               <input
                 type="text"
                 placeholder="Вес"
-                onChange={(el) => handleInput(el, "phoneNumber")}
+                onChange={(el) => handleInput(el, "weigth")}
                 value={cardData.phoneNumber}
               />
               <input
                 type="text"
                 placeholder="Объем"
-                onChange={(el) => handleInput(el, "birthDate")}
+                onChange={(el) => handleInput(el, "obyom")}
                 value={cardData.birthDate}
               />
             </div>
@@ -157,7 +174,7 @@ const EditOredr = () => {
                   <input
                     type="text"
                     placeholder="76"
-                    onChange={(el) => handleInput(el, "birthDate")}
+                    onChange={(el) => handleInput(el, "km")}
                     value={cardData.birthDate}
                   />
                 </div>
@@ -170,14 +187,14 @@ const EditOredr = () => {
                       <input
                         type="text"
                         placeholder="1000р"
-                        onChange={(el) => handleInput(el, "birthDate")}
+                        onChange={(el) => handleInput(el, "priceHoursKlient")}
                         value={cardData.birthDate}
                       />
                       1 км =
                       <input
                         type="text"
                         placeholder="25р"
-                        onChange={(el) => handleInput(el, "birthDate")}
+                        onChange={(el) => handleInput(el, "priceKmKlient")}
                         value={cardData.birthDate}
                       />
                     </div>
@@ -189,14 +206,14 @@ const EditOredr = () => {
                       <input
                         type="text"
                         placeholder="1000р"
-                        onChange={(el) => handleInput(el, "birthDate")}
+                        onChange={(el) => handleInput(el, "birthDateIsp")}
                         value={cardData.birthDate}
                       />
                       1 км =
                       <input
                         type="text"
                         placeholder="25р"
-                        onChange={(el) => handleInput(el, "birthDate")}
+                        onChange={(el) => handleInput(el, "birthDateIsp")}
                         value={cardData.birthDate}
                       />
                     </div>
@@ -208,7 +225,7 @@ const EditOredr = () => {
                 <input
                   type="text"
                   placeholder="250 000"
-                  onChange={(el) => handleInput(el, "birthDate")}
+                  onChange={(el) => handleInput(el, "AllSumm")}
                   value={cardData.birthDate}
                 />
                 <span>Оплачено</span>
@@ -219,7 +236,7 @@ const EditOredr = () => {
                 <input
                   type="text"
                   placeholder="100 000"
-                  onChange={(el) => handleInput(el, "birthDate")}
+                  onChange={(el) => handleInput(el, "ispSumm")}
                   value={cardData.birthDate}
                 />
                 <span>Оплачено</span>

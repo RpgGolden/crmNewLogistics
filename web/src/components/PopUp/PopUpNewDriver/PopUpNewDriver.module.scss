@@ -1,0 +1,29 @@
+@import "./../../../styles/color.scss";
+@import "./../../../styles/mixins.scss";
+.newCarInDriver{
+    .TwoInput{
+        display: flex;
+        margin: 0 25px;
+        justify-content: space-between;
+        input{ 
+            @include input-text(180px, 8px);  
+        }
+    }
+    .ThreeInput{
+        display: flex;
+        margin: 0 25px;
+        justify-content: space-between;
+        input{ 
+            @include input-text(100px, 8px);  
+        }
+    }
+    .button{
+        display: flex;
+        justify-content: end;
+        width: 100%;
+        .buttonSave{
+            margin-top: 20px;
+            @include buttonSave(var(--green-color));
+        }
+    }
+}
