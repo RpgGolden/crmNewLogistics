@@ -17,6 +17,7 @@ function App() {
   const [selectedTr, setSelectedTr] = useState(null); // выбранная строка
   const [selectedTable, setSelectedTable] = useState("Заказы"); // выбранная таблица
   const [searchDataForTable, setsearchDataForTable] = useState(" "); // поиск по таблице
+  const [brands, setBrands] = useState([]);
 
   const [popUp, setpopUp] = useState("");
 
@@ -45,6 +46,8 @@ function App() {
     searchDataForTable,
     setCarData,
     carData,
+    brands,
+    setBrands,
   };
 
   const [carTableData, setCarTableData] = useState([]); // таблиычные данные всех машин у diver

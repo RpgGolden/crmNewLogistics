@@ -1,8 +1,7 @@
 // Input.js
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./Input.module.scss";
 import DataContext from "../../context";
-import axios from "axios";
 
 function Input({
   Textlabel,
@@ -21,24 +20,8 @@ function Input({
   // };
   const { context } = React.useContext(DataContext);
 
-  const [brands, setBrands] = useState([]);
   const [typeCarShow, settypeCarShow] = useState(false);
   const [typeCar, settypeCar] = useState(null);
-
-  useEffect(() => {
-    // Отправить запрос к бесплатному API
-    axios(
-      "https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/truck?format=json"
-    )
-      .then((response) => {
-        console.log(response.data);
-        // Сохранить список марок авто в состоянии
-        setBrands(response.data.Results.map((brand) => brand.MakeName));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
 
   const selectTypeCar = () => {
     settypeCarShow(!typeCarShow);
@@ -69,7 +52,7 @@ function Input({
             {typeCarShow && (
               <div className={styles.list}>
                 <ul>
-                  {brands.map((brand) => (
+                  {context.brands.map((brand) => (
                     <li key={brand} onClick={() => selectLi(brand)}>
                       {brand}
                     </li>

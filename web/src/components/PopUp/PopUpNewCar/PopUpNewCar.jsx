@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./PopUpNewCar.module.scss";
 import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
 import Input from "../../../UI/Input/Input";
 import DataContext from "../../../context";
+import axios from "axios";
 
 function PopUpNewCar() {
   const { context } = React.useContext(DataContext);
@@ -14,6 +15,21 @@ function PopUpNewCar() {
     cd[inputKey] = value;
     context.setCarData(cd);
   };
+
+  useEffect(() => {
+    // Отправить запрос к бесплатному API
+    axios(
+      "https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/truck?format=json"
+    )
+      .then((response) => {
+        console.log(response.data);
+        // Сохранить список марок авто в состоянии
+        context.setBrands(response.data.Results.map((brand) => brand.MakeName));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <PopUpContainer title={"Новый авто"} mT={200}>
