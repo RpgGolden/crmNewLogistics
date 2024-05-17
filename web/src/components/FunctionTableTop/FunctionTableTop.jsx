@@ -53,7 +53,7 @@ function FunctionTableTop() {
                         <Input placeholder={"Поиск..."} settextSearchTableData={settextSearchTableData}/>
                         <img src="./img/Search_light.png"/>
                     </div>
-                    <div class={filterMenu}>
+                    <div class={styles.filterMenu}>
 
                     </div>
                 </div>
