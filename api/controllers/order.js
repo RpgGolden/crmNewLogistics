@@ -137,11 +137,13 @@ export default {
     },
 
     async getOrderByDriverId({ params: { driverId } }, res) {
-        const order = await Order.findAll({ where: { driverId }, include: [Customer, Driver, Car] });
+        const order = await Order.findAll({ where: { driverId: driverId }, include: [Customer, Driver, Car] });
         if (!order) {
             throw new AppErrorMissing('Order not found');
         }
-        const orderDto = new OrderDto(order);
-        res.json(orderDto);
+        
+        const orderDtos = order.map(order => new OrderDto(order));
+
+        res.json(orderDtos);
     },
 };

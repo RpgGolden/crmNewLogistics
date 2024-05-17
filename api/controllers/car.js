@@ -38,8 +38,8 @@ export default {
        
         const car = await Car.findAll({ where: { driverId }, include: { model: Driver } });
         
-        const carDto = new CarDto(car);
+        const carDtos = car.map(car => new CarDto(car));
 
-        res.json(carDto);
+        res.json(carDtos);
     }
 };
