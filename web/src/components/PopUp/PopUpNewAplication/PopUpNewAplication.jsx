@@ -6,11 +6,22 @@ import List from "../../../UI/List/List";
 import InputTimeStamp from "../../../UI/InputTimeStamp/InputTimeStamp";
 
 function PopUpNewAplication() {
+    const DataDriver = [
+        {
+            id: 1,
+            name: "Иванов Иван Кузьмич"
+        },
+        {
+            id: 2,
+            name: "Петров Василий Иванович"
+        }
+    ];
     return (
         <PopUpContainer title={"Создание заказа"} mT={50}>
            <div className={styles.containerInput}>
-               <List Textlabel={"Клиент"}/>
-               <Input Textlabel={"Контакт"}/>
+               <List Textlabel={"Клиент"} data={DataDriver}/>
+               
+               <Input Textlabel={"Контакт"} />
                <Input Textlabel={"Тип транспорта"}/>
                <Input Textlabel={"Загрузка"}/>
                <Input Textlabel={"Разгрузка"}/>

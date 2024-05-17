@@ -1,37 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./List.module.scss";
+import DataContext from "../../context";
 
-function List({ data, Textlabel }) {
-    const testData = [
-        {
-            id: 1,
-            name: "Иванов Иван Кузьмич"
-        },
-        {
-            id: 2,
-            name: "Петров Василий Иванович"
-        }
-    ];
+function List({ data, Textlabel, defaultValue }) {
+    const { context } = React.useContext(DataContext);
+
     
     const [activeList, setactiveList] = useState(false);
     const [nameClient, setnameClient] = useState("");
-    const addClient = (name) =>{
-        setnameClient(name);
+    const addClient = (el) =>{
+        setnameClient(el);
         setactiveList(!activeList)
+        if(el === "Заказы" || el === "Водители" || el === "Клиенты"){
+            context.setSelectedTable(el)
+        }
     }
+
+    useEffect(()=>{
+        setnameClient(defaultValue)
+    },[])
     return (
         <div className={styles.List}>
-            <div>
-                <div>
-                    <label>{Textlabel}</label>
+            <div >
+                {Textlabel &&
+                   <div>
+                        <label>{Textlabel}</label>
+                    </div>
+                }
+                <div className={styles.ListCont}>
+                    <input readOnly onClick={() => setactiveList(!activeList)} value={nameClient}/>
+                    <span onClick={() => setactiveList(!activeList)} className={styles.arrowBot}>
+                        <img style={{ transform: activeList ? "rotate(0deg)" : "rotate(-90deg)" }} src="./img/arrow_bottom.svg" />
+                    </span>
                 </div>
-                <input readOnly onClick={() => setactiveList(!activeList)} value={nameClient}/>
-                <span onClick={() => setactiveList(!activeList)} className={styles.arrowBot}>
-                    <img style={{ transform: activeList ? "rotate(0deg)" : "rotate(-90deg)" }} src="./img/arrow_bottom.svg" />
-                </span>
                 {activeList &&
                  <div className={styles.ListData}>
-                    {testData.map((item) => ( 
+                    {data.map((item) => ( 
                         <p className={styles.NameForList} onClick={()=>addClient(item.name)} key={item.id}>{item.name}</p> 
                     ))}
                 </div>
