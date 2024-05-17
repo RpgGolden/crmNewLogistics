@@ -137,7 +137,7 @@ export default {
     },
 
     async getOrderByDriverId({ params: { driverId } }, res) {
-        const order = await Order.findAll({ where: { driverId } });
+        const order = await Order.findAll({ where: { driverId }, include: [Customer, Driver, Car] });
         if (!order) {
             throw new AppErrorMissing('Order not found');
         }

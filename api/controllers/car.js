@@ -36,7 +36,7 @@ export default {
     
     async getCarByIdDriver({params: {driverId}}, res) {
        
-        const car = await Car.findAll({ where: { driverId } });
+        const car = await Car.findAll({ where: { driverId }, include: { model: Driver } });
         
         const carDto = new CarDto(car);
 
