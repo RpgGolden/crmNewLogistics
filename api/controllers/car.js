@@ -33,4 +33,13 @@ export default {
         const cars = car.map(car => new CarDto(car));
         res.json(cars);
     },
+    
+    async getCarByIdDriver({params: {driverId}}, res) {
+       
+        const car = await Car.findAll({ where: { driverId } });
+        
+        const carDto = new CarDto(car);
+
+        res.json(carDto);
+    }
 };

@@ -4,6 +4,7 @@ import Car from '../models/car.js';
 import { AppErrorMissing } from '../utils/errors.js';
 import OrderDto from '../dtos/order-dto.js';
 import Order from '../models/order.js';
+import orderStatus from '../config/status.js';
 
 export default {
     async createOrder(req, res) {
@@ -120,6 +121,27 @@ export default {
 
         const orderDto = new OrderDto(order);
 
+        res.json(orderDto);
+    },
+
+    async changeStatus({ params: { orderId }, body: { status } }, res) {
+        const order = await Order.findOne({ where: { id: orderId } });
+        if (!order) {
+            throw new AppErrorMissing('Order not found');
+        }
+
+        await order.update({ status });
+        await order.reload({ include: [Customer, Driver, Car] });
+        const orderDto = new OrderDto(order);
+        res.json(orderDto);
+    },
+
+    async getOrderByDriverId({ params: { driverId } }, res) {
+        const order = await Order.findAll({ where: { driverId } });
+        if (!order) {
+            throw new AppErrorMissing('Order not found');
+        }
+        const orderDto = new OrderDto(order);
         res.json(orderDto);
     },
 };

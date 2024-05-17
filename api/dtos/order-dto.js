@@ -15,6 +15,7 @@ export default class OrderDto {
     weight;
     volume;
     price;
+    status;
     constructor(model) {
         this.id = model.id;
         this.customer = model.Customer ? new CustomerDto(model.Customer) : null;
@@ -29,5 +30,6 @@ export default class OrderDto {
         this.weight = model.weight;
         this.volume = model.volume;
         this.price = model.price;
+        this.status = model.status;
     }
 }

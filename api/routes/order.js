@@ -29,5 +29,10 @@ router
         asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
         asyncRoute(orderController.updateOrder)
     );
-
+router
+    .route('/changeStatus/:orderId')
+    .post(authenticateToken, asyncRoute(checkRole([roles.ADMINISTRATOR])), asyncRoute(orderController.changeStatus));
+router
+    .route('/getOrderByDriverId/:driverId')
+    .get(authenticateToken, asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])), asyncRoute(orderController.getOrderByDriverId));
 export default router;
