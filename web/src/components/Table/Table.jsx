@@ -2,7 +2,7 @@ import React, {  useEffect, useState } from "react";
 import styles from "./Table.module.scss";
 import { tableHeadAppoint, tableHeadClient } from "./Data";
 import DataContext from "../../context";
-import { getAllCustomers } from "../../API/API";
+import { getAllCustomers, getProfileDriver } from "../../API/API";
 import { testData } from "../../DataApi";
 function Table() {
   const { context } = React.useContext(DataContext);
@@ -22,6 +22,15 @@ function Table() {
           settableHeader(tableHeadClient)
         }
       });
+    }
+    if(context.selectedTable==="Водители"){
+      // getProfileDriver().then((response) => {
+      //   if (response) {
+      //     console.log(response.data);
+      //     context.setTableData(response.data);
+      //     settableHeader(tableHeadClient)
+      //   }
+      // });
     }
     if(context.selectedTable==="Заказы"){
       settableHeader(tableHeadAppoint)
