@@ -4,6 +4,7 @@ import List from "../../UI/List/List";
 import Input from "../../UI/Input/Input";
 import DataContext from "../../context";
 import { testData } from "../../DataApi";
+import { getAllCustomers, getAllDriver } from "../../API/API";
 
 function FunctionTableTop() {
     const TableName= [
@@ -40,7 +41,27 @@ function FunctionTableTop() {
         if (textSearchTableData) {
             filteredData(textSearchTableData);
         } else {
-            context.setTableData(testData); // Set original data if search text is empty
+            if (context.selectedTable === "Клиенты") {
+                getAllCustomers().then((response) => {
+                  if (response) {
+                    context.setTableData(response.data);
+                  }
+                });
+              }
+              if (context.selectedTable === "Водители") {
+                getAllDriver().then((response) => {
+                  if (response) {
+                    const dataTable = response.data.map((driver) => ({
+                      id: driver.id,
+                      fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
+                    }));
+                    context.setTableData(dataTable);
+                  }
+                });
+              }
+              if (context.selectedTable === "Заказы") {
+                context.setTableData(testData);
+              }
         }
     }, [textSearchTableData]);
 

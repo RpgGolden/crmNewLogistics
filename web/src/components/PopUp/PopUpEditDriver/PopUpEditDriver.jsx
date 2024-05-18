@@ -14,13 +14,14 @@ function PopUpEditDriver() {
         additionalPhoneNumber: "",
     });
     useEffect(()=>{
-        getAllDriver().then((response) => {
-            if (response) {
-            console.log(response)
-            //   context.setTableData(dataTable);
-            //   settableHeader(tableHeadDriver)
-            }
-          });
+        // getAllDriver().then((response) => {
+        //     if (response) {
+        //     console.log(response)
+        //     //   context.setTableData(dataTable);
+        //     //   settableHeader(tableHeadDriver)
+        //     }
+        //   });
+        setdataNewClient()
     })
 
 
@@ -32,10 +33,10 @@ function PopUpEditDriver() {
     return (
         <PopUpContainer title={"Редактирование водителя"} mT={150}>
             <div className={styles.newCarInDriver}>
-               <Input Textlabel={"ФИО:"}/>
-               <Input Textlabel={"Номер телефона:"}/>
-               <Input Textlabel={"Доп телефон:"}/>
-               <Input Textlabel={"Почта:"}/>
+               <Input Textlabel={"ФИО:"} value={dataNewClient.fio}/>
+               <Input Textlabel={"Номер телефона:"} value={dataNewClient.phone}/>
+               <Input Textlabel={"Доп телефон:"} value={dataNewClient.additionalPhoneNumber}/>
+               <Input Textlabel={"Почта:"} value={dataNewClient.login}/>
                <div className={styles.button}>
                     <button className={styles.buttonSave}>Сохранить</button>
                </div>
