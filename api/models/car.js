@@ -52,7 +52,7 @@ export default class Car extends Model {
                 },
                 driverId: {
                     type: DataTypes.UUID,
-                    allowNull: false,
+                    allowNull: true,
                 },
             },
             {

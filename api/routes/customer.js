@@ -21,5 +21,12 @@ router
         asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
         asyncRoute(customerController.getAllCustomers)
     );
+router
+    .route('/deleteCustomer/:customerId')
+    .delete(
+        authenticateToken,
+        asyncRoute(checkRole([roles.ADMINISTRATOR])),
+        asyncRoute(customerController.deleteCustomer)
+    );
 
 export default router;

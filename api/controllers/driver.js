@@ -67,11 +67,21 @@ export default {
     },
     async getAllDrivers(req, res) {
         // Получить всех драйверов роль которых driver
-        const drivers = await Driver.findAll({include: {
-            model: User,
-            where: {role: roles.DRIVER}
-        }});
+        const drivers = await Driver.findAll({
+            include: {
+                model: User,
+                where: { role: roles.DRIVER },
+            },
+        });
         const driverDtos = drivers.map(driver => new ProfileDto(driver));
         res.json(driverDtos);
+    },
+    async getDriver({ params: { driverId } }, res) {
+        const driver = await Driver.findOne({ where: { id: driverId } });
+        if (!driver) {
+            throw new AppErrorMissing('Driver not found');
+        }
+        const profileDto = new ProfileDto(driver);
+        res.json(profileDto);
     },
 };
