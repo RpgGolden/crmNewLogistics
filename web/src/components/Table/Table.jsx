@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import styles from "./Table.module.scss";
 import { tableHeadAppoint, tableHeadClient, tableHeadDriver } from "./Data";
 import DataContext from "../../context";
-import { getAllCustomers, getAllDriver, getProfileDriver } from "../../API/API";
+import {
+  apiGetAllOrders,
+  getAllCustomers,
+  getAllDriver,
+  getProfileDriver,
+} from "../../API/API";
 import { testData } from "../../DataApi";
 function Table() {
   const { context } = React.useContext(DataContext);
@@ -36,8 +41,18 @@ function Table() {
       });
     }
     if (context.selectedTable === "Заказы") {
+      apiGetAllOrders().then((resp) => {
+        console.log("Заказы", resp.data);
+
+        const dat = [...resp.data];
+        dat.map((item) => {
+          item.car = item.car.markCar;
+          item.customer = item.customer.fio;
+          item.driver = item.driver.name;
+        });
+        context.setTableData(dat);
+      });
       settableHeader(tableHeadAppoint);
-      context.setTableData(testData);
     }
   }, [context.selectedTable]);
 

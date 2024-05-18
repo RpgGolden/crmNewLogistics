@@ -54,13 +54,17 @@ const EditOredr = () => {
     //     console.log(resp.data.id);
     //   });
     // });
-    const md = orderCon.orderData;
+    const md = { ...orderCon.orderData };
     md.loading = `{adress: ${md.loading.address}, geo: [${md.loading.geo[0]},${md.loading.geo[1]}]}`;
     md.unloading = `{adress: ${md.unloading.address}, geo: [${md.unloading.geo[0]},${md.unloading.geo[1]}]}`;
     md.dateBegin = `${md.dateBegin.data} ${md.dateBegin.time}`;
     md.dateEnd = `${md.dateEnd.data} ${md.dateEnd.time}`;
+    md.places = Number(md.places);
+    md.weight = Number(md.weight);
+    md.volume = Number(md.volume);
+    md.price = Number(md.price);
     apiAddOrder(md).then((resp) => {
-      console.log(resp.data.id);
+      console.log(resp);
     });
   };
 
