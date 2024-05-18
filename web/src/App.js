@@ -11,6 +11,7 @@ import HomePageAdmin from "./pages/AdminPages/HomePageAdmin/HomePageAdmin";
 import AdminPage from "./pages/AdminPages/HomePage/AdminPage";
 import DriverPage from "./pages/DriverPage/HomePage/DriverPage";
 import HomePageDriver from "./pages/DriverPage/HomePageDriver/HomePageDriver";
+import AccounDriver from "./components/AccounDriver/AccounDriver";
 
 function App() {
   const [tableData, setTableData] = useState(testData); // данные таблицы
@@ -28,15 +29,16 @@ function App() {
     heightCar: null,
     widthCar: null,
     lengthCar: null,
-    volumecare: null,
+    volumeCar: null,
     loadCapacity: null,
     numberOfPallet: null,
+    driverId: null,
   });
 
-  useEffect(()=>{
-    console.log(selectedTr)
-  },[selectedTr])
-  
+  useEffect(() => {
+    console.log(selectedTr);
+  }, [selectedTr]);
+
   const context = {
     tableData,
     setTableData,
@@ -62,11 +64,46 @@ function App() {
     ordersTableData,
     setOrdersTableData,
   };
+
+  //! данные создания заказа
+  const orderObj = {
+    customerId: null,
+    driverId: null,
+    carId: null,
+    loading: { adress: null, geo: null },
+    unloading: { adress: null, geo: null },
+    dateBegin: { data: null, time: null },
+    dateEnd: { data: null, time: null },
+    typeCargo: null,
+    places: null,
+    weight: null,
+    volume: null,
+    price: null,
+  };
+
+  const [orderData, setOrderData] = useState(orderObj);
+  const [drivers, setDrivers] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [cars, setCars] = useState([]);
+
+  const orderCon = {
+    orderObj,
+    orderData,
+    setOrderData,
+    drivers,
+    setDrivers,
+    clients,
+    setClients,
+    cars,
+    setCars,
+  };
+
   return (
     <DataContext.Provider
       value={{
         context,
         drivCon,
+        orderCon,
       }}
     >
       <BrowserRouter>
@@ -80,6 +117,7 @@ function App() {
             </Route>
             <Route path="/DriverPage/*" element={<DriverPage />}>
               <Route path="*" element={<HomePageDriver />}></Route>
+              <Route path="AccounDriver" element={<AccounDriver />}></Route>
             </Route>
           </Routes>
         </main>

@@ -17,6 +17,11 @@ import "leaflet-routing-machine";
 import L from "leaflet";
 
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
+import DataContext from "../../context";
+import ClientForm from "./ClientForm";
+import DriverForm from "./DriverForm";
+import CarForm from "./CarForm";
+import GruzForm from "./GruzForm";
 const markerIcon = new L.Icon({
   iconUrl: markerIconPng,
   iconSize: [25, 32],
@@ -25,8 +30,9 @@ const markerIcon = new L.Icon({
 });
 
 const EditOredr = () => {
-  const [center, setCenter] = useState([47.222531, 39.718705]);
+  const { orderCon } = React.useContext(DataContext);
 
+  const [center, setCenter] = useState([47.222531, 39.718705]);
   const [cardData, setCardData] = useState([]);
   const [adressA, setAdressA] = useState("");
   const [adressB, setAdressB] = useState("");
@@ -35,9 +41,7 @@ const EditOredr = () => {
   const [coordinates, setCoordinates] = useState([]);
 
   useEffect(() => {
-    console.log("coordinates", coordinates);
     if (coordinates.length > 0) {
-      console.log("coor", coordinates);
       if (pointCoor.length > 0) {
         let mass = [...pointCoor];
         mass.push([...coordinates]);
@@ -53,20 +57,19 @@ const EditOredr = () => {
 
   const rotPan = useRef(null);
   useEffect(() => {
-    console.log("rotPan", rotPan);
     if (rotPan.current) {
       rotPan.current.state.set("from", [47.222531, 39.718705]);
       rotPan.current.state.set("to", [47.20958, 38.935194]);
     }
   }, [rotPan, pointCoor]);
 
-  useEffect(() => {
-    console.log("pointCoor", pointCoor);
-    if (rotPan.current) {
-      console.log("from", rotPan.current.state._data.from);
-      console.log("to", rotPan.current.state._data.to);
-    }
-  }, [pointCoor]);
+  // useEffect(() => {
+  //   console.log("pointCoor", pointCoor);
+  //   if (rotPan.current) {
+  //     console.log("from", rotPan.current.state._data.from);
+  //     console.log("to", rotPan.current.state._data.to);
+  //   }
+  // }, [pointCoor]);
 
   const handleInput = (el, key) => {
     const query = el.target.value;
@@ -91,7 +94,6 @@ const EditOredr = () => {
   };
 
   const funSetAddress = (e) => {
-    console.log(e);
     if (e.data.geo_lat) {
       const coor = [e.data.geo_lat, e.data.geo_lon];
       setCoordinates([...coor]);
@@ -101,7 +103,6 @@ const EditOredr = () => {
     }
   };
   const funSetAddress2 = (e) => {
-    console.log(e);
     if (e.data.geo_lat) {
       const coor = [e.data.geo_lat, e.data.geo_lon];
       setCoordinates([...coor]);
@@ -153,7 +154,6 @@ const EditOredr = () => {
     const fetchRoute = async () => {
       const startPoint = L.latLng(pointCoor[0][0], pointCoor[0][1]); // Сан-Франциско
       const endPoint = L.latLng(pointCoor[1][0], pointCoor[1][1]); // Сан-Хосе
-      console.log("p", startPoint, endPoint);
 
       const routingControl = L.Routing.control({
         waypoints: [startPoint, endPoint],
@@ -161,14 +161,12 @@ const EditOredr = () => {
           serviceUrl: "https://router.project-osrm.org/route/v1/",
         }),
       });
-      console.log("routingControl", routingControl);
 
       routingControl.on("routesfound", function (e) {
         setRoute(e.routes[0]);
       });
       if (mapRef.current && routingControl) {
         // Добавляем routingControl на карту
-        console.log(mapRef.current);
         routingControl.addTo(mapRef.current);
       }
     };
@@ -177,9 +175,9 @@ const EditOredr = () => {
     }
   }, [map, pointCoor]);
 
-  useEffect(() => {
-    console.log("rout", route);
-  }, [route]);
+  // useEffect(() => {
+  //   console.log("rout", route);
+  // }, [route]);
 
   useEffect(() => {
     const attributionControl = document.querySelector(
@@ -211,7 +209,6 @@ const EditOredr = () => {
     if (route) {
       const km = (route.summary.totalDistance / 1000).toFixed(2);
       const hours = (route.summary.totalTime / 60 / 60).toFixed(2);
-      console.log(hours);
       let sz = { ...summZakaz };
       sz.kl = hours * tarif.klHors + km * tarif.klKm;
       sz.isp = hours * tarif.ispHors + km * tarif.ispKm;
@@ -251,95 +248,58 @@ const EditOredr = () => {
         <div>
           <h1>Редактирование заказа</h1>
           <div className={styles.data_container}>
-            <div className={styles.leftbox}>
-              <p>Клиент</p>
-              <input
-                type="text"
-                placeholder="Фамилия"
-                onChange={(el) => handleInput(el, "surname")}
-                value={cardData.surname}
-              />
-              <input
-                type="text"
-                placeholder="Имя"
-                onChange={(el) => handleInput(el, "name")}
-                value={cardData.name}
-              />
-              <input
-                type="text"
-                placeholder="Отчество"
-                onChange={(el) => handleInput(el, "patronymic")}
-                value={cardData.patronymic}
-              />
-              <input
-                type="text"
-                placeholder="Телефон"
-                onChange={(el) => handleInput(el, "tel")}
-                value={cardData.passport}
-              />
-            </div>
-            <div className={styles.centerbox}>
-              <p>Заказ</p>
-              <input
-                type="text"
-                placeholder="Тип транспорта"
-                onChange={(el) => handleInput(el, "CarType")}
-                value={cardData.snils}
-              />
-              <div className={styles.address}>
-                <AddressSuggestions
-                  key={"adress"}
-                  token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
-                  value={adressA}
-                  onChange={funSetAddress}
+            <div className={styles.driverCar}>
+              <ClientForm handleInput={handleInput} orderCon={orderCon} />
+              <div className={styles.centerbox}>
+                <p>Заказ</p>
+                <label>Тип транспорта</label>
+                <input
+                  type="text"
+                  placeholder="Тип транспорта"
+                  onChange={(el) => handleInput(el, "сarType")}
+                  value={
+                    orderCon.cars.find(
+                      (el) => el.id === orderCon.orderData.carId
+                    )?.typeCar
+                  }
+                />
+                <label>Загрузка</label>
+                <div className={styles.address}>
+                  <AddressSuggestions
+                    key={"adress"}
+                    token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
+                    value={adressA}
+                    onChange={funSetAddress}
+                  />
+                </div>
+                <label>Разгрузка</label>
+                <div className={styles.address}>
+                  <AddressSuggestions
+                    key={"adressB"}
+                    token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
+                    value={adressB}
+                    onChange={funSetAddress2}
+                  />
+                </div>
+                <label>Период выполнения</label>
+                <input
+                  type="text"
+                  placeholder="Период выполнения с ... по ..."
+                  onChange={(el) => handleInput(el, "dateBegin")}
+                  value={`с ${orderCon.orderData.dateBegin.data} ${orderCon.orderData.dateBegin.time} по 
+                  ${orderCon.orderData.dateEnd.data} ${orderCon.orderData.dateEnd.time} `}
                 />
               </div>
-              <div className={styles.address}>
-                <AddressSuggestions
-                  key={"adressB"}
-                  token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
-                  value={adressB}
-                  onChange={funSetAddress2}
-                />
-              </div>
-
-              <input
-                type="text"
-                placeholder="Период выполнения с ... по ..."
-                onChange={(el) => handleInput(el, "period")}
-                value={cardData.birthDate}
-              />
+            </div>
+            <div className={styles.driverCar}>
+              <GruzForm handleInput={handleInput} orderCon={orderCon} />
+              <DriverForm handleInput={handleInput} orderCon={orderCon} />
             </div>
 
-            <div className={styles.rightbox}>
-              <p>Груз</p>
-              <input
-                type="text"
-                placeholder="Тип груза"
-                onChange={(el) => handleInput(el, "gruz")}
-                value={cardData.snils}
-              />
-              <input
-                type="text"
-                placeholder="Мест"
-                onChange={(el) => handleInput(el, "mest")}
-                value={cardData.oms}
-              />
-              <input
-                type="text"
-                placeholder="Вес"
-                onChange={(el) => handleInput(el, "weigth")}
-                value={cardData.phoneNumber}
-              />
-              <input
-                type="text"
-                placeholder="Объем"
-                onChange={(el) => handleInput(el, "obyom")}
-                value={cardData.birthDate}
-              />
+            <div className={styles.driverCar}>
+              <CarForm handleInput={handleInput} orderCon={orderCon} />
             </div>
           </div>
-
           <div className={styles.zakazgrup}>
             <div className={styles.summa}>
               <h2>Расчет стоимости</h2>
