@@ -24,19 +24,19 @@ export default class Order extends Model {
                     allowNull: false,
                 },
                 loading: {
-                    type: DataTypes.STRING,
+                    type: DataTypes.JSON,
                     allowNull: false,
                 },
                 unloading: {
-                    type: DataTypes.STRING,
+                    type: DataTypes.JSON,
                     allowNull: false,
                 },
                 dateBegin: {
-                    type: DataTypes.DATE,
+                    type: DataTypes.JSON,
                     allowNull: false,
                 },
                 dateEnd: {
-                    type: DataTypes.DATE,
+                    type: DataTypes.JSON,
                     allowNull: false,
                 },
                 typeCargo: {

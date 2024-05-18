@@ -32,4 +32,11 @@ router
 router
     .route('/getDriver/:driverId')
     .get(authenticateToken, asyncRoute(checkRole([roles.ADMINISTRATOR])), asyncRoute(driverController.getDriver));
+router
+    .route('/updateProfileByAdmin/:driverId')
+    .post(
+        authenticateToken,
+        asyncRoute(checkRole([roles.ADMINISTRATOR])),
+        asyncRoute(driverController.updateProfileByAdmin)
+    );
 export default router;
