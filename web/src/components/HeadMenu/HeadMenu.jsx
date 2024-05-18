@@ -23,11 +23,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
   }, [context]);
   return (
     <>
-<<<<<<< HEAD
-      {context.selectedTable === "Заказы" && state === "home" ? (
-=======
       {state === "home" ? (
->>>>>>> parent of 522167b (Merge remote-tracking branch 'origin/Niks64' into Archi)
         <div className={styles.HeadMenu}>
           <button onClick={() => context.setpopUp("PopUpNewAplication")}>
             <img src="./img/add.svg" alt="View" />
@@ -58,7 +54,6 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             </button>
           </Link>
         </div>
-<<<<<<< HEAD
       ) : context.selectedTable === "Клиенты" && state === "home" ? (
         <div className={styles.HeadMenu}>
           <button onClick={() => context.setpopUp("PopUpNewAplication")}>
@@ -92,16 +87,15 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Добавить машину
           </button>
+          ) : state === "register" ? (
           <button onClick={() => context.setpopUp("PopUpNewClient")}>
             <img src="./img/add.svg" alt="View" />
             Добавить клиента
           </button>
-          <Link to={flag && "./EditOrder"}>
-            <button>
-              <img src="./img/Edit.png" alt="View" />
-              Редактировать
-            </button>
-          </Link>
+          <button onClick={() => context.setpopUp("PopUpEditDriver")}>
+            <img src="./img/Edit.png" alt="View" />
+            Редактировать
+          </button>
           <Link to={flag && "./MakeAppointmentRegistrar"}>
             <button>
               <img src="./img/File_dock.png" alt="View" />
@@ -109,8 +103,6 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             </button>
           </Link>
         </div>
-=======
->>>>>>> parent of 522167b (Merge remote-tracking branch 'origin/Niks64' into Archi)
       ) : state === "register" ? (
         <div className={styles.HeadMenu}>
           <Link to="./..">

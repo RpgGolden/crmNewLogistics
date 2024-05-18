@@ -17,3 +17,12 @@ export const tableHeadClient = [
   { key: "additionalPhoneNumber", value: "Доп-телефон" },
   { key: "login", value: "Почта" },
 ];
+
+export const tableHeadDriver = [
+  { key: "fio", value: "ФИО" },
+  { key: "phoneNumber", value: "Номер телефона" },
+  { key: "additionalPhoneNumber", value: "Доп-телефон" },
+  { key: "login", value: "Почта" },
+  { key: "Car", value: "Машина" },
+  { key: "NumberCar", value: "Номер машины" },
+];

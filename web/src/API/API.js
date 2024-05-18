@@ -115,10 +115,40 @@ export const getAllCustomers = async () => {
         Authorization: `${localStorage.getItem("accessToken")}`,
       },
     });
+    console.log(response);
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при получении аккаунтов!");
+  }
+};
+
+// //! Запрос на получение информации о водителе
+export const getProfileDriver = async () => {
+  try {
+    const response = await axios.get(`${server}/driver/getProfile`, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
 
     return response;
   } catch (error) {
     alert("Возникла ошибка при добавлении нового клиента!");
+  }
+};
+
+// //! Запрос на получение информации о водителе
+export const getAllDriver = async () => {
+  try {
+    const response = await axios.get(`${server}/driver/getAllDrivers`, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при получении водителей!");
   }
 };
 
