@@ -16,10 +16,7 @@ function PopUpEditDriver() {
     useEffect(()=>{
         getAllDriver().then((response) => {
             if (response) {
-              const dataTable = response.data.map(driver => ({
-                id: driver.id,
-                fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
-              }));
+            console.log(response)
             //   context.setTableData(dataTable);
             //   settableHeader(tableHeadDriver)
             }
