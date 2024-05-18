@@ -6,6 +6,7 @@ import {
   apiGetAllCar,
   apiGetAllOrdersDriver,
   getAllCustomers,
+  getProfileDriver,
 } from "../../API/API";
 import { testData } from "../../DataApi";
 function TableDriverPage() {
@@ -32,13 +33,15 @@ function TableDriverPage() {
 
   useEffect(() => {
     console.log(context.selectedTable);
-    if (context.selectedTable === "Клиенты") {
-      getAllCustomers().then((response) => {
-        if (response) {
-          console.log(response.data);
-          context.setTableData(response.data);
-          settableHeader(tableHeadCar);
-        }
+    if (context.selectedTable === "Машины") {
+      getProfileDriver().then((response) => {
+        apiGetAllCar(response.data.id).then((resp) => {
+          if (resp) {
+            console.log(resp.data);
+            context.setTableData(resp.data);
+            settableHeader(tableHeadCar);
+          }
+        });
       });
     }
     if (context.selectedTable === "Заказы") {
@@ -67,7 +70,9 @@ function TableDriverPage() {
               }
             >
               {tableHeader.map((headerItem) => (
-                <td key={headerItem.key}>{row[headerItem.key]}</td>
+                <td key={headerItem.key}>
+                  {headerItem.key === "id" ? index + 1 : row[headerItem.key]}
+                </td>
               ))}
             </tr>
           ))}

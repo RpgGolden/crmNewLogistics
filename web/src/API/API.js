@@ -161,7 +161,7 @@ export const apiGetAllCar = async (driverId) => {
         Authorization: `${localStorage.getItem("accessToken")}`,
       },
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.error("Пользователь не найден!");
   }
@@ -198,7 +198,7 @@ export const apiAddCar = async (data) => {
         },
       }
     );
-    return response.data;
+    return response;
   } catch (error) {
     console.error("машина не добавлена");
   }

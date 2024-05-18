@@ -1,14 +1,14 @@
 export const tableHeadCar = [
   { key: "id", value: "Номер" },
-  { key: "status", value: "Марка" },
-  { key: "client", value: "Гос номер" },
-  { key: "loading", value: "Тип авто" },
-  { key: "unloading", value: "Длина, м" },
-  { key: "typeCargo", value: "Ширина, м" },
-  { key: "executor", value: "Высота, м" },
-  { key: "numberCar", value: "Объем, м3" },
-  { key: "driver", value: "Грузоподъемность, т" },
-  { key: "cost", value: "Колличесвто палет" },
+  { key: "markCar", value: "Марка" },
+  { key: "numberCar", value: "Гос номер" },
+  { key: "typeCar", value: "Тип авто" },
+  { key: "lengthCar", value: "Длина, м" },
+  { key: "widthCar", value: "Ширина, м" },
+  { key: "heightCar", value: "Высота, м" },
+  { key: "volumeCar", value: "Объем, м3" },
+  { key: "loadCapacity", value: "Грузоподъемность, т" },
+  { key: "numberOfPallet", value: "Колличесвто палет" },
 ];
 
 export const tableHeadOrders = [

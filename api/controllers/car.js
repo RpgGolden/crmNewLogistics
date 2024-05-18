@@ -6,8 +6,19 @@ import { AppErrorInvalid } from '../utils/errors.js';
 export default {
     async createCar(req, res) {
         const data = req.body;
-        const { numberCar, markCar, typeCar, heightCar, widthCar, lengthCar, volumeCar, loadCapacity, numberOfPallet } =
-            data;
+        const {
+            numberCar,
+            markCar,
+            typeCar,
+            heightCar,
+            widthCar,
+            lengthCar,
+            volumeCar,
+            loadCapacity,
+            numberOfPallet,
+            driverId,
+        } = data;
+        const driver = await Driver.findOne({ where: { id: driverId } });
         const car = await Car.create({
             numberCar,
             markCar,
@@ -18,6 +29,7 @@ export default {
             volumeCar,
             loadCapacity,
             numberOfPallet,
+            driverId: driver.id || null,
         });
 
         await car.reload({ include: [Driver] });

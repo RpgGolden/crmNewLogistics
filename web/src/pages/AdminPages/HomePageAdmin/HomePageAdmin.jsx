@@ -11,9 +11,24 @@ import FunctionTableTop from "../../../components/FunctionTableTop/FunctionTable
 import PopUpEditDriver from "../../../components/PopUp/PopUpEditDriver/PopUpEditDriver";
 function HomePageAdmin() {
   const { context } = React.useContext(DataContext);
-  useEffect(()=>{
-    console.log(context.popUp)
-  },[context.popUp])
+  useEffect(() => {
+    console.log(context.popUp);
+  }, [context.popUp]);
+
+  const TableName = [
+    {
+      id: 1,
+      name: "Заказы",
+    },
+    {
+      id: 2,
+      name: "Клиенты",
+    },
+    {
+      id: 3,
+      name: "Водители",
+    },
+  ];
   return (
     <div className={styles.HomePage}>
       {/* <Header /> */}
@@ -22,15 +37,15 @@ function HomePageAdmin() {
         setFiltredData={context.setTableData}
         filtredData={context.tableData}
       />
-      <FunctionTableTop/>
+      <FunctionTableTop TableName={TableName} />
       <div className={styles.Table}>
         <Table />
       </div>
-      {context.popUp === "PopUpNewAplication" &&  <PopUpNewAplication/>}
-      {context.popUp === "PopUpNewClient" &&  <PopUpNewClient/>}
-      {context.popUp === "PopUpNewCar" &&  <PopUpNewCar/>}
-      {context.popUp === "PopUpNewDriver" &&  <PopUpNewDriver/>}
-      {context.popUp === "PopUpEditDriver" &&  <PopUpEditDriver/>}
+      {context.popUp === "PopUpNewAplication" && <PopUpNewAplication />}
+      {context.popUp === "PopUpNewClient" && <PopUpNewClient />}
+      {context.popUp === "PopUpNewCar" && <PopUpNewCar />}
+      {context.popUp === "PopUpNewDriver" && <PopUpNewDriver />}
+      {context.popUp === "PopUpEditDriver" && <PopUpEditDriver />}
     </div>
   );
 }

@@ -52,8 +52,8 @@ function Input({
             {typeCarShow && (
               <div className={styles.list}>
                 <ul>
-                  {context.brands.map((brand) => (
-                    <li key={brand} onClick={() => selectLi(brand)}>
+                  {context.brands.map((brand, index) => (
+                    <li key={index} onClick={() => selectLi(brand)}>
                       {brand}
                     </li>
                   ))}
