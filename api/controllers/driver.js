@@ -1,6 +1,8 @@
 import Driver from '../models/driver.js';
 import { AppErrorMissing } from '../utils/errors.js';
 import ProfileDto from '../dtos/profile-dto.js';
+import User from '../models/user.js';
+import roles from '../config/roles.js';
 
 export default {
     async getProfile(req, res) {
@@ -62,5 +64,14 @@ export default {
 
         const profileDto = new ProfileDto(driver);
         res.json(profileDto);
+    },
+    async getAllDrivers(req, res) {
+        // Получить всех драйверов роль которых driver
+        const drivers = await Driver.findAll({include: {
+            model: User,
+            where: {role: roles.DRIVER}
+        }});
+        const driverDtos = drivers.map(driver => new ProfileDto(driver));
+        res.json(driverDtos);
     },
 };

@@ -21,4 +21,12 @@ router
         asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
         asyncRoute(driverController.updateProfile)
     );
+
+router
+    .route('/getAllDrivers')
+    .get(
+        authenticateToken,
+        asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
+        asyncRoute(driverController.getAllDrivers)
+    );
 export default router;
