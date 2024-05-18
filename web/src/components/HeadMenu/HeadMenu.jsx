@@ -23,7 +23,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
   }, [context]);
   return (
     <>
-      {state === "home" ? (
+      {(state === "home"  && context.selectedTable === "Заказы")? (
         <div className={styles.HeadMenu}>
           <button onClick={() => context.setpopUp("PopUpNewAplication")}>
             <img src="./img/add.svg" alt="View" />
@@ -87,7 +87,6 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Добавить машину
           </button>
-          ) : state === "register" ? (
           <button onClick={() => context.setpopUp("PopUpNewClient")}>
             <img src="./img/add.svg" alt="View" />
             Добавить клиента

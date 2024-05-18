@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import styles from "./Input.module.scss";
 
-function Input({Textlabel, placeholder, handleInputChange, name}) {
+function Input({Textlabel, placeholder, handleInputChange, name, settextSearchTableData, value}) {
   const [textInput, settextInput] = useState("")
 
   const InputText = (e)=>{
     settextInput(e.target.value)
-    // settextSearchTableData && settextSearchTableData(e.target.value)
+    settextSearchTableData && settextSearchTableData(e.target.value)
     handleInputChange &&  handleInputChange(name, e.target.value);
 }
 
@@ -20,7 +20,7 @@ function Input({Textlabel, placeholder, handleInputChange, name}) {
                   <label>{Textlabel}</label>
               </div>
               }
-                <input onChange={(e)=>InputText(e)} placeholder={placeholder}/>
+                <input onChange={(e)=>InputText(e)} placeholder={placeholder} value={value}/>
         </div>
     </div>
   );
