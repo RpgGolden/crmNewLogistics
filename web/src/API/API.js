@@ -191,7 +191,7 @@ export const apiAddCar = async (data) => {
     console.log("добавить машину", data);
     const response = await axios.post(
       `${server}/car/createCar`,
-      { data },
+      { ...data },
       {
         headers: {
           Authorization: `${localStorage.getItem("accessToken")}`,
@@ -200,6 +200,6 @@ export const apiAddCar = async (data) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Пользователь не найден!");
+    console.error("машина не добавлена");
   }
 };

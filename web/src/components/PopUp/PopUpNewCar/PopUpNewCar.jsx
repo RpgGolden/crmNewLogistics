@@ -14,6 +14,16 @@ function PopUpNewCar() {
     let cd = { ...context.carData };
     if (inputKey === "numberCar") {
       if ([...value].length <= 9) cd[inputKey] = value.toUpperCase();
+    } else if (
+      inputKey === "heightCar" ||
+      inputKey === "lengthCar" ||
+      inputKey === "loadCapacity" ||
+      inputKey === "numberOfPallet" ||
+      inputKey === "volumeCar" ||
+      inputKey === "widthCar" ||
+      inputKey === "typeCar"
+    ) {
+      cd[inputKey] = Number(value);
     } else {
       cd[inputKey] = value;
     }
@@ -22,9 +32,7 @@ function PopUpNewCar() {
 
   const clickAddCar = () => {
     console.log("context.carData", context.carData);
-    apiAddCar(context.carData).then(() => {
-      console.log("машина создалась");
-    });
+    apiAddCar(context.carData);
   };
 
   useEffect(() => {
@@ -87,7 +95,7 @@ function PopUpNewCar() {
           <Input
             Textlabel={"Объем, м3:"}
             value={context.carData.volumecare}
-            itemKey={"volumecare"}
+            itemKey={"volumeCar"}
             onChangeInput={onChangeInput}
           />
         </div>

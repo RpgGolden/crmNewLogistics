@@ -28,15 +28,15 @@ function App() {
     heightCar: null,
     widthCar: null,
     lengthCar: null,
-    volumecare: null,
+    volumeCar: null,
     loadCapacity: null,
     numberOfPallet: null,
   });
 
-  useEffect(()=>{
-    console.log(selectedTr)
-  },[selectedTr])
-  
+  useEffect(() => {
+    console.log(selectedTr);
+  }, [selectedTr]);
+
   const context = {
     tableData,
     setTableData,
