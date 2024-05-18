@@ -179,7 +179,7 @@ export const apiGetAllOrdersDriver = async (driverId) => {
         },
       }
     );
-    return response.data;
+    return response;
   } catch (error) {
     console.error("Пользователь не найден!");
   }

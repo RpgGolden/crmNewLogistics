@@ -45,8 +45,17 @@ function TableDriverPage() {
       });
     }
     if (context.selectedTable === "Заказы") {
-      settableHeader(tableHeadOrders);
-      context.setTableData(testData);
+      getProfileDriver().then((response) => {
+        console.log(response);
+        apiGetAllOrdersDriver(response.data.id).then((resp) => {
+          if (resp) {
+            console.log("заказы", resp.data);
+            context.setTableData(resp.data);
+            settableHeader(tableHeadOrders);
+          }
+        });
+      });
+      // context.setTableData(testData);
     }
   }, [context.selectedTable]);
 
