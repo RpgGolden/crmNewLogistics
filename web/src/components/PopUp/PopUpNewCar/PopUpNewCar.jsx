@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styles from "./PopUpNewCar.module.scss";
 import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
-import Input from "../../../UI/Input/Input";
-import DataContext from "../../../context";
 import axios from "axios";
+import Input from "./InputNewCar/Input";
+import DataContext from "../../../context";
 
 function PopUpNewCar() {
   const { context } = React.useContext(DataContext);

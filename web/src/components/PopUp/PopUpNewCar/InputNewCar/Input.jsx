@@ -1,7 +1,7 @@
 // Input.js
 import React, { useState } from "react";
 import styles from "./Input.module.scss";
-import DataContext from "../../context";
+import DataContext from "../../../../context";
 
 function Input({
   Textlabel,
