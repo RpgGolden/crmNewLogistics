@@ -63,4 +63,9 @@ export default {
         const profileDto = new ProfileDto(driver);
         res.json(profileDto);
     },
+    async getAllDrivers(req, res) {
+        const drivers = await Driver.findAll();
+        const driverDtos = drivers.map(driver => new ProfileDto(driver));
+        res.json(driverDtos);
+    },
 };
