@@ -107,7 +107,7 @@ export const AddClient = async (ClientData) => {
   }
 };
 
-//! Запрос на получение всех Аккаунтов
+//! Запрос на получение заявок
 export const getAllCustomers = async () => {
   try {
     const response = await axios.get(`${server}/customer/getAllCustomers`, {
@@ -115,25 +115,10 @@ export const getAllCustomers = async () => {
         Authorization: `${localStorage.getItem("accessToken")}`,
       },
     });
-    console.log(response)
-    return response;
-  } catch (error) {
-    alert("Возникла ошибка при получении аккаунтов!");
-  }
-};
-
-// //! Запрос на получение Водителей
-export const getProfileDriver = async () => {
-  try {
-    const response = await axios.get(`${server}/driver/getProfile`, {
-      headers: {
-        Authorization: `${localStorage.getItem("accessToken")}`,
-      },
-    });
 
     return response;
   } catch (error) {
-    alert("Возникла ошибка при получении водителей!");
+    alert("Возникла ошибка при добавлении нового клиента!");
   }
 };
 

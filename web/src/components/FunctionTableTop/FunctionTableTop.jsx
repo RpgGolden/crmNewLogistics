@@ -24,9 +24,6 @@ function FunctionTableTop() {
     const { context } = React.useContext(DataContext);
     const [textSearchTableData, settextSearchTableData] = useState("")
 
-    const handleInputChange = (name, value) => {
-        settextSearchTableData(value);
-    }
     const filteredData = (searchText) => {
         const filteredData = testData.filter(item => {
             for (let key in item) {
@@ -53,7 +50,7 @@ function FunctionTableTop() {
                 <div className={styles.container}>
                     <List  data={TableName} defaultValue={defaultValue}/>
                     <div className={styles.searchForTable}>
-                        <Input placeholder={"Поиск..."} handleInputChange={handleInputChange}/>
+                        <Input placeholder={"Поиск..."} settextSearchTableData={settextSearchTableData}/>
                         <img src="./img/Search_light.png"/>
                     </div>
                     <div class={styles.filterMenu}>

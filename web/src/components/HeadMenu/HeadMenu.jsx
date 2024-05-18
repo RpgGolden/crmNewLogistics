@@ -23,11 +23,23 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
   }, [context]);
   return (
     <>
+<<<<<<< HEAD
       {context.selectedTable === "Заказы" && state === "home" ? (
+=======
+      {state === "home" ? (
+>>>>>>> parent of 522167b (Merge remote-tracking branch 'origin/Niks64' into Archi)
         <div className={styles.HeadMenu}>
           <button onClick={() => context.setpopUp("PopUpNewAplication")}>
             <img src="./img/add.svg" alt="View" />
             Создать заказ
+          </button>
+          <button onClick={() => context.setpopUp("PopUpNewDriver")}>
+            <img src="./img/Add_ring.png" alt="View" />
+            Добавить водителя
+          </button>
+          <button onClick={() => context.setpopUp("PopUpNewCar")}>
+            <img src="./img/add.svg" alt="View" />
+            Добавить машину
           </button>
           <button onClick={() => context.setpopUp("PopUpNewClient")}>
             <img src="./img/add.svg" alt="View" />
@@ -46,6 +58,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             </button>
           </Link>
         </div>
+<<<<<<< HEAD
       ) : context.selectedTable === "Клиенты" && state === "home" ? (
         <div className={styles.HeadMenu}>
           <button onClick={() => context.setpopUp("PopUpNewAplication")}>
@@ -96,6 +109,8 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             </button>
           </Link>
         </div>
+=======
+>>>>>>> parent of 522167b (Merge remote-tracking branch 'origin/Niks64' into Archi)
       ) : state === "register" ? (
         <div className={styles.HeadMenu}>
           <Link to="./..">
