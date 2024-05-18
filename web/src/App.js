@@ -1,6 +1,6 @@
 import Authorization from "./pages/Login/Authorization/Authorization";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Register from "./pages/Login/Register/Register";
 import HomePage from "./pages/AdminPages/HomePage/AdminPage";
 import DataContext from "./context";
@@ -33,6 +33,10 @@ function App() {
     numberOfPallet: null,
   });
 
+  useEffect(()=>{
+    console.log(selectedTr)
+  },[selectedTr])
+  
   const context = {
     tableData,
     setTableData,

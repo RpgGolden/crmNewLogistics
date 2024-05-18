@@ -122,10 +122,25 @@ export const getAllCustomers = async () => {
   }
 };
 
-// //! Запрос на получение Водителей
+// //! Запрос на получение информации о водителе
 export const getProfileDriver = async () => {
   try {
     const response = await axios.get(`${server}/driver/getProfile`, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при получении водителей!");
+  }
+};
+
+// //! Запрос на получение информации о водителе
+export const getAllDriver = async () => {
+  try {
+    const response = await axios.get(`${server}/driver/getAllDrivers`, {
       headers: {
         Authorization: `${localStorage.getItem("accessToken")}`,
       },
