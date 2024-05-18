@@ -4,7 +4,6 @@ import Car from '../models/car.js';
 import { AppErrorMissing } from '../utils/errors.js';
 import OrderDto from '../dtos/order-dto.js';
 import Order from '../models/order.js';
-import orderStatus from '../config/status.js';
 
 export default {
     async createOrder(req, res) {
@@ -141,9 +140,18 @@ export default {
         if (!order) {
             throw new AppErrorMissing('Order not found');
         }
-        
+
         const orderDtos = order.map(order => new OrderDto(order));
 
         res.json(orderDtos);
+    },
+    async deleteOrder({ params: { orderId } }, res) {
+        const order = await Order.findOne({ where: { id: orderId } });
+        if (!order) {
+            throw new AppErrorMissing('Order not found');
+        }
+
+        await order.destroy({ force: true });
+        res.json({ success: true });
     },
 };
