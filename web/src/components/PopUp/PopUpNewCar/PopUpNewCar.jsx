@@ -4,6 +4,7 @@ import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
 import axios from "axios";
 import Input from "./InputNewCar/Input";
 import DataContext from "../../../context";
+import { apiAddCar } from "../../../API/API";
 
 function PopUpNewCar() {
   const { context } = React.useContext(DataContext);
@@ -12,25 +13,20 @@ function PopUpNewCar() {
     const value = e.target.value;
     let cd = { ...context.carData };
     if (inputKey === "numberCar") {
-      let textMass = [...value];
-      if (textMass.length === 1) {
-        if (Number(textMass[0])) {
-          console.log(textMass[0]);
-          cd[inputKey] = null;
-        } else {
-          cd[inputKey] = textMass[0].toUpperCase();
-        }
-      }
-      if (textMass.length > 1 && textMass.length < 4) {
-        if (Number(textMass[textMass.length - 1])) {
-          cd[inputKey] = textMass[textMass.length - 1];
-        }
-      }
+      if ([...value].length <= 9) cd[inputKey] = value.toUpperCase();
     } else {
       cd[inputKey] = value;
     }
     context.setCarData(cd);
   };
+
+  const clickAddCar = () => {
+    console.log("context.carData", context.carData);
+    apiAddCar(context.carData).then(() => {
+      console.log("машина создалась");
+    });
+  };
+
   useEffect(() => {
     // Отправить запрос к бесплатному API
     axios(
@@ -66,7 +62,7 @@ function PopUpNewCar() {
         <Input
           Textlabel={"Тип авто:"}
           value={context.carData.markCtypeCarar}
-          itemKey={"markCtypeCarar"}
+          itemKey={"typeCar"}
           onChangeInput={onChangeInput}
         />
         <div className={styles.type1}>
@@ -110,7 +106,9 @@ function PopUpNewCar() {
           />
         </div>
         <div className={styles.button}>
-          <button className={styles.buttonSave}>Добавить</button>
+          <button className={styles.buttonSave} onClick={clickAddCar}>
+            Добавить
+          </button>
         </div>
       </div>
     </PopUpContainer>
