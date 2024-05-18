@@ -38,7 +38,7 @@ function App() {
   useEffect(() => {
     console.log(selectedTr);
   }, [selectedTr]);
-
+ 
   const context = {
     tableData,
     setTableData,

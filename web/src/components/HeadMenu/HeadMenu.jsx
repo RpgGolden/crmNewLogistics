@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./HeadMenu.module.scss";
 import { Link } from "react-router-dom";
 import DataContext from "../../context";
-import deleteCustomers from "./../../API/API"
+import deleteCustomers, { CustomersDelete } from "./../../API/API"
 function HeadMenu({ state, setFiltredData, filtredData }) {
   const { context } = useContext(DataContext);
 
@@ -16,14 +16,17 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
       : false;
   
   const DeleteCus = () =>{
-    // context.
-    // deleteCustomers(dataNewClient).then((response) => {
-    //   if (response.status === 200) {
-    //     alert("Новый клиент зарегистрирован!")
-    //     context.setpopUp("")
-    //   }
-    // });
+    console.log(context.selectedTr);
+    flag && (
+      CustomersDelete(context.selectedTr).then((response) => {
+        if (response.status === 200) {
+         alert("Пользователь успешно удален!")
+          context.setpopUp("")
+        }
+      })
+    )
   }
+  
   return (
     <>
       {state === "home" && context.selectedTable === "Заказы" ? (

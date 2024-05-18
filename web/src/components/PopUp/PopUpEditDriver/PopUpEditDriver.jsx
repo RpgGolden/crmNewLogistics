@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./PopUpEditDriver.module.scss";
 import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
 import Input from "../../../UI/Input/Input";
-import { getOneDriverData } from "../../../API/API";
+import { EditDriverInfo, getOneDriverData } from "../../../API/API";
 import DataContext from "../../../context";
 
 function PopUpEditDriver() {
@@ -63,7 +63,11 @@ function PopUpEditDriver() {
         setdataNewClient(prevState => ({ ...prevState, [name]: value }));
     }
    const saveData = ()=>{
-
+    console.log('idSelectDriver', idSelectDriver)
+    console.log('dataNewClient',dataNewClient)
+    EditDriverInfo(idSelectDriver, dataNewClient).then((response)=>{
+        console.log(response);
+    })
    }
     return (
         <PopUpContainer title={"Новый водитель"} mT={50}>

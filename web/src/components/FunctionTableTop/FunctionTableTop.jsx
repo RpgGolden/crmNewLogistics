@@ -10,7 +10,21 @@ function FunctionTableTop(props) {
   const defaultValue = "Заказы";
   const { context } = React.useContext(DataContext);
   const [textSearchTableData, settextSearchTableData] = useState("");
+  const dataList = [
+    {
+        id:1,
+        name:"Заказы"
+    },
+    {
+        id:2,
+        name:"Клиенты"
+    },
+    {
+        id:3,
+        name:"Водители"
+    }
 
+  ]
   const filteredData = (searchText) => {
     const filteredData = testData.filter((item) => {
       for (let key in item) {
@@ -66,7 +80,7 @@ function FunctionTableTop(props) {
     <>
       <div className={styles.FunctionTableTop}>
         <div className={styles.container}>
-          <List data={props.TableName} defaultValue={defaultValue} />
+          <List data={props.TableName} defaultValue={defaultValue} dataList={dataList}/>
           <div className={styles.searchForTable}>
             <Input
               placeholder={"Поиск..."}

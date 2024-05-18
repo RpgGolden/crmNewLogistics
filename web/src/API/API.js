@@ -108,7 +108,7 @@ export const AddClient = async (ClientData) => {
 };
 
 //! Запрос на получение заявок
-export const deleteCustomers = async (IdCustomer) => {
+export const CustomersDelete = async (IdCustomer) => {
   try {
     const response = await axios.delete(`${server}/customer/deleteCustomer/${IdCustomer}`, {
       headers: {
@@ -122,7 +122,21 @@ export const deleteCustomers = async (IdCustomer) => {
   }
 }; 
 
-
+//! Запрос на обновление данных драйвера
+export const EditDriverInfo = async (idSelectDriver, DataDriver) => {
+  try {
+    const response = await axios.post(`${server}driver/updateProfileByAdmin/${idSelectDriver}`, DataDriver,{
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+    console.log(response);
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка обновление данных драйвера!");
+  }
+};
+//! Запрос на обновление клиента
 export const getAllCustomers = async () => {
   try {
     const response = await axios.get(`${server}/customer/getAllCustomers`, {
