@@ -169,6 +169,7 @@ export const apiAetAllCustomers = async () => {
 
 //! Запрос на получение информации о водителе
 export const getOneDriverData = async (idDriver) => {
+  console.log("получить водилу ", idDriver);
   try {
     const response = await axios.get(`${server}/driver/getDriver/${idDriver}`, {
       headers: {
@@ -254,8 +255,8 @@ export const apiAddOrder = async (data) => {
   try {
     console.log("добавить заказ", data);
     const response = await axios.post(
-      `${server}/car/createCar`,
-      { ...data },
+      `${server}/order/createOrder`,
+      { data },
       {
         headers: {
           Authorization: `${localStorage.getItem("accessToken")}`,
@@ -264,6 +265,6 @@ export const apiAddOrder = async (data) => {
     );
     return response;
   } catch (error) {
-    console.error("машина не добавлена");
+    console.error("заказ не добавлен");
   }
 };

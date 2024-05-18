@@ -72,7 +72,7 @@ function PopUpNewAplication() {
     ) {
       md[itemKey] = value.id;
     } else if (itemKey === "dateBegin" || itemKey === "dateEnd") {
-      if ({ ...value } > 9) {
+      if ([...value].length > 8) {
         md[itemKey].data = value;
       } else {
         md[itemKey].time = value;
