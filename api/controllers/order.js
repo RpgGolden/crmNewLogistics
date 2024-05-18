@@ -141,9 +141,18 @@ export default {
         if (!order) {
             throw new AppErrorMissing('Order not found');
         }
-        
+
         const orderDtos = order.map(order => new OrderDto(order));
 
         res.json(orderDtos);
+    },
+    async deleteOrder({ params: { orderId } }, res) {
+        const order = await Order.findOne({ where: { id: orderId } });
+        if (!order) {
+            throw new AppErrorMissing('Order not found');
+        }
+
+        await order.destroy({ force: true });
+        res.json({ success: true });
     },
 };

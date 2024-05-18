@@ -34,5 +34,12 @@ router
     .post(authenticateToken, asyncRoute(checkRole([roles.ADMINISTRATOR])), asyncRoute(orderController.changeStatus));
 router
     .route('/getOrderByDriverId/:driverId')
-    .get(authenticateToken, asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])), asyncRoute(orderController.getOrderByDriverId));
+    .get(
+        authenticateToken,
+        asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
+        asyncRoute(orderController.getOrderByDriverId)
+    );
+router
+    .route('/deleteOrder/:orderId')
+    .delete(authenticateToken, asyncRoute(checkRole([roles.ADMINISTRATOR])), asyncRoute(orderController.deleteOrder));
 export default router;
