@@ -64,7 +64,7 @@ function PopUpEditDriver() {
     }
    const saveData = ()=>{
     console.log('idSelectDriver', idSelectDriver)
-    console.log('dataNewClient',dataNewClient)
+    console.log('dataNewClient', dataNewClient)
     EditDriverInfo(idSelectDriver, dataNewClient).then((response)=>{
         console.log(response);
     })

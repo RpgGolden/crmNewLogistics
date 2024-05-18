@@ -125,7 +125,7 @@ export const CustomersDelete = async (IdCustomer) => {
 //! Запрос на обновление данных драйвера
 export const EditDriverInfo = async (idSelectDriver, DataDriver) => {
   try {
-    const response = await axios.post(`${server}driver/updateProfileByAdmin/${idSelectDriver}`, DataDriver,{
+    const response = await axios.post(`${server}/driver/updateProfileByAdmin/${idSelectDriver}`, DataDriver,{
       headers: {
         Authorization: `${localStorage.getItem("accessToken")}`,
       },
@@ -133,7 +133,7 @@ export const EditDriverInfo = async (idSelectDriver, DataDriver) => {
     console.log(response);
     return response;
   } catch (error) {
-    alert("Возникла ошибка обновление данных драйвера!");
+    alert("Возникла ошибка при обновление данных драйвера!");
   }
 };
 //! Запрос на обновление клиента
