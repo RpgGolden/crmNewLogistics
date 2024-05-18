@@ -34,7 +34,7 @@ router
     .get(authenticateToken, asyncRoute(checkRole([roles.ADMINISTRATOR])), asyncRoute(driverController.getDriver));
 router
     .route('/updateProfileByAdmin/:driverId')
-    .get(
+    .post(
         authenticateToken,
         asyncRoute(checkRole([roles.ADMINISTRATOR])),
         asyncRoute(driverController.updateProfileByAdmin)
