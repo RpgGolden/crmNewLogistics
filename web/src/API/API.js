@@ -108,6 +108,21 @@ export const AddClient = async (ClientData) => {
 };
 
 //! Запрос на получение заявок
+export const deleteCustomers = async (IdCustomer) => {
+  try {
+    const response = await axios.delete(`${server}/customer/deleteCustomer/${IdCustomer}`, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+  
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при удалении заказчика!");
+  }
+}; 
+
+//! Запрос на получение заявок
 export const getAllCustomers = async () => {
   try {
     const response = await axios.get(`${server}/customer/getAllCustomers`, {

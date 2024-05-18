@@ -2,25 +2,26 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./HeadMenu.module.scss";
 import { Link } from "react-router-dom";
 import DataContext from "../../context";
-
+import deleteCustomers from "./../../API/API"
 function HeadMenu({ state, setFiltredData, filtredData }) {
   const { context } = useContext(DataContext);
-  const accessToken = localStorage.getItem("accessToken");
-  console.log(state);
-  const deletePatien = () => {};
-  // console.log(
-  //   "d",
-  //   context.selectedTr,
-  //   sessionStorage.getItem("idClientSelect")
-  // );
+  // const accessToken = localStorage.getItem("accessToken");
+  
   const flag =
     context.selectedTr !== "null" &&
     sessionStorage.getItem("idClientSelect") !== "null"
       ? true
       : false;
-  useEffect(() => {
-    // console.log(context.popUp);
-  }, [context]);
+  
+  const DeleteCus = () =>{
+    // context.
+    // deleteCustomers(dataNewClient).then((response) => {
+    //   if (response.status === 200) {
+    //     alert("Новый клиент зарегистрирован!")
+    //     context.setpopUp("")
+    //   }
+    // });
+  }
   return (
     <>
       {(state === "home"  && context.selectedTable === "Заказы")? (
@@ -70,12 +71,10 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
               Редактировать
             </button>
           </Link>
-          <Link to={flag && "./MakeAppointmentRegistrar"}>
-            <button>
+            <button onClick={DeleteCus}>
               <img src="./img/File_dock.png" alt="View" />
               Удалить клиента
             </button>
-          </Link>
         </div>
       ) : context.selectedTable === "Водители" && state === "home" ? (
         <div className={styles.HeadMenu}>
