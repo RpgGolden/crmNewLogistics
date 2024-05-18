@@ -122,7 +122,7 @@ export const getAllCustomers = async () => {
   }
 };
 
-// //! Запрос на получение информации о водителе
+//! Запрос на получение информации о водителе
 export const getProfileDriver = async () => {
   try {
     const response = await axios.get(`${server}/driver/getProfile`, {
@@ -137,7 +137,7 @@ export const getProfileDriver = async () => {
   }
 };
 
-// //! Запрос на получение информации о всех водителей
+//! Запрос на получение информации о всех водителей
 export const getAllDriver = async () => {
   try {
     const response = await axios.get(`${server}/driver/getAllDrivers`, {
@@ -151,7 +151,23 @@ export const getAllDriver = async () => {
     alert("Возникла ошибка при получении водителей!");
   }
 };
-// //! Запрос на получение информации о всех водителей
+
+//! Запрос на получение всех клиентов
+export const apiAetAllCustomers = async () => {
+  try {
+    const response = await axios.get(`${server}/customer/getAllCustomers`, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при получении клиентов!");
+  }
+};
+
+//! Запрос на получение информации о водителе
 export const getOneDriverData = async (idDriver) => {
   try {
     const response = await axios.get(`${server}/driver/getDriver/${idDriver}`, {
@@ -162,10 +178,9 @@ export const getOneDriverData = async (idDriver) => {
 
     return response;
   } catch (error) {
-    alert("Возникла ошибка при получении водителей!");
+    alert("Возникла ошибка при получении водителя!");
   }
 };
-
 
 //! Запрос на получение всех машшин
 export const apiGetAllCar = async (driverId) => {
@@ -204,6 +219,25 @@ export const apiGetAllOrdersDriver = async (driverId) => {
 export const apiAddCar = async (data) => {
   try {
     console.log("добавить машину", data);
+    const response = await axios.post(
+      `${server}/car/createCar`,
+      { ...data },
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("машина не добавлена");
+  }
+};
+
+//! запрос добавить заказ
+export const apiAddOrder = async (data) => {
+  try {
+    console.log("добавить заказ", data);
     const response = await axios.post(
       `${server}/car/createCar`,
       { ...data },

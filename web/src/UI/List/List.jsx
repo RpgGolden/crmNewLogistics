@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import styles from "./List.module.scss";
 import DataContext from "../../context";
 
-function List({ data, Textlabel, defaultValue }) {
+function List({ data, Textlabel, defaultValue, funSetData, itemKey }) {
   const { context } = React.useContext(DataContext);
 
   const [activeList, setactiveList] = useState(false);
   const [nameClient, setnameClient] = useState("");
   const addClient = (el) => {
-    setnameClient(el);
+    setnameClient(el.name);
     setactiveList(!activeList);
     if (
       el === "Заказы" ||
@@ -16,7 +16,10 @@ function List({ data, Textlabel, defaultValue }) {
       el === "Клиенты" ||
       el === "Машины"
     ) {
-      context.setSelectedTable(el);
+      context.setSelectedTable(el.name);
+    }
+    if (funSetData && itemKey) {
+      funSetData(itemKey, el);
     }
   };
 
@@ -54,7 +57,7 @@ function List({ data, Textlabel, defaultValue }) {
             {data.map((item) => (
               <p
                 className={styles.NameForList}
-                onClick={() => addClient(item.name)}
+                onClick={() => addClient(item)}
                 key={item.id}
               >
                 {item.name}

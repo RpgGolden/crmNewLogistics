@@ -1,48 +1,145 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./PopUpNewAplication.module.scss";
 import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
 import Input from "../../../UI/Input/Input";
 import List from "../../../UI/List/List";
 import InputTimeStamp from "../../../UI/InputTimeStamp/InputTimeStamp";
+import {
+  apiAddOrder,
+  apiAetAllCustomers,
+  getAllDriver,
+} from "../../../API/API";
+import { Link } from "react-router-dom";
+import DataContext from "../../../context";
 
 function PopUpNewAplication() {
-    const DataDriver = [
-        {
-            id: 1,
-            name: "Иванов Иван Кузьмич"
-        },
-        {
-            id: 2,
-            name: "Петров Василий Иванович"
-        }
-    ];
-    return (
-        <PopUpContainer title={"Создание заказа"} mT={50}>
-           <div className={styles.containerInput}>
-               <List Textlabel={"Клиент"} data={DataDriver}/>
-               
-               <Input Textlabel={"Контакт"} />
-               <Input Textlabel={"Тип транспорта"}/>
-               <Input Textlabel={"Загрузка"}/>
-               <Input Textlabel={"Разгрузка"}/>
-               <h3>Период выполнения заказа:</h3>
-                <InputTimeStamp name="C" margin="20"/>
-                <InputTimeStamp name="По" margin="10"/>
-                <h3>Груз:</h3>
-                <Input Textlabel={"Тип Груза"}/>
-                <div className={styles.Cargo}>
-                    <Input Textlabel={"Мест:"}/>
-                    <Input Textlabel={"Вес:"}/>
-                    <Input Textlabel={"Объем:"}/>
-                </div>
-               <div className={styles.button}>
-                    <button className={styles.buttonSave}>Сохранить</button>
-               </div>
+  const { orderCon } = React.useContext(DataContext);
+  const [drivers, setdrivers] = useState([]);
+  const [clients, setclientss] = useState([]);
 
-           </div>
-          
-        </PopUpContainer>
-    );
+  //! поулучаем всех водителей и клиентов
+  useEffect(() => {
+    getAllDriver().then((response) => {
+      console.log("Все водилы", response.data);
+      let mass = [];
+      response.data.map((item) => {
+        mass.push({
+          id: item.id,
+          name: `${item.surname} ${item.name} ${item.patronymic}`,
+        });
+      });
+      orderCon.setDrivers(response.data);
+      setdrivers(mass);
+    });
+    apiAetAllCustomers().then((response) => {
+      console.log("Все клиенты", response.data);
+      let mass = [];
+      response.data.map((item) => {
+        mass.push({
+          id: item.id,
+          name: item.fio,
+        });
+      });
+      orderCon.setClients(response.data);
+      setclientss(mass);
+    });
+  }, []);
+
+  const handleInputChange = (itemKey, value) => {
+    const md = { ...orderCon.orderData };
+    if (itemKey === "driverId" || itemKey === "customerId") {
+      md[itemKey] = value.id;
+    } else {
+      md[itemKey] = value;
+    }
+    orderCon.setOrderData(md);
+  };
+
+  const addAplication = () => {
+    console.log(orderCon.orderData);
+    // apiAddOrder()
+  };
+
+  return (
+    <PopUpContainer title={"Создание заказа"} mT={50}>
+      <div className={styles.containerInput}>
+        <List
+          Textlabel={"Клиент"}
+          data={clients}
+          funSetData={handleInputChange}
+          itemKey={"customerId"}
+        />
+        <List
+          Textlabel={"Водитель"}
+          data={drivers}
+          funSetData={handleInputChange}
+          itemKey={"driverId"}
+        />
+
+        {/* <Input
+          Textlabel={"Контакт"}
+          handleInputChange={handleInputChange}
+          name={"tel"}
+        /> */}
+        {/* <Input
+          Textlabel={"Тип транспорта"}
+          handleInputChange={handleInputChange}
+          name={"typeCargo"}
+        /> */}
+        {/* <Input
+          Textlabel={"Загрузка"}
+          handleInputChange={handleInputChange}
+          name={"loading"}
+        />
+        <Input
+          Textlabel={"Разгрузка"}
+          handleInputChange={handleInputChange}
+          name={"unloading"}
+        /> */}
+        <h3>Период выполнения заказа:</h3>
+        <InputTimeStamp
+          name="C"
+          margin="20"
+          handleInputChange={handleInputChange}
+        />
+        <InputTimeStamp
+          name="По"
+          margin="10"
+          handleInputChange={handleInputChange}
+        />
+        <h3>Груз:</h3>
+        <Input
+          Textlabel={"Тип Груза"}
+          handleInputChange={handleInputChange}
+          name={"typeCargo"}
+        />
+        <div className={styles.Cargo}>
+          <Input
+            Textlabel={"Мест:"}
+            handleInputChange={handleInputChange}
+            name={"places"}
+          />
+          <Input
+            Textlabel={"Вес:"}
+            handleInputChange={handleInputChange}
+            name={"weight"}
+          />
+          <Input
+            Textlabel={"Объем:"}
+            handleInputChange={handleInputChange}
+            name={"volume"}
+          />
+        </div>
+        <div className={styles.button}>
+          <Link to="./EditOrder">
+            <button className={styles.buttonSave} onClick={addAplication}>
+              Сохранить
+            </button>
+          </Link>
+        </div>
+      </div>
+    </PopUpContainer>
+  );
 }
 
 export default PopUpNewAplication;

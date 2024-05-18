@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./Header.module.scss";
 import { Link } from "react-router-dom";
 function Header() {
+  const userDataapi = JSON.parse(localStorage.getItem("userData"));
   const [userData, setuserData] = useState({
-    name: "Иван",
-    surname: "Иванов",
+    name: userDataapi.name,
+    surname: userDataapi.surname,
   });
 
   return (

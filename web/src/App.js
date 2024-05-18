@@ -11,6 +11,7 @@ import HomePageAdmin from "./pages/AdminPages/HomePageAdmin/HomePageAdmin";
 import AdminPage from "./pages/AdminPages/HomePage/AdminPage";
 import DriverPage from "./pages/DriverPage/HomePage/DriverPage";
 import HomePageDriver from "./pages/DriverPage/HomePageDriver/HomePageDriver";
+import AccounDriver from "./components/AccounDriver/AccounDriver";
 
 function App() {
   const [tableData, setTableData] = useState(testData); // данные таблицы
@@ -63,11 +64,43 @@ function App() {
     ordersTableData,
     setOrdersTableData,
   };
+
+  //! данные создания заказа
+  const orderObj = {
+    customerId: null,
+    driverId: null,
+    carId: null,
+    loading: null,
+    unloading: null,
+    dateBegin: null,
+    dateEnd: null,
+    typeCargo: null,
+    places: null,
+    weight: null,
+    volume: null,
+    price: null,
+  };
+
+  const [orderData, setOrderData] = useState(orderObj);
+  const [drivers, setDrivers] = useState([]);
+  const [clients, setClients] = useState([]);
+
+  const orderCon = {
+    orderObj,
+    orderData,
+    setOrderData,
+    drivers,
+    setDrivers,
+    clients,
+    setClients,
+  };
+
   return (
     <DataContext.Provider
       value={{
         context,
         drivCon,
+        orderCon,
       }}
     >
       <BrowserRouter>
@@ -81,6 +114,7 @@ function App() {
             </Route>
             <Route path="/DriverPage/*" element={<DriverPage />}>
               <Route path="*" element={<HomePageDriver />}></Route>
+              <Route path="AccounDriver" element={<AccounDriver />}></Route>
             </Route>
           </Routes>
         </main>

@@ -6,7 +6,6 @@ import DataContext from "../../context";
 function HeadMenu({ state, setFiltredData, filtredData }) {
   const { context } = useContext(DataContext);
   const accessToken = localStorage.getItem("accessToken");
-  console.log(state);
   const deletePatien = () => {};
   // console.log(
   //   "d",
@@ -23,7 +22,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
   }, [context]);
   return (
     <>
-      {(state === "home"  && context.selectedTable === "Заказы")? (
+      {state === "home" && context.selectedTable === "Заказы" ? (
         <div className={styles.HeadMenu}>
           <button onClick={() => context.setpopUp("PopUpNewAplication")}>
             <img src="./img/add.svg" alt="View" />
@@ -122,16 +121,16 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Добавить машину
           </button>
-          <Link to="AccounClient">
+          <Link to="AccounDriver">
             <button>
               <img src="./img/Edit.png" alt="View" />
               Редактировать аккаунт
             </button>
           </Link>
         </div>
-      ) : state === "ViewMyAppointment" ? (
+      ) : state === "withBack" ? (
         <div className={styles.HeadMenu}>
-          <Link to="/Client">
+          <Link to="./..">
             <button>
               <img src="./../img/Home.png" alt="View" />
               На Главную

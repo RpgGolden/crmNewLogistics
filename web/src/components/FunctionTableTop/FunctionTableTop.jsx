@@ -66,7 +66,7 @@ function FunctionTableTop(props) {
     <>
       <div className={styles.FunctionTableTop}>
         <div className={styles.container}>
-          <List data={TableName} defaultValue={defaultValue} />
+          <List data={props.TableName} defaultValue={defaultValue} />
           <div className={styles.searchForTable}>
             <Input
               placeholder={"Поиск..."}
@@ -74,7 +74,7 @@ function FunctionTableTop(props) {
             />
             <img src="./img/Search_light.png" />
           </div>
-          <div class={styles.filterMenu}></div>
+          <div className={styles.filterMenu}></div>
         </div>
       </div>
     </>

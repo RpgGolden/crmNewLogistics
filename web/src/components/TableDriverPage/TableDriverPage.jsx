@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styles from "./TableDriverPage.module.scss";
-import { tableHeadCar, tableHeadClient, tableHeadOrders } from "./Data";
+import { tableHeadCar, tableHeadOrders } from "./Data";
 import DataContext from "../../context";
 import {
   apiGetAllCar,
   apiGetAllOrdersDriver,
-  getAllCustomers,
   getProfileDriver,
 } from "../../API/API";
-import { testData } from "../../DataApi";
+
 function TableDriverPage() {
   const { drivCon, context } = React.useContext(DataContext);
   const [tableHeader, settableHeader] = useState(tableHeadCar);
@@ -61,32 +60,36 @@ function TableDriverPage() {
 
   return (
     <div className={styles.Table}>
-      <table className={styles.TableInner}>
-        <thead>
-          <tr>
-            {tableHeader.map((item) => (
-              <th key={item.key}>{item.value}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {context.tableData.map((row, index) => (
-            <tr
-              key={index}
-              onClick={() => trClick(row)}
-              className={
-                context.selectedTr === row.id ? styles.setectedTr : null
-              }
-            >
-              {tableHeader.map((headerItem) => (
-                <td key={headerItem.key}>
-                  {headerItem.key === "id" ? index + 1 : row[headerItem.key]}
-                </td>
+      {context.tableData.length > 0 ? (
+        <table className={styles.TableInner}>
+          <thead>
+            <tr>
+              {tableHeader.map((item) => (
+                <th key={item.key}>{item.value}</th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {context.tableData.map((row, index) => (
+              <tr
+                key={index}
+                onClick={() => trClick(row)}
+                className={
+                  context.selectedTr === row.id ? styles.setectedTr : null
+                }
+              >
+                {tableHeader.map((headerItem) => (
+                  <td key={headerItem.key}>
+                    {headerItem.key === "id" ? index + 1 : row[headerItem.key]}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div className={styles.notdata}>Нет данных</div>
+      )}
     </div>
   );
 }

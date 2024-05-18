@@ -1,0 +1,8 @@
+@import "./../../styles/color.scss";
+@import "./../../styles/mixins.scss";
+
+.AccounDriver {
+  .container {
+    @include container;
+  }
+}
