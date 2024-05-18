@@ -9,13 +9,28 @@ function PopUpNewCar() {
   const { context } = React.useContext(DataContext);
 
   const onChangeInput = (e, inputKey) => {
-    console.log(inputKey);
     const value = e.target.value;
     let cd = { ...context.carData };
-    cd[inputKey] = value;
+    if (inputKey === "numberCar") {
+      let textMass = [...value];
+      if (textMass.length === 1) {
+        if (Number(textMass[0])) {
+          console.log(textMass[0]);
+          cd[inputKey] = null;
+        } else {
+          cd[inputKey] = textMass[0].toUpperCase();
+        }
+      }
+      if (textMass.length > 1 && textMass.length < 4) {
+        if (Number(textMass[textMass.length - 1])) {
+          cd[inputKey] = textMass[textMass.length - 1];
+        }
+      }
+    } else {
+      cd[inputKey] = value;
+    }
     context.setCarData(cd);
   };
-
   useEffect(() => {
     // Отправить запрос к бесплатному API
     axios(
@@ -43,6 +58,7 @@ function PopUpNewCar() {
 
         <Input
           Textlabel={"Номер авто:"}
+          placeholder={"A000AA000"}
           itemKey={"numberCar"}
           value={context.carData.numberCar}
           onChangeInput={onChangeInput}

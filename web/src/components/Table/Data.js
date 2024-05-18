@@ -26,4 +26,3 @@ export const tableHeadDriver = [
   { key: "Car", value: "Машина" },
   { key: "NumberCar", value: "Номер машины" },
 ];
-
