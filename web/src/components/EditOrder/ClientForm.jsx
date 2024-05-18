@@ -5,6 +5,7 @@ function ClientForm(props) {
   return (
     <div className={styles.leftbox}>
       <p>Клиент</p>
+      <label>Фамилия</label>
       <input
         type="text"
         placeholder="Фамилия"
@@ -15,6 +16,7 @@ function ClientForm(props) {
             ?.fio.split(" ")[0]
         }
       />
+      <label>Имя</label>
       <input
         type="text"
         placeholder="Имя"
@@ -25,6 +27,7 @@ function ClientForm(props) {
             ?.fio.split(" ")[1]
         }
       />
+      <label>Отчество</label>
       <input
         type="text"
         placeholder="Отчество"
@@ -35,6 +38,7 @@ function ClientForm(props) {
             ?.fio.split(" ")[2]
         }
       />
+      <label>Телефон</label>
       <input
         type="text"
         placeholder="Телефон"

@@ -7,6 +7,7 @@ import InputTimeStamp from "../../../UI/InputTimeStamp/InputTimeStamp";
 import {
   apiAddOrder,
   apiAetAllCustomers,
+  apiGetAllCarsLogistic,
   getAllDriver,
 } from "../../../API/API";
 import { Link } from "react-router-dom";
@@ -16,6 +17,7 @@ function PopUpNewAplication() {
   const { orderCon } = React.useContext(DataContext);
   const [drivers, setdrivers] = useState([]);
   const [clients, setclientss] = useState([]);
+  const [carsName, setCarsName] = useState([]);
 
   //! поулучаем всех водителей и клиентов
   useEffect(() => {
@@ -43,12 +45,38 @@ function PopUpNewAplication() {
       orderCon.setClients(response.data);
       setclientss(mass);
     });
+
+    apiGetAllCarsLogistic().then((response) => {
+      console.log("Все машины", response.data);
+      let mass = [];
+      response.data.map((item) => {
+        if (item.driver === null) {
+          mass.push({
+            id: item.id,
+            name: `${item.markCar} ${item.numberCar}`,
+          });
+        }
+      });
+      setCarsName(mass);
+      orderCon.setCars(response.data);
+    });
   }, []);
 
   const handleInputChange = (itemKey, value) => {
+    console.log(itemKey);
     const md = { ...orderCon.orderData };
-    if (itemKey === "driverId" || itemKey === "customerId") {
+    if (
+      itemKey === "driverId" ||
+      itemKey === "customerId" ||
+      itemKey === "carId"
+    ) {
       md[itemKey] = value.id;
+    } else if (itemKey === "dateBegin" || itemKey === "dateEnd") {
+      if ({ ...value } > 9) {
+        md[itemKey].data = value;
+      } else {
+        md[itemKey].time = value;
+      }
     } else {
       md[itemKey] = value;
     }
@@ -76,34 +104,20 @@ function PopUpNewAplication() {
           itemKey={"driverId"}
         />
 
-        {/* <Input
-          Textlabel={"Контакт"}
-          handleInputChange={handleInputChange}
-          name={"tel"}
-        /> */}
-        {/* <Input
-          Textlabel={"Тип транспорта"}
-          handleInputChange={handleInputChange}
-          name={"typeCargo"}
-        /> */}
-        {/* <Input
-          Textlabel={"Загрузка"}
-          handleInputChange={handleInputChange}
-          name={"loading"}
+        <List
+          Textlabel={"Машина"}
+          data={carsName}
+          funSetData={handleInputChange}
+          itemKey={"carId"}
         />
-        <Input
-          Textlabel={"Разгрузка"}
-          handleInputChange={handleInputChange}
-          name={"unloading"}
-        /> */}
         <h3>Период выполнения заказа:</h3>
         <InputTimeStamp
-          name="C"
+          name="dateBegin"
           margin="20"
           handleInputChange={handleInputChange}
         />
         <InputTimeStamp
-          name="По"
+          name="dateEnd"
           margin="10"
           handleInputChange={handleInputChange}
         />
@@ -120,12 +134,12 @@ function PopUpNewAplication() {
             name={"places"}
           />
           <Input
-            Textlabel={"Вес:"}
+            Textlabel={"Вес, т:"}
             handleInputChange={handleInputChange}
             name={"weight"}
           />
           <Input
-            Textlabel={"Объем:"}
+            Textlabel={"Объем, м3:"}
             handleInputChange={handleInputChange}
             name={"volume"}
           />

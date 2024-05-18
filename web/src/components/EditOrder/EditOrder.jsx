@@ -20,6 +20,8 @@ import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import DataContext from "../../context";
 import ClientForm from "./ClientForm";
 import DriverForm from "./DriverForm";
+import CarForm from "./CarForm";
+import GruzForm from "./GruzForm";
 const markerIcon = new L.Icon({
   iconUrl: markerIconPng,
   iconSize: [25, 32],
@@ -246,70 +248,58 @@ const EditOredr = () => {
         <div>
           <h1>Редактирование заказа</h1>
           <div className={styles.data_container}>
-            <ClientForm handleInput={handleInput} orderCon={orderCon} />
-            <DriverForm handleInput={handleInput} orderCon={orderCon} />
-            <div className={styles.centerbox}>
-              <p>Заказ</p>
-              <input
-                type="text"
-                placeholder="Тип транспорта"
-                onChange={(el) => handleInput(el, "CarType")}
-                value={cardData.snils}
-              />
-              <div className={styles.address}>
-                <AddressSuggestions
-                  key={"adress"}
-                  token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
-                  value={adressA}
-                  onChange={funSetAddress}
+            <div className={styles.driverCar}>
+              <ClientForm handleInput={handleInput} orderCon={orderCon} />
+              <div className={styles.centerbox}>
+                <p>Заказ</p>
+                <label>Тип транспорта</label>
+                <input
+                  type="text"
+                  placeholder="Тип транспорта"
+                  onChange={(el) => handleInput(el, "сarType")}
+                  value={
+                    orderCon.cars.find(
+                      (el) => el.id === orderCon.orderData.carId
+                    )?.typeCar
+                  }
+                />
+                <label>Загрузка</label>
+                <div className={styles.address}>
+                  <AddressSuggestions
+                    key={"adress"}
+                    token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
+                    value={adressA}
+                    onChange={funSetAddress}
+                  />
+                </div>
+                <label>Разгрузка</label>
+                <div className={styles.address}>
+                  <AddressSuggestions
+                    key={"adressB"}
+                    token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
+                    value={adressB}
+                    onChange={funSetAddress2}
+                  />
+                </div>
+                <label>Период выполнения</label>
+                <input
+                  type="text"
+                  placeholder="Период выполнения с ... по ..."
+                  onChange={(el) => handleInput(el, "dateBegin")}
+                  value={`с ${orderCon.orderData.dateBegin.data} ${orderCon.orderData.dateBegin.time} по 
+                  ${orderCon.orderData.dateEnd.data} ${orderCon.orderData.dateEnd.time} `}
                 />
               </div>
-              <div className={styles.address}>
-                <AddressSuggestions
-                  key={"adressB"}
-                  token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
-                  value={adressB}
-                  onChange={funSetAddress2}
-                />
-              </div>
-
-              <input
-                type="text"
-                placeholder="Период выполнения с ... по ..."
-                onChange={(el) => handleInput(el, "period")}
-                value={cardData.birthDate}
-              />
+            </div>
+            <div className={styles.driverCar}>
+              <GruzForm handleInput={handleInput} orderCon={orderCon} />
+              <DriverForm handleInput={handleInput} orderCon={orderCon} />
             </div>
 
-            <div className={styles.rightbox}>
-              <p>Груз</p>
-              <input
-                type="text"
-                placeholder="Тип груза"
-                onChange={(el) => handleInput(el, "gruz")}
-                value={cardData.snils}
-              />
-              <input
-                type="text"
-                placeholder="Мест"
-                onChange={(el) => handleInput(el, "mest")}
-                value={cardData.oms}
-              />
-              <input
-                type="text"
-                placeholder="Вес"
-                onChange={(el) => handleInput(el, "weigth")}
-                value={cardData.phoneNumber}
-              />
-              <input
-                type="text"
-                placeholder="Объем"
-                onChange={(el) => handleInput(el, "obyom")}
-                value={cardData.birthDate}
-              />
+            <div className={styles.driverCar}>
+              <CarForm handleInput={handleInput} orderCon={orderCon} />
             </div>
           </div>
-
           <div className={styles.zakazgrup}>
             <div className={styles.summa}>
               <h2>Расчет стоимости</h2>

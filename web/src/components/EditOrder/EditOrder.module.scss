@@ -2,19 +2,40 @@
 @import "./../../styles/mixins.scss";
 
 .EditPatient {
+  input {
+    font-weight: 500;
+    font-size: 16px;
+  }
+  label {
+    font-size: 14px;
+    font-weight: 400;
+    color: #898787;
+  }
   width: 100%;
   box-sizing: border-box;
   @include container;
   margin-top: 15px;
+  .driverCar {
+    display: flex;
+    flex-direction: column;
+  }
   .data_container {
+    justify-content: space-between;
+
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     @include font(21px, 700);
+    box-sizing: border-box;
   }
   .leftbox {
     display: flex;
     flex-direction: column;
+    .leftbox_lll {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
     input {
       @include input-text(382px, 8px);

@@ -107,7 +107,7 @@ export const AddClient = async (ClientData) => {
   }
 };
 
-//! Запрос на получение заявок
+//! Запрос на получение клиентов
 export const getAllCustomers = async () => {
   try {
     const response = await axios.get(`${server}/customer/getAllCustomers`, {
@@ -182,7 +182,7 @@ export const getOneDriverData = async (idDriver) => {
   }
 };
 
-//! Запрос на получение всех машшин
+//! Запрос на получение всех машшин водителя
 export const apiGetAllCar = async (driverId) => {
   try {
     console.log("получить машины водителя", driverId);
@@ -194,6 +194,21 @@ export const apiGetAllCar = async (driverId) => {
     return response;
   } catch (error) {
     console.error("Пользователь не найден!");
+  }
+};
+
+//! Запрос на получение всех машин
+export const apiGetAllCarsLogistic = async () => {
+  try {
+    const response = await axios.get(`${server}/car/getAllCars`, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при получении водителя!");
   }
 };
 

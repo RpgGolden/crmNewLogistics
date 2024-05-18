@@ -70,10 +70,10 @@ function App() {
     customerId: null,
     driverId: null,
     carId: null,
-    loading: null,
-    unloading: null,
-    dateBegin: null,
-    dateEnd: null,
+    loading: { adress: null, geo: null },
+    unloading: { adress: null, geo: null },
+    dateBegin: { data: null, time: null },
+    dateEnd: { data: null, time: null },
     typeCargo: null,
     places: null,
     weight: null,
@@ -84,6 +84,7 @@ function App() {
   const [orderData, setOrderData] = useState(orderObj);
   const [drivers, setDrivers] = useState([]);
   const [clients, setClients] = useState([]);
+  const [cars, setCars] = useState([]);
 
   const orderCon = {
     orderObj,
@@ -93,6 +94,8 @@ function App() {
     setDrivers,
     clients,
     setClients,
+    cars,
+    setCars,
   };
 
   return (

@@ -5,6 +5,7 @@ function DriverForm(props) {
   return (
     <div className={styles.leftbox}>
       <p>Водитель</p>
+      <label>Фамилия</label>
       <input
         type="text"
         placeholder="Фамилия"
@@ -15,6 +16,7 @@ function DriverForm(props) {
           )?.surname
         }
       />
+      <label>Имя</label>
       <input
         type="text"
         placeholder="Имя"
@@ -25,6 +27,7 @@ function DriverForm(props) {
           )?.name
         }
       />
+      <label>Отчество</label>
       <input
         type="text"
         placeholder="Отчество"
@@ -35,6 +38,7 @@ function DriverForm(props) {
           )?.patronymic
         }
       />
+      <label>Телефон</label>
       <input
         type="text"
         placeholder="Телефон"
