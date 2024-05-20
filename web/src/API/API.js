@@ -198,6 +198,7 @@ export const apiAetAllCustomers = async () => {
 
 //! Запрос на получение информации о водителе
 export const getOneDriverData = async (idDriver) => {
+  console.log("получить водилу ", idDriver);
   try {
     const response = await axios.get(`${server}/driver/getDriver/${idDriver}`, {
       headers: {
@@ -244,7 +245,7 @@ export const apiGetAllCarsLogistic = async () => {
 //! запрос на получение заказов водителя
 export const apiGetAllOrdersDriver = async (driverId) => {
   try {
-    console.log("получить машины водителя", driverId);
+    console.log("получить заказов водителя", driverId);
     const response = await axios.get(
       `${server}/order/getOrderByDriverId/${driverId}`,
       {
@@ -283,7 +284,7 @@ export const apiAddOrder = async (data) => {
   try {
     console.log("добавить заказ", data);
     const response = await axios.post(
-      `${server}/car/createCar`,
+      `${server}/order/createOrder`,
       { ...data },
       {
         headers: {
@@ -293,6 +294,21 @@ export const apiAddOrder = async (data) => {
     );
     return response;
   } catch (error) {
-    console.error("машина не добавлена");
+    console.error("заказ не добавлен");
+  }
+};
+
+//! запрос на получение всех заказов
+export const apiGetAllOrders = async () => {
+  try {
+    console.log("получить заказов водителя");
+    const response = await axios.get(`${server}/order/getAllOrders`, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Пользователь не найден!");
   }
 };

@@ -27,6 +27,11 @@
     @include font(21px, 700);
     box-sizing: border-box;
   }
+  .save {
+    button {
+      @include button(var(--turquoise-color));
+    }
+  }
   .leftbox {
     display: flex;
     flex-direction: column;

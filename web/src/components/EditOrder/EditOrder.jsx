@@ -22,6 +22,7 @@ import ClientForm from "./ClientForm";
 import DriverForm from "./DriverForm";
 import CarForm from "./CarForm";
 import GruzForm from "./GruzForm";
+import { apiAddOrder, getOneDriverData } from "../../API/API";
 const markerIcon = new L.Icon({
   iconUrl: markerIconPng,
   iconSize: [25, 32],
@@ -37,8 +38,35 @@ const EditOredr = () => {
   const [adressA, setAdressA] = useState("");
   const [adressB, setAdressB] = useState("");
   const [pointCoor, setpointCoor] = useState([]);
-
   const [coordinates, setCoordinates] = useState([]);
+
+  //! сохраняем заказ
+  const saveClick = () => {
+    // getOneDriverData(orderCon.orderData.driverId).then((response) => {
+    //   console.log(response);
+    //   const md = orderCon.orderData;
+    //   md.loading = `{adress: ${md.loading.address}, geo: [${md.loading.geo[0]},${md.loading.geo[1]}]}`;
+    //   md.unloading = `{adress: ${md.unloading.address}, geo: [${md.unloading.geo[0]},${md.unloading.geo[1]}]}`;
+    //   md.dateBegin = `${md.dateBegin.data} ${md.dateBegin.time}`;
+    //   md.dateEnd = `${md.dateEnd.data} ${md.dateEnd.time}`;
+
+    //   apiAddOrder(md).then((resp) => {
+    //     console.log(resp.data.id);
+    //   });
+    // });
+    const md = { ...orderCon.orderData };
+    md.loading = `{adress: ${md.loading.address}, geo: [${md.loading.geo[0]},${md.loading.geo[1]}]}`;
+    md.unloading = `{adress: ${md.unloading.address}, geo: [${md.unloading.geo[0]},${md.unloading.geo[1]}]}`;
+    md.dateBegin = `${md.dateBegin.data} ${md.dateBegin.time}`;
+    md.dateEnd = `${md.dateEnd.data} ${md.dateEnd.time}`;
+    md.places = Number(md.places);
+    md.weight = Number(md.weight);
+    md.volume = Number(md.volume);
+    md.price = Number(md.price);
+    apiAddOrder(md).then((resp) => {
+      console.log(resp);
+    });
+  };
 
   useEffect(() => {
     if (coordinates.length > 0) {
@@ -100,6 +128,10 @@ const EditOredr = () => {
     }
     if (e.value) {
       setAdressA(e.value);
+      const md = { ...orderCon.orderData };
+      md.loading.adress = e.value;
+      md.loading.geo = [e.data.geo_lat, e.data.geo_lon];
+      orderCon.setOrderData(md);
     }
   };
   const funSetAddress2 = (e) => {
@@ -109,6 +141,10 @@ const EditOredr = () => {
     }
     if (e.value) {
       setAdressB(e.value);
+      const md = { ...orderCon.orderData };
+      md.unloading.adress = e.value;
+      md.unloading.geo = [e.data.geo_lat, e.data.geo_lon];
+      orderCon.setOrderData(md);
     }
   };
 
@@ -217,6 +253,10 @@ const EditOredr = () => {
       prib.prc = (prib.sum / (sz.kl / 100)).toFixed(2);
       setSummZakaz(sz);
       setPribil(prib);
+      const md = { ...orderCon.orderData };
+      md.price = prib.sum;
+      orderCon.setOrderData(md);
+      console.log(md);
     }
   }, [route, tarif]);
 
@@ -286,8 +326,7 @@ const EditOredr = () => {
                   type="text"
                   placeholder="Период выполнения с ... по ..."
                   onChange={(el) => handleInput(el, "dateBegin")}
-                  value={`с ${orderCon.orderData.dateBegin.data} ${orderCon.orderData.dateBegin.time} по 
-                  ${orderCon.orderData.dateEnd.data} ${orderCon.orderData.dateEnd.time} `}
+                  value={`с ${orderCon.orderData.dateBegin.data} ${orderCon.orderData.dateBegin.time} по ${orderCon.orderData.dateEnd.data} ${orderCon.orderData.dateEnd.time} `}
                 />
               </div>
             </div>
@@ -419,6 +458,9 @@ const EditOredr = () => {
                 )}
               </MapContainer>
             </div>
+          </div>
+          <div className={styles.save}>
+            <button onClick={saveClick}>Сохранить</button>
           </div>
         </div>
       </div>
