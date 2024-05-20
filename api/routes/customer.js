@@ -28,5 +28,18 @@ router
         asyncRoute(checkRole([roles.ADMINISTRATOR])),
         asyncRoute(customerController.deleteCustomer)
     );
-
+router
+    .route('/updateCustomer/:customerId')
+    .post(
+        authenticateToken,
+        asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
+        asyncRoute(customerController.updateCustomer)
+    );
+router
+    .route('/getCustomer/:customerId')
+    .get(
+        authenticateToken,
+        asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
+        asyncRoute(customerController.getCustomer)
+    );
 export default router;

@@ -1,6 +1,6 @@
 import Customer from '../models/customer.js';
 import CustomerDto from '../dtos/customer-dto.js';
-import { AppErrorInvalid } from '../utils/errors.js';
+import { AppErrorInvalid, AppErrorMissing } from '../utils/errors.js';
 
 export default {
     async createCustomer(req, res) {
@@ -30,5 +30,33 @@ export default {
         }
         await customer.destroy({ force: true });
         res.json({ success: true });
+    },
+    async updateCustomer({ params: { customerId } }, req, res) {
+        const customer = await Customer.findOne({ where: { id: customerId } });
+        if (!customer) {
+            throw new AppErrorMissing('Customer not found');
+        }
+        const data = req.body;
+
+        const { fio, login, phoneNumber, additionalPhoneNumber } = data;
+
+        await customer.update({
+            fio,
+            login,
+            phoneNumber,
+            additionalPhoneNumber,
+        });
+
+        const customerDto = new CustomerDto(customer);
+        res.json(customerDto);
+    },
+
+    async getCustomer({ params: { customerId } }, res) {
+        const customer = Customer.findOne({ where: { id: customerId } });
+        if (!customer) {
+            throw new AppErrorMissing('Customer not found');
+        }
+        const customerDto = new CustomerDto(customer);
+        res.json(customerDto);
     },
 };
