@@ -314,3 +314,37 @@ export const apiGetAllOrders = async () => {
     console.error("Пользователь не найден!");
   }
 };
+
+//! запрос на данных клиента по Id
+export const getCustomeriD = async (CustomerId) => {
+  try {
+    const response = await axios.get(
+      `${server}/customer/getCustomer/${CustomerId}`,
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Пользователь не найден!");
+  }
+};
+
+//! запрос на обновление данных клиента по Id
+export const UpdateProfileCustomer = async (CustomerId, data) => {
+  try {
+    const response = await axios.post(
+      `${server}/customer/updateCustomer/${CustomerId}`, data,
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Пользователь не найден!");
+  }
+};

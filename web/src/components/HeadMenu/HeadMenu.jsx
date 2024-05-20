@@ -71,12 +71,10 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Добавить клиента
           </button>
-          <Link to={flag && "./EditOrder"}>
-            <button>
+            <button onClick={() => context.setpopUp("PopUpEditClient")}>
               <img src="./img/Edit.png" alt="View" />
               Редактировать
             </button>
-          </Link>
             <button onClick={DeleteCus}>
               <img src="./img/File_dock.png" alt="View" />
               Удалить клиента

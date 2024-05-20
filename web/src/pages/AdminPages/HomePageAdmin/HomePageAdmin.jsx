@@ -9,6 +9,7 @@ import PopUpNewCar from "../../../components/PopUp/PopUpNewCar/PopUpNewCar";
 import PopUpNewDriver from "../../../components/PopUp/PopUpNewDriver/PopUpNewDriver";
 import FunctionTableTop from "../../../components/FunctionTableTop/FunctionTableTop";
 import PopUpEditDriver from "../../../components/PopUp/PopUpEditDriver/PopUpEditDriver";
+import PopUpEditClient from "../../../components/PopUp/PopUpEditClient/PopUpEditClient";
 function HomePageAdmin() {
   const { context } = React.useContext(DataContext);
   useEffect(() => {
@@ -48,6 +49,7 @@ function HomePageAdmin() {
       {context.popUp === "PopUpNewCar" && <PopUpNewCar />}
       {context.popUp === "PopUpNewDriver" && <PopUpNewDriver />}
       {context.popUp === "PopUpEditDriver" && <PopUpEditDriver />}
+      {context.popUp === "PopUpEditClient" && <PopUpEditClient/>}
     </div>
   );
 }
