@@ -8,7 +8,7 @@ import {
   getAllDriver,
   getProfileDriver,
 } from "../../API/API";
-import { testData } from "../../DataApi";
+
 function Table() {
   const { context } = React.useContext(DataContext);
   const [tableHeader, settableHeader] = useState(tableHeadAppoint);
@@ -43,7 +43,6 @@ function Table() {
     if (context.selectedTable === "Заказы") {
       apiGetAllOrders().then((resp) => {
         console.log("Заказы", resp.data);
-
         const dat = [...resp.data];
         dat.map((item) => {
           item.car = item.car.markCar;
