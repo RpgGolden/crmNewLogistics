@@ -137,7 +137,8 @@ export const EditDriverInfo = async (idSelectDriver, DataDriver) => {
     alert("Возникла ошибка при обновление данных драйвера!");
   }
 };
-//! Запрос на обновление клиента
+
+//! Запрос на получение всех клиентов
 export const getAllCustomers = async () => {
   try {
     const response = await axios.get(`${server}/customer/getAllCustomers`, {
