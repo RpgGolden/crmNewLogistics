@@ -39,7 +39,9 @@ function HomePageAdmin() {
       />
       <FunctionTableTop TableName={TableName} />
       <div className={styles.Table}>
+     
         <Table />
+     
       </div>
       {context.popUp === "PopUpNewAplication" && <PopUpNewAplication />}
       {context.popUp === "PopUpNewClient" && <PopUpNewClient />}

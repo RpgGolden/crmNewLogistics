@@ -30,10 +30,10 @@ function PopUpNewClient() {
     return (
         <PopUpContainer title={"Новый клиент"} mT={200}>
             <div>
-               <Input Textlabel={"Фио"} handleInputChange={handleInputChange} name="fio"/>
-               <Input Textlabel={"Телефон"} handleInputChange={handleInputChange} name="phoneNumber"/>
-               <Input Textlabel={"Доп.Телефон"} handleInputChange={handleInputChange} name="additionalPhoneNumber"/>
-               <Input Textlabel={"E-mail"} handleInputChange={handleInputChange} name="login"/>
+               <Input Textlabel={"Фио"} handleInputChange={handleInputChange} name="fio" value={dataNewClient.fio}/>
+               <Input Textlabel={"Телефон"} handleInputChange={handleInputChange} name="phoneNumber" value={dataNewClient.phoneNumber}/>
+               <Input Textlabel={"Доп.Телефон"} handleInputChange={handleInputChange} name="additionalPhoneNumber" value={dataNewClient.additionalPhoneNumber}/>
+               <Input Textlabel={"E-mail"} handleInputChange={handleInputChange} name="login" value={dataNewClient.login}/>
                <div className={styles.button}>
                     <button className={styles.buttonSave} onClick={EditClient}>Добавить</button>
                </div>
