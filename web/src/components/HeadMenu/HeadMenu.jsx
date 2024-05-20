@@ -22,11 +22,12 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
         if (response.status === 200) {
          alert("Пользователь успешно удален!")
           context.setpopUp("")
+          context.setSelectedTable("Клиенты")
         }
       })
     )
   }
-  
+
   return (
     <>
       {state === "home" && context.selectedTable === "Заказы" ? (
