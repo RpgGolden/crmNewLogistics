@@ -124,8 +124,9 @@ export const CustomersDelete = async (IdCustomer) => {
 
 //! Запрос на обновление данных драйвера
 export const EditDriverInfo = async (idSelectDriver, DataDriver) => {
+  const data = {DataDriver}
   try {
-    const response = await axios.post(`${server}/driver/updateProfileByAdmin/${idSelectDriver}`, DataDriver,{
+    const response = await axios.post(`${server}/driver/updateProfileByAdmin/${idSelectDriver}`, ...data,{
       headers: {
         Authorization: `${localStorage.getItem("accessToken")}`,
       },
