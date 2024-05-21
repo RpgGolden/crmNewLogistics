@@ -4,9 +4,10 @@
 .Table {
   width: 100%;
   display: flex;
+  overflow: auto;
 
   .TableInner {
-    width: 100vw;
+    width: 100%;
 
     th:nth-child(1) {
       border-radius: 8px 0 0 0;

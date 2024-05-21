@@ -48,6 +48,8 @@ function Table() {
           item.car = item.car.markCar;
           item.customer = item.customer.fio;
           item.driver = item.driver.name;
+          item.loading = JSON.parse(item.loading).adress;
+          item.unloading = JSON.parse(item.unloading).adress;
         });
         context.setTableData(dat);
       });
@@ -57,37 +59,41 @@ function Table() {
 
   return (
     <>
-     {context.tableData.length > 0 ? (
+      {context.tableData.length > 0 ? (
         <div className={styles.Table}>
-        <table className={styles.TableInner}>
-          <thead>
-            <tr>
-              {tableHeader.map((item) => (
-                <th key={item.key}>{item.value}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {context.tableData.map((row, index) => (
-              <tr
-                key={index}
-                onClick={() => trClick(row)}
-                className={
-                  context.selectedTr === row.id ? styles.setectedTr : null
-                }
-              >
-                {tableHeader.map((headerItem) => (
-                  <td key={headerItem.key}>{row[headerItem.key]}</td>
+          <table className={styles.TableInner}>
+            <thead>
+              <tr>
+                {tableHeader.map((item) => (
+                  <th key={item.key}>{item.value}</th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      ):
-      <div className={styles.notdata}>Нет данных</div>
-    }
-   </>
+            </thead>
+            <tbody>
+              {context.tableData.map((row, index) => (
+                <tr
+                  key={index}
+                  onClick={() => trClick(row)}
+                  className={
+                    context.selectedTr === row.id ? styles.setectedTr : null
+                  }
+                >
+                  {tableHeader.map((headerItem) => (
+                    <td key={headerItem.key}>
+                      {headerItem.key === "id"
+                        ? index + 1
+                        : row[headerItem.key]}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className={styles.notdata}>Нет данных</div>
+      )}
+    </>
   );
 }
 

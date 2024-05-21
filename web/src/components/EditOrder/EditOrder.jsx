@@ -55,8 +55,15 @@ const EditOredr = () => {
     //   });
     // });
     const md = { ...orderCon.orderData };
-    md.loading = `{adress: ${md.loading.address}, geo: [${md.loading.geo[0]},${md.loading.geo[1]}]}`;
-    md.unloading = `{adress: ${md.unloading.address}, geo: [${md.unloading.geo[0]},${md.unloading.geo[1]}]}`;
+    md.loading = JSON.stringify({
+      adress: adressA,
+      geo: [md.loading.geo[0], md.loading.geo[1]],
+    });
+
+    md.unloading = JSON.stringify({
+      adress: adressB,
+      geo: [md.unloading.geo[0], md.unloading.geo[1]],
+    });
     md.dateBegin = `${md.dateBegin.data} ${md.dateBegin.time}`;
     md.dateEnd = `${md.dateEnd.data} ${md.dateEnd.time}`;
     md.places = Number(md.places);
@@ -326,7 +333,7 @@ const EditOredr = () => {
                   type="text"
                   placeholder="Период выполнения с ... по ..."
                   onChange={(el) => handleInput(el, "dateBegin")}
-                  // value={`с ${orderCon.orderData.dateBegin.data} ${orderCon.orderData.dateBegin.time} по ${orderCon.orderData.dateEnd.data} ${orderCon.orderData.dateEnd.time} `}
+                  value={`с ${orderCon.orderData.dateBegin.data} ${orderCon.orderData.dateBegin.time} по ${orderCon.orderData.dateEnd.data} ${orderCon.orderData.dateEnd.time} `}
                 />
               </div>
             </div>

@@ -93,20 +93,20 @@ function PopUpNewAplication() {
       <div className={styles.containerInput}>
         <List
           Textlabel={"Клиент"}
-          data={clients}
+          dataList={clients}
           funSetData={handleInputChange}
           itemKey={"customerId"}
         />
         <List
           Textlabel={"Водитель"}
-          data={drivers}
+          dataList={drivers}
           funSetData={handleInputChange}
           itemKey={"driverId"}
         />
 
         <List
           Textlabel={"Машина"}
-          data={carsName}
+          dataList={carsName}
           funSetData={handleInputChange}
           itemKey={"carId"}
         />
