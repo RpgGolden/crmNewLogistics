@@ -19,7 +19,7 @@ export default {
             volumeCar,
             loadCapacity,
             numberOfPallet,
-            driverId: driver.id ? driver.id : null,
+            driverId: driver.id ? driver.id : undefined,
         });
 
         await car.reload({ include: [Driver] });
