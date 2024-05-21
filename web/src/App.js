@@ -32,7 +32,7 @@ function App() {
     volumeCar: null,
     loadCapacity: null,
     numberOfPallet: null,
-    driverId: null,
+    // driverId: null,
   });
 
   useEffect(() => {

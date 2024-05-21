@@ -20,13 +20,13 @@ function PopUpEditClient() {
         const idCustomer = context.selectedTr
         getCustomeriD(idCustomer).then((response)=>{
             console.log("responseClient",response)
-            // setdataNewClient({
-            //     fio:response.data.fio,
-            //     login:response.data.login,
-            //     phoneNumber:response.data.phoneNumber,
-            //     additionalPhoneNumber:response.data.additionalPhoneNumber,
-            // }
-            // );
+            setdataNewClient({
+                fio:response.data.fio,
+                login:response.data.login,
+                phoneNumber:response.data.phoneNumber,
+                additionalPhoneNumber:response.data.additionalPhoneNumber,
+            }
+            );
         })
     },[])
 

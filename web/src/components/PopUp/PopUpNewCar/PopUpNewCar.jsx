@@ -20,8 +20,8 @@ function PopUpNewCar() {
       inputKey === "loadCapacity" ||
       inputKey === "numberOfPallet" ||
       inputKey === "volumeCar" ||
-      inputKey === "widthCar" ||
-      inputKey === "typeCar"
+      inputKey === "widthCar" 
+      // inputKey === "typeCar"
     ) {
       cd[inputKey] = Number(value);
     } else {
@@ -31,8 +31,8 @@ function PopUpNewCar() {
   };
 
   const clickAddCar = () => {
-    getProfileDriver().then((response) => {
-      apiAddCar({ ...context.carData, driverId: response.data.id }).then(
+      const data = context.carData
+      apiAddCar(data).then(
         (resp) => {
           console.log("response", resp);
           if (resp.status === 200) {
@@ -47,12 +47,12 @@ function PopUpNewCar() {
               volumeCar: null,
               loadCapacity: null,
               numberOfPallet: null,
-              driverId: null,
+              // driverId: null,
             });
           }
         }
       );
-    });
+    
   };
 
   useEffect(() => {
