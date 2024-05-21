@@ -7,11 +7,11 @@ import {
   apiGetAllOrdersDriver,
   getProfileDriver,
 } from "../../API/API";
+import { tableHeadAppoint } from "../Table/Data";
 
 function TableDriverPage() {
   const { drivCon, context } = React.useContext(DataContext);
-  const [tableHeader, settableHeader] = useState(tableHeadCar);
-
+  const [tableHeader, settableHeader] = useState(tableHeadAppoint);
   const trClick = (row) => {
     context.setSelectedTr(row.id);
   };
@@ -20,13 +20,14 @@ function TableDriverPage() {
     const userData = JSON.parse(localStorage.getItem("userData"));
     const id = userData.id;
     apiGetAllCar(id).then((data) => {
-      console.log("машины", data);
-      drivCon.setCarTableData(data);
+      console.log("машины", [data]);
+      drivCon.setCarTableData([data]);
     });
 
     apiGetAllOrdersDriver(id).then((data) => {
       console.log("заказы", data);
-      drivCon.setOrdersTableData(data);
+      drivCon.setOrdersTableData([data]);
+      // settableHeader(tableHeadOrders);
     });
   }, []);
 
@@ -36,7 +37,7 @@ function TableDriverPage() {
       getProfileDriver().then((response) => {
         apiGetAllCar(response.data.id).then((resp) => {
           if (resp) {
-            console.log(resp.data);
+            console.log("Машины", resp.data);
             context.setTableData(resp.data);
             settableHeader(tableHeadCar);
           }
@@ -49,8 +50,14 @@ function TableDriverPage() {
         apiGetAllOrdersDriver(response.data.id).then((resp) => {
           if (resp) {
             console.log("заказы", resp.data);
+            let zak = [...resp.data];
+            zak.map((item) => {
+              item.car = item.car.markCar;
+              item.customer = item.customer.fio;
+              item.driver = item.driver.name;
+            });
             context.setTableData(resp.data);
-            settableHeader(tableHeadOrders);
+            settableHeader(tableHeadAppoint);
           }
         });
       });

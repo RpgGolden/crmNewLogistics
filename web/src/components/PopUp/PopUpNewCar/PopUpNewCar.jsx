@@ -32,26 +32,30 @@ function PopUpNewCar() {
 
   const clickAddCar = () => {
     getProfileDriver().then((response) => {
-      apiAddCar({ ...context.carData, driverId: response.data.id }).then(
-        (resp) => {
-          console.log("response", resp);
-          if (resp.status === 200) {
-            context.setpopUp("");
-            context.setCarData({
-              numberCar: null,
-              markCar: null,
-              typeCar: null,
-              heightCar: null,
-              widthCar: null,
-              lengthCar: null,
-              volumeCar: null,
-              loadCapacity: null,
-              numberOfPallet: null,
-              driverId: null,
-            });
-          }
+      const ud = JSON.parse(localStorage.getItem("userData"));
+      console.log(ud);
+      apiAddCar(
+        ud.role === "ADMINISTRATOR"
+          ? { ...context.carData, driverId: null }
+          : { ...context.carData, driverId: response.data.id }
+      ).then((resp) => {
+        console.log("response", resp);
+        if (resp?.status === 200) {
+          context.setpopUp("");
+          context.setCarData({
+            numberCar: null,
+            markCar: null,
+            typeCar: null,
+            heightCar: null,
+            widthCar: null,
+            lengthCar: null,
+            volumeCar: null,
+            loadCapacity: null,
+            numberOfPallet: null,
+            driverId: null,
+          });
         }
-      );
+      });
     });
   };
 
@@ -88,6 +92,7 @@ function PopUpNewCar() {
           onChangeInput={onChangeInput}
         />
         <Input
+          placeholder="1"
           Textlabel={"Тип авто:"}
           value={context.carData.markCtypeCarar}
           itemKey={"typeCar"}
