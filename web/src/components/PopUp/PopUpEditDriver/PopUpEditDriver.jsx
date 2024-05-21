@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import styles from "./PopUpEditDriver.module.scss";
 import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
 import Input from "../../../UI/Input/Input";
-import { getOneDriverData } from "../../../API/API";
+import { EditDriverInfo, getOneDriverData } from "../../../API/API";
 import DataContext from "../../../context";
+import InputOnlyDate from "../../../UI/InputOnlyDate/InputOnlyDate";
 
 function PopUpEditDriver() {
     const { context } = React.useContext(DataContext);
@@ -63,10 +64,14 @@ function PopUpEditDriver() {
         setdataNewClient(prevState => ({ ...prevState, [name]: value }));
     }
    const saveData = ()=>{
-
+    console.log('idSelectDriver', idSelectDriver)
+    console.log('dataNewClient', dataNewClient)
+    EditDriverInfo(idSelectDriver, dataNewClient).then((response)=>{
+        console.log(response);
+    })
    }
     return (
-        <PopUpContainer title={"Новый водитель"} mT={50}>
+        <PopUpContainer title={"Редактирование водителя"} mT={50}>
             <div className={styles.newCarInDriver}>
                 <Input Textlabel={"Имя:"} value={dataNewClient.name} handleInputChange={handleInputChange} name="name"/>
                 <Input Textlabel={"Фамилия:"} value={dataNewClient.surname} handleInputChange={handleInputChange} name="surname"/>
@@ -87,7 +92,9 @@ function PopUpEditDriver() {
                 <Input Textlabel={"Кем выдан:"} value={dataNewClient.passportIssueBy} handleInputChange={handleInputChange} name="passportIssueBy"/>
                 <div className={styles.ThreeInput}>
                     <Input Textlabel={"Дата выдачи:"} value={dataNewClient.passportIssueDate} handleInputChange={handleInputChange} name="passportIssueDate"/>
+                   {/* <InputOnlyDate Textlabel={"Дата выдачи:"} value={dataNewClient.passportIssueDate} handleInputChange={handleInputChange} name="passportIssueDate"/> */}
                     <Input Textlabel={"Код подразделения:"} value={dataNewClient.passportCode} handleInputChange={handleInputChange} name="passportCode"/>
+                    {/* <InputOnlyDate Textlabel={"Дата рождения:"} value={dataNewClient.birthDate} handleInputChange={handleInputChange} name="birthDate"/> */}
                     <Input Textlabel={"Дата рождения:"} value={dataNewClient.birthDate} handleInputChange={handleInputChange} name="birthDate"/>
                 </div>
                 <h3>Водительское удостоверение</h3>

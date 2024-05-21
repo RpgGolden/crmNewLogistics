@@ -8,7 +8,7 @@ import {
   getAllDriver,
   getProfileDriver,
 } from "../../API/API";
-import { testData } from "../../DataApi";
+
 function Table() {
   const { context } = React.useContext(DataContext);
   const [tableHeader, settableHeader] = useState(tableHeadAppoint);
@@ -43,7 +43,6 @@ function Table() {
     if (context.selectedTable === "Заказы") {
       apiGetAllOrders().then((resp) => {
         console.log("Заказы", resp.data);
-
         const dat = [...resp.data];
         dat.map((item) => {
           item.car = item.car.markCar;
@@ -57,32 +56,38 @@ function Table() {
   }, [context.selectedTable]);
 
   return (
-    <div className={styles.Table}>
-      <table className={styles.TableInner}>
-        <thead>
-          <tr>
-            {tableHeader.map((item) => (
-              <th key={item.key}>{item.value}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {context.tableData.map((row, index) => (
-            <tr
-              key={index}
-              onClick={() => trClick(row)}
-              className={
-                context.selectedTr === row.id ? styles.setectedTr : null
-              }
-            >
-              {tableHeader.map((headerItem) => (
-                <td key={headerItem.key}>{row[headerItem.key]}</td>
+    <>
+     {context.tableData.length > 0 ? (
+        <div className={styles.Table}>
+        <table className={styles.TableInner}>
+          <thead>
+            <tr>
+              {tableHeader.map((item) => (
+                <th key={item.key}>{item.value}</th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {context.tableData.map((row, index) => (
+              <tr
+                key={index}
+                onClick={() => trClick(row)}
+                className={
+                  context.selectedTr === row.id ? styles.setectedTr : null
+                }
+              >
+                {tableHeader.map((headerItem) => (
+                  <td key={headerItem.key}>{row[headerItem.key]}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      ):
+      <div className={styles.notdata}>Нет данных</div>
+    }
+   </>
   );
 }
 

@@ -2,24 +2,32 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./HeadMenu.module.scss";
 import { Link } from "react-router-dom";
 import DataContext from "../../context";
-
+import deleteCustomers, { CustomersDelete } from "./../../API/API"
 function HeadMenu({ state, setFiltredData, filtredData }) {
   const { context } = useContext(DataContext);
+
   const accessToken = localStorage.getItem("accessToken");
   const deletePatien = () => {};
-  // console.log(
-  //   "d",
-  //   context.selectedTr,
-  //   sessionStorage.getItem("idClientSelect")
-  // );
+
   const flag =
     context.selectedTr !== "null" &&
     sessionStorage.getItem("idClientSelect") !== "null"
       ? true
       : false;
-  useEffect(() => {
-    // console.log(context.popUp);
-  }, [context]);
+  
+  const DeleteCus = () =>{
+    console.log(context.selectedTr);
+    flag && (
+      CustomersDelete(context.selectedTr).then((response) => {
+        if (response.status === 200) {
+         alert("Пользователь успешно удален!")
+          context.setpopUp("")
+          context.setSelectedTable("Клиенты")
+        }
+      })
+    )
+  }
+
   return (
     <>
       {state === "home" && context.selectedTable === "Заказы" ? (
@@ -63,18 +71,14 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Добавить клиента
           </button>
-          <Link to={flag && "./EditOrder"}>
-            <button>
+            <button onClick={() => context.setpopUp("PopUpEditClient")}>
               <img src="./img/Edit.png" alt="View" />
               Редактировать
             </button>
-          </Link>
-          <Link to={flag && "./MakeAppointmentRegistrar"}>
-            <button>
+            <button onClick={DeleteCus}>
               <img src="./img/File_dock.png" alt="View" />
               Удалить клиента
             </button>
-          </Link>
         </div>
       ) : context.selectedTable === "Водители" && state === "home" ? (
         <div className={styles.HeadMenu}>

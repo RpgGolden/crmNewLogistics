@@ -112,11 +112,13 @@ function PopUpNewAplication() {
         />
         <h3>Период выполнения заказа:</h3>
         <InputTimeStamp
+          Textlabel="С"
           name="dateBegin"
           margin="20"
           handleInputChange={handleInputChange}
         />
         <InputTimeStamp
+          Textlabel="До"
           name="dateEnd"
           margin="10"
           handleInputChange={handleInputChange}

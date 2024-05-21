@@ -32,13 +32,13 @@ function App() {
     volumeCar: null,
     loadCapacity: null,
     numberOfPallet: null,
-    driverId: null,
+    // driverId: null,
   });
 
   useEffect(() => {
     console.log(selectedTr);
   }, [selectedTr]);
-
+ 
   const context = {
     tableData,
     setTableData,

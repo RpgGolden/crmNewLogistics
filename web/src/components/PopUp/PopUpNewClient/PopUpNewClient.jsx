@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styles from "./PopUpNewClient.module.scss";
 import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
 import Input from "../../../UI/Input/Input";
-import { AddClient } from "../../../API/API";
+import { AddClient, getAllCustomers } from "../../../API/API";
 import DataContext from "../../../context";
 
 function PopUpNewClient() {
@@ -22,8 +22,14 @@ function PopUpNewClient() {
     const CreateNewClient = () => {
         AddClient(dataNewClient).then((response) => {
           if (response.status === 200) {
+            getAllCustomers().then((response) => {
+              if (response) {
+                context.setTableData(response.data);
+              }
+            });
             alert("Новый клиент зарегистрирован!")
             context.setpopUp("")
+        
           }
         });
       };

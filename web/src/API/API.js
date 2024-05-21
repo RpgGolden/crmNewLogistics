@@ -107,7 +107,38 @@ export const AddClient = async (ClientData) => {
   }
 };
 
-//! Запрос на получение клиентов
+//! Запрос на получение заявок
+export const CustomersDelete = async (IdCustomer) => {
+  try {
+    const response = await axios.delete(`${server}/customer/deleteCustomer/${IdCustomer}`, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+  
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при удалении заказчика!");
+  }
+}; 
+
+//! Запрос на обновление данных драйвера
+export const EditDriverInfo = async (idSelectDriver, DataDriver) => {
+  const data = {DataDriver}
+  try {
+    const response = await axios.post(`${server}/driver/updateProfileByAdmin/${idSelectDriver}`, ...data,{
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+    console.log(response);
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при обновление данных драйвера!");
+  }
+};
+
+//! Запрос на получение всех клиентов
 export const getAllCustomers = async () => {
   try {
     const response = await axios.get(`${server}/customer/getAllCustomers`, {
@@ -278,6 +309,40 @@ export const apiGetAllOrders = async () => {
         Authorization: `${localStorage.getItem("accessToken")}`,
       },
     });
+    return response;
+  } catch (error) {
+    console.error("Пользователь не найден!");
+  }
+};
+
+//! запрос на данных клиента по Id
+export const getCustomeriD = async (CustomerId) => {
+  try {
+    const response = await axios.get(
+      `${server}/customer/getCustomer/${CustomerId}`,
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Пользователь не найден!");
+  }
+};
+
+//! запрос на обновление данных клиента по Id
+export const UpdateProfileCustomer = async (CustomerId, data) => {
+  try {
+    const response = await axios.post(
+      `${server}/customer/updateCustomer/${CustomerId}`, data,
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
     return response;
   } catch (error) {
     console.error("Пользователь не найден!");
