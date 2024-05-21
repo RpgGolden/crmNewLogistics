@@ -71,7 +71,7 @@ function PopUpEditDriver() {
     })
    }
     return (
-        <PopUpContainer title={"Новый водитель"} mT={50}>
+        <PopUpContainer title={"Редактирование водителя"} mT={50}>
             <div className={styles.newCarInDriver}>
                 <Input Textlabel={"Имя:"} value={dataNewClient.name} handleInputChange={handleInputChange} name="name"/>
                 <Input Textlabel={"Фамилия:"} value={dataNewClient.surname} handleInputChange={handleInputChange} name="surname"/>

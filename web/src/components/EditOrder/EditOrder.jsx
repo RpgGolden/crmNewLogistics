@@ -326,7 +326,7 @@ const EditOredr = () => {
                   type="text"
                   placeholder="Период выполнения с ... по ..."
                   onChange={(el) => handleInput(el, "dateBegin")}
-                  value={`с ${orderCon.orderData.dateBegin.data} ${orderCon.orderData.dateBegin.time} по ${orderCon.orderData.dateEnd.data} ${orderCon.orderData.dateEnd.time} `}
+                  // value={`с ${orderCon.orderData.dateBegin.data} ${orderCon.orderData.dateBegin.time} по ${orderCon.orderData.dateEnd.data} ${orderCon.orderData.dateEnd.time} `}
                 />
               </div>
             </div>
