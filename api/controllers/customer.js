@@ -31,31 +31,30 @@ export default {
         await customer.destroy({ force: true });
         res.json({ success: true });
     },
-    async updateCustomer({ params: { customerId } }, req, res) {
+    
+    async updateProfileCustomer({ params: { customerId }, body: { fio, login, phoneNumber, additionalPhoneNumber } },res) {
         const customer = await Customer.findOne({ where: { id: customerId } });
         if (!customer) {
             throw new AppErrorMissing('Customer not found');
         }
-        const data = req.body;
-
-        const { fio, login, phoneNumber, additionalPhoneNumber } = data;
 
         await customer.update({
             fio,
             login,
             phoneNumber,
-            additionalPhoneNumber,
+            additionalPhoneNumber
         });
 
-        const customerDto = new CustomerDto(customer);
-        res.json(customerDto);
+        const profileDto = new CustomerDto(customer);
+        res.json(profileDto);
     },
 
     async getCustomer({ params: { customerId } }, res) {
-        const customer = Customer.findOne({ where: { id: customerId } });
+        const customer = await Customer.findOne({ where: { id: customerId } });
         if (!customer) {
             throw new AppErrorMissing('Customer not found');
         }
+        console.log(customer)
         const customerDto = new CustomerDto(customer);
         res.json(customerDto);
     },

@@ -33,7 +33,7 @@ router
     .post(
         authenticateToken,
         asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
-        asyncRoute(customerController.updateCustomer)
+        asyncRoute(customerController.updateProfileCustomer)
     );
 router
     .route('/getCustomer/:customerId')
