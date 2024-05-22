@@ -22,7 +22,8 @@ import ClientForm from "./ClientForm";
 import DriverForm from "./DriverForm";
 import CarForm from "./CarForm";
 import GruzForm from "./GruzForm";
-import { apiAddOrder, getOneDriverData } from "../../API/API";
+import { apiAddOrder, apiGetAllOrders, apiUpdateOrder } from "../../API/API";
+import { useNavigate } from "react-router-dom";
 const markerIcon = new L.Icon({
   iconUrl: markerIconPng,
   iconSize: [25, 32],
@@ -31,64 +32,138 @@ const markerIcon = new L.Icon({
 });
 
 const EditOredr = () => {
-  const { orderCon } = React.useContext(DataContext);
+  const { orderCon, context } = React.useContext(DataContext);
 
   const [center, setCenter] = useState([47.222531, 39.718705]);
   const [cardData, setCardData] = useState([]);
   const [adressA, setAdressA] = useState("");
   const [adressB, setAdressB] = useState("");
-  const [pointCoor, setpointCoor] = useState([]);
-  const [coordinates, setCoordinates] = useState([]);
-
+  const [pointCoor, setpointCoor] = useState([]); //! местки
   //! сохраняем заказ
-  const saveClick = () => {
-    // getOneDriverData(orderCon.orderData.driverId).then((response) => {
-    //   console.log(response);
-    //   const md = orderCon.orderData;
-    //   md.loading = `{adress: ${md.loading.address}, geo: [${md.loading.geo[0]},${md.loading.geo[1]}]}`;
-    //   md.unloading = `{adress: ${md.unloading.address}, geo: [${md.unloading.geo[0]},${md.unloading.geo[1]}]}`;
-    //   md.dateBegin = `${md.dateBegin.data} ${md.dateBegin.time}`;
-    //   md.dateEnd = `${md.dateEnd.data} ${md.dateEnd.time}`;
-
-    //   apiAddOrder(md).then((resp) => {
-    //     console.log(resp.data.id);
-    //   });
-    // });
-    const md = { ...orderCon.orderData };
-    md.loading = JSON.stringify({
-      adress: adressA,
-      geo: [md.loading.geo[0], md.loading.geo[1]],
-    });
-
-    md.unloading = JSON.stringify({
-      adress: adressB,
-      geo: [md.unloading.geo[0], md.unloading.geo[1]],
-    });
-    md.dateBegin = `${md.dateBegin.data} ${md.dateBegin.time}`;
-    md.dateEnd = `${md.dateEnd.data} ${md.dateEnd.time}`;
-    md.places = Number(md.places);
-    md.weight = Number(md.weight);
-    md.volume = Number(md.volume);
-    md.price = Number(md.price);
-    apiAddOrder(md).then((resp) => {
-      console.log(resp);
-    });
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (coordinates.length > 0) {
-      if (pointCoor.length > 0) {
-        let mass = [...pointCoor];
-        mass.push([...coordinates]);
-        setpointCoor(mass);
-        setCenter([...coordinates]);
-      } else {
-        setpointCoor([[...coordinates]]);
-        setCenter([...coordinates]);
+    console.log(context.selectedTr);
+    apiGetAllOrders().then((resp) => {
+      console.log("Заказы", resp.data);
+      const dat = [...resp.data].find((el) => el.id === context.selectedTr);
+
+      if (dat) {
+        dat.loading = JSON.parse(dat.loading);
+        dat.unloading = JSON.parse(dat.unloading);
+        console.log(dat);
+        setAdressA(dat.loading.adress);
+        setAdressB(dat.unloading.adress);
+        setpointCoor([dat.loading?.geo, dat.unloading?.geo]);
+        orderCon.setOrderData({ ...dat });
       }
-      setCoordinates([]);
+    });
+  }, []);
+
+  //! сохранить заказ
+  const saveClick = () => {
+    // const md = { ...orderCon.orderData };
+    // if (md.loading.geo) {
+    //   md.loading = JSON.stringify({
+    //     adress: adressA,
+    //     geo: [md.loading.geo[0], md.loading.geo[1]],
+    //   });
+    // } else {
+    //   alert("Заполните поле Загрузки");
+    //   return;
+    // }
+    // if (md.unloading.geo) {
+    //   md.unloading = JSON.stringify({
+    //     adress: adressB,
+    //     geo: [md.unloading.geo[0], md.unloading.geo[1]],
+    //   });
+    // } else {
+    //   alert("Заполните поле Разгрузки");
+    //   return;
+    // }
+    // if (md.dateBegin.data && md.dateBegin.time) {
+    //   md.dateBegin = `${md.dateBegin.data} ${md.dateBegin.time}`;
+    // } else {
+    //   alert("Заполните период выполнения");
+    //   return;
+    // }
+    // if (md.dateEnd.data && md.dateEnd.time) {
+    //   md.dateEnd = `${md.dateEnd.data} ${md.dateEnd.time}`;
+    // } else {
+    //   alert("Заполните период выполнения");
+    //   return;
+    // }
+    // md.places = Number(md.places);
+    // md.weight = Number(md.weight);
+    // md.volume = Number(md.volume);
+    // md.price = Number(md.price);
+
+    const md = { ...orderCon.orderData };
+    const datareq = {};
+    if (md.loading.geo) {
+      datareq.loading = JSON.stringify({
+        adress: adressA,
+        geo: [md.loading.geo[0], md.loading.geo[1]],
+      });
+    } else {
+      alert("Заполните поле Загрузки");
+      return;
     }
-  }, [coordinates]);
+    if (md.unloading.geo) {
+      datareq.unloading = JSON.stringify({
+        adress: adressB,
+        geo: [md.unloading.geo[0], md.unloading.geo[1]],
+      });
+    } else {
+      alert("Заполните поле Разгрузки");
+      return;
+    }
+    if (md.dateBegin && md.dateEnd) {
+      datareq.dateBegin = JSON.stringify({
+        data: md.dateBegin.split(" ")[0],
+        time: md.dateBegin.split(" ")[1],
+      });
+      datareq.dateEnd = JSON.stringify({
+        data: md.dateEnd.split(" ")[0],
+        time: md.dateEnd.split(" ")[1],
+      });
+    } else {
+      alert("Заполните период выполнения");
+      return;
+    }
+
+    datareq.places = Number(md.places);
+    datareq.weight = Number(md.weight);
+    datareq.volume = Number(md.volume);
+    datareq.price = Number(md.price);
+
+    datareq.customerId = md.customer.id;
+    datareq.driverId = md.driver.id;
+    datareq.carId = md.car.id;
+    datareq.typeCargo = md.typeCargo;
+
+    if (context.selectedTr) {
+      apiUpdateOrder(datareq).then((resp) => {
+        console.log(resp);
+      });
+    } else {
+      apiAddOrder(md).then((resp) => {
+        console.log(resp);
+        if (resp.status === 200) {
+          orderCon.setOrderData({ ...orderCon.orderObj });
+          navigate("..");
+        }
+      });
+    }
+  };
+
+  //! функция опредления положения меток на карте
+  const rendPlaysmark = (coordinates, key) => {
+    let mass = [...pointCoor];
+    mass[key] = [...coordinates];
+    setpointCoor(mass);
+    setCenter([...coordinates]);
+  };
 
   const rotPan = useRef(null);
   useEffect(() => {
@@ -97,14 +172,6 @@ const EditOredr = () => {
       rotPan.current.state.set("to", [47.20958, 38.935194]);
     }
   }, [rotPan, pointCoor]);
-
-  // useEffect(() => {
-  //   console.log("pointCoor", pointCoor);
-  //   if (rotPan.current) {
-  //     console.log("from", rotPan.current.state._data.from);
-  //     console.log("to", rotPan.current.state._data.to);
-  //   }
-  // }, [pointCoor]);
 
   const handleInput = (el, key) => {
     const query = el.target.value;
@@ -115,23 +182,15 @@ const EditOredr = () => {
 
   useEffect(() => {
     const inputs = document.querySelectorAll(".react-dadata__input");
+    inputs[0].placeholder = adressA ? adressA : "Загрузка";
+    inputs[1].placeholder = adressB ? adressB : "Разгрузка";
     // Установить placeholder для каждого элемента
-    let text = "Загрузка";
-    inputs.forEach((input) => {
-      input.placeholder = text; // Текст placeholder
-      text = "Разгрузка";
-    });
-  }, []);
-
-  const mapState = {
-    center: [47.222078, 39.720358],
-    zoom: 12,
-  };
+  }, [adressA, adressB]);
 
   const funSetAddress = (e) => {
     if (e.data.geo_lat) {
       const coor = [e.data.geo_lat, e.data.geo_lon];
-      setCoordinates([...coor]);
+      rendPlaysmark([...coor], 0);
     }
     if (e.value) {
       setAdressA(e.value);
@@ -144,7 +203,7 @@ const EditOredr = () => {
   const funSetAddress2 = (e) => {
     if (e.data.geo_lat) {
       const coor = [e.data.geo_lat, e.data.geo_lon];
-      setCoordinates([...coor]);
+      rendPlaysmark([...coor], 1);
     }
     if (e.value) {
       setAdressB(e.value);
@@ -195,32 +254,30 @@ const EditOredr = () => {
   const [route, setRoute] = useState(null);
   useEffect(() => {
     const fetchRoute = async () => {
-      const startPoint = L.latLng(pointCoor[0][0], pointCoor[0][1]); // Сан-Франциско
-      const endPoint = L.latLng(pointCoor[1][0], pointCoor[1][1]); // Сан-Хосе
+      if (pointCoor[0] && pointCoor[1]) {
+        const startPoint = L.latLng(pointCoor[0][0], pointCoor[0][1]); // Сан-Франциско
+        const endPoint = L.latLng(pointCoor[1][0], pointCoor[1][1]); // Сан-Хосе
 
-      const routingControl = L.Routing.control({
-        waypoints: [startPoint, endPoint],
-        router: L.Routing.osrmv1({
-          serviceUrl: "https://router.project-osrm.org/route/v1/",
-        }),
-      });
+        const routingControl = L.Routing.control({
+          waypoints: [startPoint, endPoint],
+          router: L.Routing.osrmv1({
+            serviceUrl: "https://router.project-osrm.org/route/v1/",
+          }),
+        });
 
-      routingControl.on("routesfound", function (e) {
-        setRoute(e.routes[0]);
-      });
-      if (mapRef.current && routingControl) {
-        // Добавляем routingControl на карту
-        routingControl.addTo(mapRef.current);
+        routingControl.on("routesfound", function (e) {
+          setRoute(e.routes[0]);
+        });
+        if (mapRef.current && routingControl) {
+          // Добавляем routingControl на карту
+          routingControl.addTo(mapRef.current);
+        }
       }
     };
     if (mapRef && pointCoor.length === 2) {
       fetchRoute();
     }
   }, [map, pointCoor]);
-
-  // useEffect(() => {
-  //   console.log("rout", route);
-  // }, [route]);
 
   useEffect(() => {
     const attributionControl = document.querySelector(
@@ -287,6 +344,10 @@ const EditOredr = () => {
     setSummZakaz(tr);
   };
 
+  useEffect(() => {
+    console.log("c", center);
+  }, [center]);
+
   return (
     <div>
       <HeadMenu state={"register"} />
@@ -304,11 +365,12 @@ const EditOredr = () => {
                   type="text"
                   placeholder="Тип транспорта"
                   onChange={(el) => handleInput(el, "сarType")}
-                  value={
-                    orderCon.cars.find(
-                      (el) => el.id === orderCon.orderData.carId
-                    )?.typeCar
-                  }
+                  // value={
+                  //   orderCon.cars.find(
+                  //     (el) => el.id === orderCon.orderData.carId
+                  //   )?.typeCar
+                  // }
+                  value={orderCon.orderData?.car?.typeCar}
                 />
                 <label>Загрузка</label>
                 <div className={styles.address}>
@@ -333,7 +395,14 @@ const EditOredr = () => {
                   type="text"
                   placeholder="Период выполнения с ... по ..."
                   onChange={(el) => handleInput(el, "dateBegin")}
-                  value={`с ${orderCon.orderData.dateBegin.data} ${orderCon.orderData.dateBegin.time} по ${orderCon.orderData.dateEnd.data} ${orderCon.orderData.dateEnd.time} `}
+                  // value={
+                  //   orderCon.orderData.dateBegin.data &&
+                  //   `с ${orderCon.orderData.dateBegin.data} ${orderCon.orderData.dateBegin.time} по ${orderCon.orderData.dateEnd.data} ${orderCon.orderData.dateEnd.time} `
+                  // }
+                  value={
+                    orderCon.orderData?.dateBegin &&
+                    `с ${orderCon.orderData.dateBegin} по ${orderCon.orderData.dateEnd}`
+                  }
                 />
               </div>
             </div>

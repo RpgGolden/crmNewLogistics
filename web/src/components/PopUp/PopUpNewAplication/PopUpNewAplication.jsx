@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import DataContext from "../../../context";
 
 function PopUpNewAplication() {
-  const { orderCon } = React.useContext(DataContext);
+  const { orderCon, context } = React.useContext(DataContext);
   const [drivers, setdrivers] = useState([]);
   const [clients, setclientss] = useState([]);
   const [carsName, setCarsName] = useState([]);
@@ -85,6 +85,7 @@ function PopUpNewAplication() {
 
   const addAplication = () => {
     console.log(orderCon.orderData);
+    context.setSelectedTr("");
     // apiAddOrder()
   };
 

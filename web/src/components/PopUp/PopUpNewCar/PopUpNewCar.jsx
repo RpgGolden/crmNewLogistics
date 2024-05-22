@@ -36,7 +36,7 @@ function PopUpNewCar() {
       console.log(ud);
       apiAddCar(
         ud.role === "ADMINISTRATOR"
-          ? { ...context.carData, driverId: null }
+          ? { ...context.carData }
           : { ...context.carData, driverId: response.data.id }
       ).then((resp) => {
         console.log("response", resp);

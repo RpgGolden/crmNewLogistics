@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./HeadMenu.module.scss";
 import { Link } from "react-router-dom";
 import DataContext from "../../context";
-import deleteCustomers, { CustomersDelete } from "./../../API/API"
+import deleteCustomers, { CustomersDelete } from "./../../API/API";
 function HeadMenu({ state, setFiltredData, filtredData }) {
   const { context } = useContext(DataContext);
 
@@ -14,19 +14,18 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
     sessionStorage.getItem("idClientSelect") !== "null"
       ? true
       : false;
-  
-  const DeleteCus = () =>{
+
+  const DeleteCus = () => {
     console.log(context.selectedTr);
-    flag && (
+    flag &&
       CustomersDelete(context.selectedTr).then((response) => {
         if (response.status === 200) {
-         alert("Пользователь успешно удален!")
-          context.setpopUp("")
-          context.setSelectedTable("Клиенты")
+          alert("Пользователь успешно удален!");
+          context.setpopUp("");
+          context.setSelectedTable("Клиенты");
         }
-      })
-    )
-  }
+      });
+  };
 
   return (
     <>
@@ -48,7 +47,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Добавить клиента
           </button>
-          <Link to={flag && "./EditOrder"}>
+          <Link to={context.selectedTr && "./EditOrder"}>
             <button>
               <img src="./img/Edit.png" alt="View" />
               Редактировать
@@ -71,14 +70,14 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Добавить клиента
           </button>
-            <button onClick={() => context.setpopUp("PopUpEditClient")}>
-              <img src="./img/Edit.png" alt="View" />
-              Редактировать
-            </button>
-            <button onClick={DeleteCus}>
-              <img src="./img/File_dock.png" alt="View" />
-              Удалить клиента
-            </button>
+          <button onClick={() => context.setpopUp("PopUpEditClient")}>
+            <img src="./img/Edit.png" alt="View" />
+            Редактировать
+          </button>
+          <button onClick={DeleteCus}>
+            <img src="./img/File_dock.png" alt="View" />
+            Удалить клиента
+          </button>
         </div>
       ) : context.selectedTable === "Водители" && state === "home" ? (
         <div className={styles.HeadMenu}>

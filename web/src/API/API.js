@@ -110,27 +110,34 @@ export const AddClient = async (ClientData) => {
 //! Запрос на получение заявок
 export const CustomersDelete = async (IdCustomer) => {
   try {
-    const response = await axios.delete(`${server}/customer/deleteCustomer/${IdCustomer}`, {
-      headers: {
-        Authorization: `${localStorage.getItem("accessToken")}`,
-      },
-    });
-  
+    const response = await axios.delete(
+      `${server}/customer/deleteCustomer/${IdCustomer}`,
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+
     return response;
   } catch (error) {
     alert("Возникла ошибка при удалении заказчика!");
   }
-}; 
+};
 
 //! Запрос на обновление данных драйвера
 export const EditDriverInfo = async (idSelectDriver, DataDriver) => {
-  const data = {DataDriver}
+  const data = { DataDriver };
   try {
-    const response = await axios.post(`${server}/driver/updateProfileByAdmin/${idSelectDriver}`, ...data,{
-      headers: {
-        Authorization: `${localStorage.getItem("accessToken")}`,
-      },
-    });
+    const response = await axios.post(
+      `${server}/driver/updateProfileByAdmin/${idSelectDriver}`,
+      ...data,
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
     console.log(response);
     return response;
   } catch (error) {
@@ -294,9 +301,30 @@ export const apiAddOrder = async (data) => {
         },
       }
     );
+    alert("Заказ добавлен");
     return response;
   } catch (error) {
-    console.error("заказ не добавлен");
+    alert("При добавлении заказа возникла ошибка");
+  }
+};
+
+//! запрос обновить заказ
+export const apiUpdateOrder = async (data) => {
+  try {
+    console.log("обновить заказ", data);
+    const response = await axios.post(
+      `${server}/order/updateOrder`,
+      { ...data },
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    alert("Заказ обновлен");
+    return response;
+  } catch (error) {
+    alert("При обновлении заказа возникла ошибка");
   }
 };
 
@@ -336,7 +364,8 @@ export const getCustomeriD = async (CustomerId) => {
 export const UpdateProfileCustomer = async (CustomerId, data) => {
   try {
     const response = await axios.post(
-      `${server}/customer/updateCustomer/${CustomerId}`, data,
+      `${server}/customer/updateCustomer/${CustomerId}`,
+      data,
       {
         headers: {
           Authorization: `${localStorage.getItem("accessToken")}`,
