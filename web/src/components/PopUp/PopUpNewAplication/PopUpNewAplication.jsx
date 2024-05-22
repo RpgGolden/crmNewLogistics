@@ -21,6 +21,7 @@ function PopUpNewAplication() {
 
   //! поулучаем всех водителей и клиентов
   useEffect(() => {
+    orderCon.setOrderData({ ...orderCon.orderObj });
     getAllDriver().then((response) => {
       console.log("Все водилы", response.data);
       let mass = [];

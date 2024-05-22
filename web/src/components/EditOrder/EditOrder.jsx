@@ -62,7 +62,7 @@ const EditOredr = () => {
 
   //! сохранить заказ
   const saveClick = () => {
-    // const md = { ...orderCon.orderData };
+    const md = { ...orderCon.orderData };
     // if (md.loading.geo) {
     //   md.loading = JSON.stringify({
     //     adress: adressA,
@@ -98,7 +98,6 @@ const EditOredr = () => {
     // md.volume = Number(md.volume);
     // md.price = Number(md.price);
 
-    const md = { ...orderCon.orderData };
     const datareq = {};
     if (md.loading.geo) {
       datareq.loading = JSON.stringify({
@@ -118,18 +117,33 @@ const EditOredr = () => {
       alert("Заполните поле Разгрузки");
       return;
     }
-    if (md.dateBegin && md.dateEnd) {
-      datareq.dateBegin = JSON.stringify({
-        data: md.dateBegin.split(" ")[0],
-        time: md.dateBegin.split(" ")[1],
-      });
-      datareq.dateEnd = JSON.stringify({
-        data: md.dateEnd.split(" ")[0],
-        time: md.dateEnd.split(" ")[1],
-      });
+    if (context.selectedTr) {
+      if (md.dateBegin && md.dateEnd) {
+        datareq.dateBegin = JSON.stringify({
+          data: md.dateBegin.split(" ")[0],
+          time: md.dateBegin.split(" ")[1],
+        });
+        datareq.dateEnd = JSON.stringify({
+          data: md.dateEnd.split(" ")[0],
+          time: md.dateEnd.split(" ")[1],
+        });
+      } else {
+        alert("Заполните период выполнения");
+        return;
+      }
     } else {
-      alert("Заполните период выполнения");
-      return;
+      if (datareq.dateBegin.data && datareq.dateBegin.time) {
+        datareq.dateBegin = `${md.dateBegin.data} ${md.dateBegin.time}`;
+      } else {
+        alert("Заполните период выполнения");
+        return;
+      }
+      if (datareq.dateEnd.data && datareq.dateEnd.time) {
+        datareq.dateEnd = `${md.dateEnd.data} ${md.dateEnd.time}`;
+      } else {
+        alert("Заполните период выполнения");
+        return;
+      }
     }
 
     datareq.places = Number(md.places);
@@ -143,7 +157,7 @@ const EditOredr = () => {
     datareq.typeCargo = md.typeCargo;
 
     if (context.selectedTr) {
-      apiUpdateOrder(datareq).then((resp) => {
+      apiUpdateOrder(datareq, md.id).then((resp) => {
         console.log(resp);
       });
     } else {

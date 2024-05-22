@@ -309,11 +309,11 @@ export const apiAddOrder = async (data) => {
 };
 
 //! запрос обновить заказ
-export const apiUpdateOrder = async (data) => {
+export const apiUpdateOrder = async (data, orderId) => {
   try {
     console.log("обновить заказ", data);
     const response = await axios.post(
-      `${server}/order/updateOrder`,
+      `${server}/order/updateOrder/${orderId}`,
       { ...data },
       {
         headers: {
