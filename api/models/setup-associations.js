@@ -5,8 +5,8 @@ export default function () {
     User.hasOne(TokenSchema, { foreignKey: 'userId' });
     TokenSchema.belongsTo(User, { foreignKey: 'userId' });
 
-    User.hasOne(Driver, { foreignKey: 'userId' });
-    Driver.belongsTo(User, { foreignKey: 'userId' });
+    User.hasOne(Driver, { foreignKey: 'userId'});
+    Driver.belongsTo(User, { foreignKey: 'userId', onDelete: 'CASCADE', hooks: true });
 
     Driver.hasMany(Car);
     Car.belongsTo(Driver);

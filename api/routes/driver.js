@@ -39,4 +39,8 @@ router
         asyncRoute(checkRole([roles.ADMINISTRATOR])),
         asyncRoute(driverController.updateProfileByAdmin)
     );
+
+router
+    .route('/deleteDriver/:driverId')
+    .delete(authenticateToken, asyncRoute(checkRole([roles.ADMINISTRATOR])), asyncRoute(driverController.deleteDriver));
 export default router;
