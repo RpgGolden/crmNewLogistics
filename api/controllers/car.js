@@ -8,7 +8,11 @@ export default {
         const data = req.body;
         const { numberCar, markCar, typeCar, heightCar, widthCar, lengthCar, volumeCar, loadCapacity, numberOfPallet, driverId} =
             data;
-        const driver = await Driver.findOne({ where: { id: driverId } });
+        let driver;
+
+        if(driverId) {
+            driver = await Driver.findOne({ where: { id: driverId } });
+        }
         const car = await Car.create({
             numberCar,
             markCar,
@@ -19,7 +23,7 @@ export default {
             volumeCar,
             loadCapacity,
             numberOfPallet,
-            driverId: driver.id ? driver.id : undefined,
+            driverId: driver ? driver.id : undefined,
         });
 
         await car.reload({ include: [Driver] });
