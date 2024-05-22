@@ -123,17 +123,16 @@ export const CustomersDelete = async (IdCustomer) => {
 }; 
 
 //! Удаление Водителя
-export const DriversDrelete = async (IdDriver) => {
+export const driverDelete = async (IdDriver) => {
   try {
-    const response = await axios.delete(`${server}/customer/deleteDriver/${IdDriver}`, {
+    const response = await axios.delete(`${server}/driver/deleteDriver/${IdDriver}`, {
       headers: {
         Authorization: `${localStorage.getItem("accessToken")}`,
       },
     });
-  
     return response;
   } catch (error) {
-    alert("Возникла ошибка при удалении заказчика!");
+    alert("Возникла ошибка при удалении водителя!");
   }
 }; 
 
@@ -141,7 +140,7 @@ export const DriversDrelete = async (IdDriver) => {
 export const EditDriverInfo = async (idSelectDriver, DataDriver) => {
   const data = {DataDriver}
   try {
-    const response = await axios.post(`${server}/driver/updateProfileByAdmin/${idSelectDriver}`, ...data,{
+    const response = await axios.post(`${server}/driver/updateProfileByAdmin/${idSelectDriver}`, data,{
       headers: {
         Authorization: `${localStorage.getItem("accessToken")}`,
       },

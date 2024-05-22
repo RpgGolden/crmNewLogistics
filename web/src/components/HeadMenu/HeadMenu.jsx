@@ -2,27 +2,44 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./HeadMenu.module.scss";
 import { Link } from "react-router-dom";
 import DataContext from "../../context";
-import deleteCustomers, { CustomersDelete } from "./../../API/API"
+import { CustomersDelete, driverDelete, getAllCustomers } from "./../../API/API"
 function HeadMenu({ state, setFiltredData, filtredData }) {
   const { context } = useContext(DataContext);
-
-  const accessToken = localStorage.getItem("accessToken");
-  const deletePatien = () => {};
-
+ 
   const flag =
     context.selectedTr !== "null" &&
     sessionStorage.getItem("idClientSelect") !== "null"
       ? true
       : false;
-  
-  const DeleteCus = () =>{
+ 
+ 
+ 
+  const DeleteDriver = () =>{
     console.log(context.selectedTr);
     flag && (
-      CustomersDelete(context.selectedTr).then((response) => {
+      driverDelete(context.selectedTr).then((response) => {
         if (response.status === 200) {
-         alert("Пользователь успешно удален!")
-          context.setpopUp("")
-          context.setSelectedTable("Клиенты")
+         alert("Водитель успешно удален!")
+          // context.setpopUp("")
+          // context.setSelectedTable("Клиенты")
+        }
+      })
+    )
+  };
+ 
+  
+  const DeleteCus = () =>{
+    flag && (
+      CustomersDelete(context.selectedTr).then((response) => {
+        if (response.status === 200 && context.selectedTable === "Клиенты") {
+         getAllCustomers().then((response) => {
+            if (response) {
+              context.setTableData(response.data);
+              context.updateDataTable();
+              alert("Пользователь успешно удален!");
+              context.setSelectedTable("Клиенты")
+            }
+          });
         }
       })
     )
@@ -98,12 +115,10 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/Edit.png" alt="View" />
             Редактировать
           </button>
-          <Link to={flag && "./MakeAppointmentRegistrar"}>
-            <button>
-              <img src="./img/File_dock.png" alt="View" />
-              Удалить водителя
-            </button>
-          </Link>
+          <button onClick={DeleteDriver}>
+            <img src="./img/File_dock.png" alt="View" />
+            Удалить водителя
+          </button>
         </div>
       ) : state === "register" ? (
         <div className={styles.HeadMenu}>
