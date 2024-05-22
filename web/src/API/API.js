@@ -123,9 +123,9 @@ export const CustomersDelete = async (IdCustomer) => {
 }; 
 
 //! Удаление Водителя
-export const DriversDrelete = async (IdCustomer) => {
+export const DriversDrelete = async (IdDriver) => {
   try {
-    const response = await axios.delete(`${server}/customer/deleteCustomer/${IdCustomer}`, {
+    const response = await axios.delete(`${server}/customer/deleteDriver/${IdDriver}`, {
       headers: {
         Authorization: `${localStorage.getItem("accessToken")}`,
       },
