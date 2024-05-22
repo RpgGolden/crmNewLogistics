@@ -23,7 +23,7 @@ router
     );
 
 router
-    .route('/updateOrder')
+    .route('/updateOrder/:orderId')
     .post(
         authenticateToken,
         asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
