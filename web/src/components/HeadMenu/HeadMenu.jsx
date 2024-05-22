@@ -36,18 +36,18 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Создать заказ
           </button>
-          <button onClick={() => context.setpopUp("PopUpNewDriver")}>
+          {/* <button onClick={() => context.setpopUp("PopUpNewDriver")}>
             <img src="./img/Add_ring.png" alt="View" />
             Добавить водителя
           </button>
           <button onClick={() => context.setpopUp("PopUpNewCar")}>
             <img src="./img/add.svg" alt="View" />
             Добавить машину
-          </button>
-          <button onClick={() => context.setpopUp("PopUpNewClient")}>
+          </button> */}
+          {/* <button onClick={() => context.setpopUp("PopUpNewClient")}>
             <img src="./img/add.svg" alt="View" />
             Добавить клиента
-          </button>
+          </button> */}
           <Link to={flag && "./EditOrder"}>
             <button>
               <img src="./img/Edit.png" alt="View" />
@@ -63,10 +63,10 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
         </div>
       ) : context.selectedTable === "Клиенты" && state === "home" ? (
         <div className={styles.HeadMenu}>
-          <button onClick={() => context.setpopUp("PopUpNewAplication")}>
+          {/* <button onClick={() => context.setpopUp("PopUpNewAplication")}>
             <img src="./img/add.svg" alt="View" />
             Создать заказ
-          </button>
+          </button> */}
           <button onClick={() => context.setpopUp("PopUpNewClient")}>
             <img src="./img/add.svg" alt="View" />
             Добавить клиента
@@ -82,18 +82,18 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
         </div>
       ) : context.selectedTable === "Водители" && state === "home" ? (
         <div className={styles.HeadMenu}>
-          <button onClick={() => context.setpopUp("PopUpNewAplication")}>
+          {/* <button onClick={() => context.setpopUp("PopUpNewAplication")}>
             <img src="./img/add.svg" alt="View" />
             Создать заказ
-          </button>
+          </button> */}
           <button onClick={() => context.setpopUp("PopUpNewCar")}>
             <img src="./img/add.svg" alt="View" />
             Добавить машину
           </button>
-          <button onClick={() => context.setpopUp("PopUpNewClient")}>
+          {/* <button onClick={() => context.setpopUp("PopUpNewClient")}>
             <img src="./img/add.svg" alt="View" />
             Добавить клиента
-          </button>
+          </button> */}
           <button onClick={() => context.setpopUp("PopUpEditDriver")}>
             <img src="./img/Edit.png" alt="View" />
             Редактировать
