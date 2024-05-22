@@ -84,33 +84,36 @@ export default {
         const profileDto = new ProfileDto(driver);
         res.json(profileDto);
     },
-    async updateProfileByAdmin({ params: { driverId } }, req, res) {
+    async updateProfileByAdmin(
+        {
+            params: { driverId },
+            body: {
+                name,
+                surname,
+                patronymic,
+                phoneNumber,
+                inn,
+                additionalPhoneNumber,
+                snils,
+                passportSerial,
+                passportNumber,
+                passportIssueBy,
+                passportIssueDate,
+                passportCode,
+                birthDate,
+                addressReg,
+                actualAdress,
+                numberLicense,
+                categoryLicense,
+                periodLicense,
+            },
+        },
+        res
+    ) {
         const driver = await Driver.findOne({ where: { id: driverId } });
         if (!driver) {
             throw new AppErrorMissing('Driver not found');
         }
-        const data = req.body;
-
-        const {
-            name,
-            surname,
-            patronymic,
-            phoneNumber,
-            inn,
-            additionalPhoneNumber,
-            snils,
-            passportSerial,
-            passportNumber,
-            passportIssueBy,
-            passportIssueDate,
-            passportCode,
-            birthDate,
-            addressReg,
-            actualAdress,
-            numberLicense,
-            categoryLicense,
-            periodLicense,
-        } = data;
 
         await driver.update({
             name,
