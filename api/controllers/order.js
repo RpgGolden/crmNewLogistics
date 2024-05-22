@@ -66,23 +66,26 @@ export default {
         res.json(orderDtos);
     },
 
-    async updateOrder(req, res) {
-        const data = req.body;
-        const {
-            customerId,
-            driverId,
-            carId,
-            loading,
-            unloading,
-            dateBegin,
-            dateEnd,
-            typeCargo,
-            places,
-            weight,
-            volume,
-            price,
-        } = data;
-
+    async updateOrder(
+        {
+            params: { orderId },
+            body: {
+                customerId,
+                driverId,
+                carId,
+                loading,
+                unloading,
+                dateBegin,
+                dateEnd,
+                typeCargo,
+                places,
+                weight,
+                volume,
+                price,
+            },
+        },
+        res
+    ) {
         const customer = await Customer.findOne({ where: { id: customerId } });
         if (!customer) {
             throw new AppErrorMissing('Customer not found');
@@ -96,7 +99,7 @@ export default {
             throw new AppErrorMissing('Car not found');
         }
 
-        const order = await Order.findOne({ where: { id: req.params.id } });
+        const order = await Order.findOne({ where: { id: orderId } });
         if (!order) {
             throw new AppErrorMissing('Order not found');
         }
