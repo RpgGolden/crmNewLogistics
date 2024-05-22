@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./PopUpEditDriver.module.scss";
 import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
 import Input from "../../../UI/Input/Input";
-import { EditDriverInfo, getOneDriverData } from "../../../API/API";
+import { EditDriverInfo, editDriverInfo, getOneDriverData } from "../../../API/API";
 import DataContext from "../../../context";
 import InputOnlyDate from "../../../UI/InputOnlyDate/InputOnlyDate";
 
@@ -63,11 +63,15 @@ function PopUpEditDriver() {
     const handleInputChange = (name, value) => {
         setdataNewClient(prevState => ({ ...prevState, [name]: value }));
     }
-   const saveData = ()=>{
+
+   const saveDataDriver = ()=>{
     console.log('idSelectDriver', idSelectDriver)
     console.log('dataNewClient', dataNewClient)
-    EditDriverInfo(idSelectDriver, dataNewClient).then((response)=>{
-        console.log(response);
+    editDriverInfo(idSelectDriver, dataNewClient).then((response)=>{
+        if(response){
+            console.log(response);
+            console.log("Worked")
+        }
     })
    }
     return (
@@ -107,7 +111,7 @@ function PopUpEditDriver() {
                 <Input Textlabel={"Адрес прописки:"} value={dataNewClient.addressReg} handleInputChange={handleInputChange} name="addressReg"/>
                 <Input Textlabel={"Адрес фактического проживания:"} value={dataNewClient.actualAdress} handleInputChange={handleInputChange} name="actualAdress"/>
                 <div className={styles.button}>
-                    <button className={styles.buttonSave} onClick={saveData}>Сохранить</button>
+                    <button className={styles.buttonSave} onClick={saveDataDriver}>Сохранить</button>
                 </div>
         </div>
     </PopUpContainer>
