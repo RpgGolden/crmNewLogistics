@@ -136,4 +136,14 @@ export default {
         const profileDto = new ProfileDto(driver);
         res.json(profileDto);
     },
+
+    async deleteDriver({ params: { driverId } }, res) {
+        const driver = await Driver.findOne({ where: { id: driverId } });
+        if (!driver) {
+            throw new AppErrorMissing('Driver not found');
+        }
+
+        await driver.destroy({ force: true });
+        res.json({ success: true });
+    },
 };
