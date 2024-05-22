@@ -43,8 +43,8 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
           <button onClick={() => context.setpopUp("PopUpNewCar")}>
             <img src="./img/add.svg" alt="View" />
             Добавить машину
-          </button> */}
-          {/* <button onClick={() => context.setpopUp("PopUpNewClient")}>
+          </button>
+          <button onClick={() => context.setpopUp("PopUpNewClient")}>
             <img src="./img/add.svg" alt="View" />
             Добавить клиента
           </button> */}
@@ -63,10 +63,10 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
         </div>
       ) : context.selectedTable === "Клиенты" && state === "home" ? (
         <div className={styles.HeadMenu}>
-          {/* <button onClick={() => context.setpopUp("PopUpNewAplication")}>
+          <button onClick={() => context.setpopUp("PopUpNewAplication")}>
             <img src="./img/add.svg" alt="View" />
             Создать заказ
-          </button> */}
+          </button>
           <button onClick={() => context.setpopUp("PopUpNewClient")}>
             <img src="./img/add.svg" alt="View" />
             Добавить клиента
@@ -82,10 +82,10 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
         </div>
       ) : context.selectedTable === "Водители" && state === "home" ? (
         <div className={styles.HeadMenu}>
-          {/* <button onClick={() => context.setpopUp("PopUpNewAplication")}>
+          <button onClick={() => context.setpopUp("PopUpNewAplication")}>
             <img src="./img/add.svg" alt="View" />
             Создать заказ
-          </button> */}
+          </button>
           <button onClick={() => context.setpopUp("PopUpNewCar")}>
             <img src="./img/add.svg" alt="View" />
             Добавить машину

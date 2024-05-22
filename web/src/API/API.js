@@ -107,8 +107,23 @@ export const AddClient = async (ClientData) => {
   }
 };
 
-//! Запрос на получение заявок
+//! Удаление Клиент
 export const CustomersDelete = async (IdCustomer) => {
+  try {
+    const response = await axios.delete(`${server}/customer/deleteCustomer/${IdCustomer}`, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+  
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при удалении заказчика!");
+  }
+}; 
+
+//! Удаление Водителя
+export const DriversDrelete = async (IdCustomer) => {
   try {
     const response = await axios.delete(`${server}/customer/deleteCustomer/${IdCustomer}`, {
       headers: {
