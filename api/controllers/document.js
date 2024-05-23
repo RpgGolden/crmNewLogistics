@@ -13,7 +13,7 @@ export default {
         }
 
         const documentPath = path.join(__dirname, 'documents', req.file.filename)
-        fs.rename(req.file.path, documentPath, (err) => {
+         fs.rename(req.file.path, documentPath, (err) => {
             console.error(err);
         })
         const document = await Document.create({path: documentPath, orderId: order.id});
