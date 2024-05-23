@@ -179,6 +179,20 @@ export const editDriverInfo = async (idSelectDriver, data) => {
   }
 };
 
+//! Запрос на обновление данных драйвера
+export const editDriverDriv = async (data) => {
+  console.log("Обновление вызвал данных ");
+  try {
+    const response = await axios.post(`${server}/driver/updateProfile/`, data, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при обновление данных драйвера!");
+  }
+};
 //! Запрос на получение всех клиентов
 export const getAllCustomers = async () => {
   try {

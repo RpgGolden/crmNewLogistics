@@ -10,21 +10,35 @@ function FunctionTableTop(props) {
   const defaultValue = "Заказы";
   const { context } = React.useContext(DataContext);
   const [textSearchTableData, settextSearchTableData] = useState("");
+  const ud = JSON.parse(localStorage.getItem("userData"));
 
-  const dataList = [
-    {
-      id: 1,
-      name: "Заказы",
-    },
-    {
-      id: 2,
-      name: "Клиенты",
-    },
-    {
-      id: 3,
-      name: "Водители",
-    },
-  ];
+  const dataList =
+    ud.role === "DRIVER"
+      ? [
+          {
+            id: 1,
+            name: "Заказы",
+          },
+          {
+            id: 2,
+            name: "Машины",
+          },
+        ]
+      : [
+          {
+            id: 1,
+            name: "Заказы",
+          },
+          {
+            id: 2,
+            name: "Клиенты",
+          },
+          {
+            id: 3,
+            name: "Водители",
+          },
+        ];
+
   const filteredData = (searchText) => {
     let tableData = [];
     if (context.selectedTable === "Клиенты") {
@@ -74,6 +88,10 @@ function FunctionTableTop(props) {
         context.setTableData([...context.dataDrivers]);
       }
       if (context.selectedTable === "Заказы") {
+        context.setTableData([...context.dataAppoints]);
+      }
+      console.log(ud);
+      if (ud.role === "DRIVER" && context.selectedTable === "Машины") {
         context.setTableData([...context.dataAppoints]);
       }
     }

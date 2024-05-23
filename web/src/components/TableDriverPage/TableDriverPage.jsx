@@ -8,6 +8,8 @@ import {
   getProfileDriver,
 } from "../../API/API";
 import { tableHeadAppoint } from "../Table/Data";
+import PopUpEditDriver from "../PopUp/PopUpEditDriver/PopUpEditDriver";
+import AccounDriver from "../AccounDriver/AccounDriver";
 
 function TableDriverPage() {
   const { drivCon, context } = React.useContext(DataContext);
@@ -97,6 +99,7 @@ function TableDriverPage() {
       ) : (
         <div className={styles.notdata}>Нет данных</div>
       )}
+      {context.popUp === "AccounDriver" && <AccounDriver />}
     </div>
   );
 }

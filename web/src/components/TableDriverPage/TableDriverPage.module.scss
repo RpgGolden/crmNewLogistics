@@ -4,7 +4,7 @@
 .Table {
   width: 100%;
   display: flex;
-
+  overflow: auto;
   .TableInner {
     width: 100vw;
 

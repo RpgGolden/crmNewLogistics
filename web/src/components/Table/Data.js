@@ -6,7 +6,7 @@ export const tableHeadAppoint = [
   { key: "car", value: "Марка" },
   { key: "dateBegin", value: "Отправка" },
   { key: "dateEnd", value: "Прибытие" },
-  { key: "loading", value: "Загрущка" },
+  { key: "loading", value: "Загрузка" },
   { key: "unloading", value: "Разгрузка" },
   { key: "typeCargo", value: "Груз" },
   { key: "volume", value: "Объем" },

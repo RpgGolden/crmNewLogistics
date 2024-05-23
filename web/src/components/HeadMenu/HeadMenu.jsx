@@ -45,6 +45,11 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
       });
   };
 
+  //! при нажатии редактировать аккаунт
+  const editAkaunt = () => {
+    context.setpopUp("AccounDriver");
+  };
+
   const delOrder = () => {
     apiDeleteOrder(context.selectedTr).then(() => {
       // context.updateDataTable();
@@ -135,12 +140,10 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Добавить машину
           </button>
-          <Link to="AccounDriver">
-            <button>
-              <img src="./img/Edit.png" alt="View" />
-              Редактировать аккаунт
-            </button>
-          </Link>
+          <button onClick={editAkaunt}>
+            <img src="./img/Edit.png" alt="View" />
+            Редактировать аккаунт
+          </button>
         </div>
       ) : state === "withBack" ? (
         <div className={styles.HeadMenu}>
