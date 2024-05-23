@@ -1,23 +1,26 @@
-import Document from "../models/document.js";
-import fs from "fs";
-import Order from "../models/order.js";
-import path from "path";
-import { AppErrorMissing } from "../utils/errors.js";
+import Document from '../models/document.js';
+import fs from 'fs';
+import Order from '../models/order.js';
+import path from 'path';
+import { AppErrorMissing } from '../utils/errors.js';
 export default {
-    async createDocument({params: {orderId}},req, res) {
+    async createDocument({ params: { orderId } }, req, res) {
+        const order = await Order.findOne({ where: { id: orderId } });
 
-        const order = await Order.findOne({where: {id: orderId}});
-        
         if (!order) {
             throw new AppErrorMissing('Order not found');
         }
 
-        const documentPath = path.join(__dirname, 'documents', req.file.filename)
-         fs.rename(req.file.path, documentPath, (err) => {
+        const currentUrl = window.location.href;
+        const currentPath = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
+
+        const documentPath = `${currentPath}/documents/${req.file.filename}`;
+        fs.rename(req.file.path, documentPath, err => {
             console.error(err);
-        })
-        const document = await Document.create({path: documentPath, orderId: order.id});
-        
+        });
+
+        const document = await Document.create({ path: documentPath, orderId: order.id });
+
         res.json(document);
-    }
-}
+    },
+};
