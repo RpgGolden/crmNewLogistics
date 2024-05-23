@@ -4,6 +4,7 @@ import Car from '../models/car.js';
 import { AppErrorMissing } from '../utils/errors.js';
 import OrderDto from '../dtos/order-dto.js';
 import Order from '../models/order.js';
+import fs from 'fs';
 
 export default {
     async createOrder(req, res) {

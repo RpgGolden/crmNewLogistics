@@ -7,6 +7,7 @@ import driverRoute from './routes/driver.js';
 import carRoute from './routes/car.js';
 import customerRoute from './routes/customer.js';
 import orderRoute from './routes/order.js';
+import documentRoute from './routes/document.js';
 
 // import testUtil from './utils/test-data.js';
 
@@ -36,5 +37,6 @@ app.use('/driver', driverRoute);
 app.use('/car', carRoute);
 app.use('/customer', customerRoute);
 app.use('/order', orderRoute);
+app.use('/document', documentRoute);
 
 app.listen(PORT, () => console.log(`Listen on :${PORT}`));
