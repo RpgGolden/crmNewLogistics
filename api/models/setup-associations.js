@@ -1,5 +1,5 @@
 import { models } from './index.js';
-const { User, TokenSchema, Driver, Car, Customer, Order } = models;
+const { User, TokenSchema, Driver, Car, Customer, Order, Document} = models;
 
 export default function () {
     User.hasOne(TokenSchema, { foreignKey: 'userId' });
@@ -19,4 +19,7 @@ export default function () {
 
     Driver.hasOne(Order);
     Order.belongsTo(Driver);
+
+    Order.hasMany(Document);
+    Document.belongsTo(Order);
 }
