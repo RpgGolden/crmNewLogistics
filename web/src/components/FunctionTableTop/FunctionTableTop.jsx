@@ -13,24 +13,29 @@ function FunctionTableTop(props) {
 
   const dataList = [
     {
-        id:1,
-        name:"Заказы"
+      id: 1,
+      name: "Заказы",
     },
     {
-        id:2,
-        name:"Клиенты"
+      id: 2,
+      name: "Клиенты",
     },
     {
-        id:3,
-        name:"Водители"
-    }
-
-  ]
+      id: 3,
+      name: "Водители",
+    },
+  ];
   const filteredData = (searchText) => {
     let tableData = [];
-    if (context.selectedTable === "Клиенты"){tableData=context.dataClients}
-    if (context.selectedTable === "Заказы"){tableData=context.dataAppoints}
-    if (context.selectedTable === "Водители"){tableData=context.dataDrivers}
+    if (context.selectedTable === "Клиенты") {
+      tableData = context.dataClients;
+    }
+    if (context.selectedTable === "Заказы") {
+      tableData = context.dataAppoints;
+    }
+    if (context.selectedTable === "Водители") {
+      tableData = context.dataDrivers;
+    }
     const filteredData = tableData.filter((item) => {
       for (let key in item) {
         if (
@@ -42,35 +47,34 @@ function FunctionTableTop(props) {
       }
       return false;
     });
-    context.setTableData(filteredData); 
+    context.setTableData(filteredData);
   };
 
   useEffect(() => {
     if (textSearchTableData) {
       filteredData(textSearchTableData);
     } else {
-      context.setTableData(testData); 
+      context.setTableData(testData);
     }
   }, [textSearchTableData]);
 
-  useEffect(()=>{
-    console.log("Срабтал юз эфект")
-      context.updateDataTable();
-  },[])
+  useEffect(() => {
+    console.log("Срабтал юз эфект");
+    context.updateDataTable();
+  }, []);
 
-  
   useEffect(() => {
     if (textSearchTableData) {
       filteredData(textSearchTableData);
     } else {
       if (context.selectedTable === "Клиенты") {
-        context.setTableData(context.dataClients);
+        context.setTableData([...context.dataClients]);
       }
       if (context.selectedTable === "Водители") {
-        context.setTableData(context.dataDrivers)
+        context.setTableData([...context.dataDrivers]);
       }
       if (context.selectedTable === "Заказы") {
-        context.setTableData(context.dataAppoints)
+        context.setTableData([...context.dataAppoints]);
       }
     }
   }, [textSearchTableData]);
@@ -79,7 +83,11 @@ function FunctionTableTop(props) {
     <>
       <div className={styles.FunctionTableTop}>
         <div className={styles.container}>
-          <List data={props.TableName} defaultValue={defaultValue} dataList={dataList}/>
+          <List
+            data={props.TableName}
+            defaultValue={defaultValue}
+            dataList={dataList}
+          />
           <div className={styles.searchForTable}>
             <Input
               placeholder={"Поиск..."}

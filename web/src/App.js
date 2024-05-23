@@ -33,15 +33,15 @@ function App() {
     numberOfPallet: null,
     // driverId: null,
   });
-  const [dataAppoints, setdataAppoint] = useState([])
-  const [dataClients, setdataClient] = useState([])
-  const [dataDrivers, setdataDriver] = useState([])
+  const [dataAppoints, setdataAppoint] = useState([]);
+  const [dataClients, setdataClient] = useState([]);
+  const [dataDrivers, setdataDriver] = useState([]);
 
-  const updateDataTable = () =>{
-    console.log("Update")
+  const updateDataTable = () => {
+    console.log("Update");
     getAllCustomers().then((response) => {
       if (response) {
-        setdataClient(response.data)
+        setdataClient(response.data);
       }
     });
     getAllDriver().then((response) => {
@@ -50,15 +50,15 @@ function App() {
           id: driver.id,
           fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
         }));
-        setdataDriver(dataTable)
+        setdataDriver(dataTable);
       }
     });
     apiGetAllOrders().then((response) => {
       if (response) {
-        setdataAppoint(response.data)
+        setdataAppoint(response.data);
       }
     });
-  }
+  };
 
   useEffect(() => {
     console.log(selectedTr);
@@ -82,7 +82,7 @@ function App() {
     updateDataTable,
     dataAppoints,
     dataClients,
-    dataDrivers
+    dataDrivers,
   };
 
   const [carTableData, setCarTableData] = useState([]); // таблиычные данные всех машин у diver

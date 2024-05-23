@@ -32,6 +32,7 @@ function Table() {
       getAllDriver().then((response) => {
         if (response) {
           const dataTable = response.data.map((driver) => ({
+            ...driver,
             id: driver.id,
             fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
           }));

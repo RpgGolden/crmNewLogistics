@@ -125,6 +125,24 @@ export const CustomersDelete = async (IdCustomer) => {
   }
 };
 
+//! Удаление заказа
+export const apiDeleteOrder = async (idOrder) => {
+  try {
+    const response = await axios.delete(
+      `${server}/order/deleteOrder/${idOrder}`,
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при удалении заказа!");
+  }
+};
+
 //! Удаление Водителя
 export const driverDelete = async (IdDriver) => {
   try {
