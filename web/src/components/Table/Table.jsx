@@ -3,6 +3,7 @@ import styles from "./Table.module.scss";
 import { tableHeadAppoint, tableHeadClient, tableHeadDriver } from "./Data";
 import DataContext from "../../context";
 import {
+  apiCreateFile,
   apiGetAllOrders,
   getAllCustomers,
   getAllDriver,
@@ -57,6 +58,13 @@ function Table() {
       settableHeader(tableHeadAppoint);
     }
   }, [context.selectedTable]);
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+    console.log("file", event.target.files[0]);
+    apiCreateFile(event.target.files[0], context.selectedTr);
+  };
 
   return (
     <>
@@ -81,9 +89,13 @@ function Table() {
                 >
                   {tableHeader.map((headerItem) => (
                     <td key={headerItem.key}>
-                      {headerItem.key === "id"
-                        ? index + 1
-                        : row[headerItem.key]}
+                      {headerItem.key === "id" ? (
+                        index + 1
+                      ) : headerItem.key === "file" ? (
+                        <input type="file" onChange={handleFileChange}></input>
+                      ) : (
+                        row[headerItem.key]
+                      )}
                     </td>
                   ))}
                 </tr>

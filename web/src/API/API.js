@@ -411,3 +411,22 @@ export const UpdateProfileCustomer = async (CustomerId, data) => {
     console.error("Пользователь не найден!");
   }
 };
+
+//! запрос сформировать файл
+export const apiCreateFile = async (data, id) => {
+  try {
+    console.log("создать файл", data, id);
+    const response = await axios.post(
+      `${server}/document/createDocument/${id}`,
+      { data },
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("файл не сформирован");
+  }
+};
