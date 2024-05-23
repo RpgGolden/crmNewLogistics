@@ -10,9 +10,7 @@ function FunctionTableTop(props) {
   const defaultValue = "Заказы";
   const { context } = React.useContext(DataContext);
   const [textSearchTableData, settextSearchTableData] = useState("");
-  const [dataAppoint, setdataAppoint] = useState([])
-  const [dataClient, setdataClient] = useState([])
-  const [dataDriver, setdataDriver] = useState([])
+
   const dataList = [
     {
         id:1,
@@ -30,9 +28,9 @@ function FunctionTableTop(props) {
   ]
   const filteredData = (searchText) => {
     let tableData = [];
-    if (context.selectedTable === "Клиенты"){tableData=dataClient}
-    if (context.selectedTable === "Заказы"){tableData=dataAppoint}
-    if (context.selectedTable === "Водители"){tableData=dataDriver}
+    if (context.selectedTable === "Клиенты"){tableData=context.dataClients}
+    if (context.selectedTable === "Заказы"){tableData=context.dataAppoints}
+    if (context.selectedTable === "Водители"){tableData=context.dataDrivers}
     const filteredData = tableData.filter((item) => {
       for (let key in item) {
         if (
@@ -56,66 +54,23 @@ function FunctionTableTop(props) {
   }, [textSearchTableData]);
 
   useEffect(()=>{
-    getAllCustomers().then((response) => {
-      if (response) {
-        // context.setTableData(response.data);
-        setdataClient(response.data)
-      }
-    });
-    getAllDriver().then((response) => {
-      if (response) {
-        const dataTable = response.data.map((driver) => ({
-          id: driver.id,
-          fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
-        }));
-        // context.setTableData(dataTable);
-        setdataDriver(dataTable)
-      }
-    });
-    apiGetAllOrders().then((response) => {
-      if (response) {
-        // context.setTableData(response.data);
-        setdataAppoint(response.data)
-      }
-    });
+    console.log("Срабтал юз эфект")
+      context.updateDataTable();
   },[])
 
+  
   useEffect(() => {
     if (textSearchTableData) {
       filteredData(textSearchTableData);
     } else {
       if (context.selectedTable === "Клиенты") {
-        context.setTableData(dataClient);
-        // getAllCustomers().then((response) => {
-        //   if (response) {
-        //     context.setTableData(response.data);
-        //     setdataClient(response.data)
-        //   }
-        // });
-
+        context.setTableData(context.dataClients);
       }
       if (context.selectedTable === "Водители") {
-        context.setTableData(dataDriver)
-        // getAllDriver().then((response) => {
-        //   if (response) {
-        //     const dataTable = response.data.map((driver) => ({
-        //       id: driver.id,
-        //       fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
-        //     }));
-        //     context.setTableData(dataTable);
-        //     setdataDriver(dataTable)
-        //   }
-        // });
+        context.setTableData(context.dataDrivers)
       }
       if (context.selectedTable === "Заказы") {
-        context.setTableData(dataAppoint)
-        // apiGetAllOrders().then((response) => {
-        //   if (response) {
-        //     context.setTableData(response.data);
-        //     setdataAppoint(response.data)
-        //   }
-        // });
-      
+        context.setTableData(context.dataAppoints)
       }
     }
   }, [textSearchTableData]);

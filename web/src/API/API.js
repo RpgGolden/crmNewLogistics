@@ -107,7 +107,7 @@ export const AddClient = async (ClientData) => {
   }
 };
 
-//! Запрос на получение заявок
+//! Удаление Клиент
 export const CustomersDelete = async (IdCustomer) => {
   try {
     const response = await axios.delete(
@@ -125,20 +125,36 @@ export const CustomersDelete = async (IdCustomer) => {
   }
 };
 
-//! Запрос на обновление данных драйвера
-export const EditDriverInfo = async (idSelectDriver, DataDriver) => {
-  const data = { DataDriver };
+//! Удаление Водителя
+export const driverDelete = async (IdDriver) => {
   try {
-    const response = await axios.post(
-      `${server}/driver/updateProfileByAdmin/${idSelectDriver}`,
-      ...data,
+    const response = await axios.delete(
+      `${server}/driver/deleteDriver/${IdDriver}`,
       {
         headers: {
           Authorization: `${localStorage.getItem("accessToken")}`,
         },
       }
     );
-    console.log(response);
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при удалении водителя!");
+  }
+};
+
+//! Запрос на обновление данных драйвера
+export const editDriverInfo = async (idSelectDriver, data) => {
+  console.log("Обновление вызвал данных ");
+  try {
+    const response = await axios.post(
+      `${server}/driver/updateProfileByAdmin/${idSelectDriver}`,
+      data,
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
     return response;
   } catch (error) {
     alert("Возникла ошибка при обновление данных драйвера!");

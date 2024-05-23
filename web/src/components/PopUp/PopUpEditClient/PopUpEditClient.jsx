@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./PopUpEditClient.module.scss";
 import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
 import Input from "../../../UI/Input/Input";
-import { AddClient, UpdateProfileCustomer, getAllCustomers, getCustomeriD } from "../../../API/API";
+import { UpdateProfileCustomer, getAllCustomers, getCustomeriD } from "../../../API/API";
 import DataContext from "../../../context";
 
 function PopUpEditClient() {
@@ -37,7 +37,14 @@ function PopUpEditClient() {
     const EditClient = () => {
         const idCustomer = context.selectedTr
         UpdateProfileCustomer(idCustomer, dataNewClient).then((response)=>{
-            console.log("responseUpdateClient",response)
+            if(response.status == 200 && context.selectedTable === "Клиенты"){
+                getAllCustomers().then((response) => {
+                    if (response) {
+                      context.setTableData(response.data);
+                      context.setpopUp("")
+                    }
+                  });
+            } 
         })
       };
 
