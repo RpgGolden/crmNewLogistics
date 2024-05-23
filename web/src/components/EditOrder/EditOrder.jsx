@@ -63,40 +63,6 @@ const EditOredr = () => {
   //! сохранить заказ
   const saveClick = () => {
     const md = { ...orderCon.orderData };
-    // if (md.loading.geo) {
-    //   md.loading = JSON.stringify({
-    //     adress: adressA,
-    //     geo: [md.loading.geo[0], md.loading.geo[1]],
-    //   });
-    // } else {
-    //   alert("Заполните поле Загрузки");
-    //   return;
-    // }
-    // if (md.unloading.geo) {
-    //   md.unloading = JSON.stringify({
-    //     adress: adressB,
-    //     geo: [md.unloading.geo[0], md.unloading.geo[1]],
-    //   });
-    // } else {
-    //   alert("Заполните поле Разгрузки");
-    //   return;
-    // }
-    // if (md.dateBegin.data && md.dateBegin.time) {
-    //   md.dateBegin = `${md.dateBegin.data} ${md.dateBegin.time}`;
-    // } else {
-    //   alert("Заполните период выполнения");
-    //   return;
-    // }
-    // if (md.dateEnd.data && md.dateEnd.time) {
-    //   md.dateEnd = `${md.dateEnd.data} ${md.dateEnd.time}`;
-    // } else {
-    //   alert("Заполните период выполнения");
-    //   return;
-    // }
-    // md.places = Number(md.places);
-    // md.weight = Number(md.weight);
-    // md.volume = Number(md.volume);
-    // md.price = Number(md.price);
 
     const datareq = {};
     if (md.loading.geo) {
@@ -119,26 +85,20 @@ const EditOredr = () => {
     }
     if (context.selectedTr) {
       if (md.dateBegin && md.dateEnd) {
-        datareq.dateBegin = JSON.stringify({
-          data: md.dateBegin.split(" ")[0],
-          time: md.dateBegin.split(" ")[1],
-        });
-        datareq.dateEnd = JSON.stringify({
-          data: md.dateEnd.split(" ")[0],
-          time: md.dateEnd.split(" ")[1],
-        });
+        datareq.dateBegin = md.dateBegin;
+        datareq.dateEnd = md.dateEnd;
       } else {
         alert("Заполните период выполнения");
         return;
       }
     } else {
-      if (datareq.dateBegin.data && datareq.dateBegin.time) {
+      if (md.dateBegin.data && md.dateBegin.time) {
         datareq.dateBegin = `${md.dateBegin.data} ${md.dateBegin.time}`;
       } else {
         alert("Заполните период выполнения");
         return;
       }
-      if (datareq.dateEnd.data && datareq.dateEnd.time) {
+      if (md.dateEnd.data && md.dateEnd.time) {
         datareq.dateEnd = `${md.dateEnd.data} ${md.dateEnd.time}`;
       } else {
         alert("Заполните период выполнения");
@@ -155,13 +115,13 @@ const EditOredr = () => {
     datareq.driverId = md.driver.id;
     datareq.carId = md.car.id;
     datareq.typeCargo = md.typeCargo;
-
+    console.log(datareq);
     if (context.selectedTr) {
       apiUpdateOrder(datareq, md.id).then((resp) => {
         console.log(resp);
       });
     } else {
-      apiAddOrder(md).then((resp) => {
+      apiAddOrder(datareq).then((resp) => {
         console.log(resp);
         if (resp.status === 200) {
           orderCon.setOrderData({ ...orderCon.orderObj });
@@ -379,11 +339,6 @@ const EditOredr = () => {
                   type="text"
                   placeholder="Тип транспорта"
                   onChange={(el) => handleInput(el, "сarType")}
-                  // value={
-                  //   orderCon.cars.find(
-                  //     (el) => el.id === orderCon.orderData.carId
-                  //   )?.typeCar
-                  // }
                   value={orderCon.orderData?.car?.typeCar}
                 />
                 <label>Загрузка</label>
@@ -409,10 +364,6 @@ const EditOredr = () => {
                   type="text"
                   placeholder="Период выполнения с ... по ..."
                   onChange={(el) => handleInput(el, "dateBegin")}
-                  // value={
-                  //   orderCon.orderData.dateBegin.data &&
-                  //   `с ${orderCon.orderData.dateBegin.data} ${orderCon.orderData.dateBegin.time} по ${orderCon.orderData.dateEnd.data} ${orderCon.orderData.dateEnd.time} `
-                  // }
                   value={
                     orderCon.orderData?.dateBegin &&
                     `с ${orderCon.orderData.dateBegin} по ${orderCon.orderData.dateEnd}`

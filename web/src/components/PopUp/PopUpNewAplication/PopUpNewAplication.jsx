@@ -19,9 +19,20 @@ function PopUpNewAplication() {
   const [clients, setclientss] = useState([]);
   const [carsName, setCarsName] = useState([]);
 
-  //! поулучаем всех водителей и клиентов
+  const funSetCar = (carId) => {
+    return orderCon.cars.find((el) => el.id === carId);
+  };
+
+  const funSetDriver = (Id) => {
+    return orderCon.drivers.find((el) => el.id === Id);
+  };
+
+  const funSetCustomet = (Id) => {
+    return orderCon.clients.find((el) => el.id === Id);
+  };
+
+  //! поулучаем всех водителей и клиентов и машины
   useEffect(() => {
-    orderCon.setOrderData({ ...orderCon.orderObj });
     getAllDriver().then((response) => {
       console.log("Все водилы", response.data);
       let mass = [];
@@ -51,12 +62,10 @@ function PopUpNewAplication() {
       console.log("Все машины", response.data);
       let mass = [];
       response.data.map((item) => {
-        if (item.driver === null) {
-          mass.push({
-            id: item.id,
-            name: `${item.markCar} ${item.numberCar}`,
-          });
-        }
+        mass.push({
+          id: item.id,
+          name: `${item.markCar} ${item.numberCar}`,
+        });
       });
       setCarsName(mass);
       orderCon.setCars(response.data);
@@ -72,6 +81,15 @@ function PopUpNewAplication() {
       itemKey === "carId"
     ) {
       md[itemKey] = value.id;
+      if (itemKey === "carId") {
+        md["car"] = funSetCar(value.id);
+      }
+      if (itemKey === "driverId") {
+        md["driver"] = funSetDriver(value.id);
+      }
+      if (itemKey === "customerId") {
+        md["customer"] = funSetCustomet(value.id);
+      }
     } else if (itemKey === "dateBegin" || itemKey === "dateEnd") {
       if ([...value].length > 8) {
         md[itemKey].data = value;
@@ -85,7 +103,7 @@ function PopUpNewAplication() {
   };
 
   const addAplication = () => {
-    console.log(orderCon.orderData);
+    console.log("редактировать", orderCon.orderData);
     context.setSelectedTr("");
     // apiAddOrder()
   };

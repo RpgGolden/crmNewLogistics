@@ -38,7 +38,7 @@ function App() {
   useEffect(() => {
     console.log(selectedTr);
   }, [selectedTr]);
- 
+
   const context = {
     tableData,
     setTableData,
@@ -68,8 +68,11 @@ function App() {
   //! данные создания заказа
   const orderObj = {
     customerId: null,
+    customer: null,
     driverId: null,
+    driver: null,
     carId: null,
+    car: null,
     loading: { adress: null, geo: null },
     unloading: { adress: null, geo: null },
     dateBegin: { data: null, time: null },
