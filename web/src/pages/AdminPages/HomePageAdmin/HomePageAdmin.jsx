@@ -29,6 +29,10 @@ function HomePageAdmin() {
       id: 3,
       name: "Водители",
     },
+    {
+      id: 4,
+      name: "Машины",
+    },
   ];
   return (
     <div className={styles.HomePage}>

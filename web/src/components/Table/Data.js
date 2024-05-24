@@ -28,6 +28,7 @@ export const tableHeadAppoint = [
 //   { key: "cost", value: "Сумма" },
 // ];
 export const tableHeadClient = [
+  { key: "id", value: "Номер" },
   { key: "fio", value: "ФИО" },
   { key: "phoneNumber", value: "Номер телефона" },
   { key: "additionalPhoneNumber", value: "Доп-телефон" },
@@ -35,6 +36,7 @@ export const tableHeadClient = [
 ];
 
 export const tableHeadDriver = [
+  { key: "id", value: "Номер" },
   { key: "fio", value: "ФИО" },
   { key: "phoneNumber", value: "Номер телефона" },
   { key: "additionalPhoneNumber", value: "Доп-телефон" },
