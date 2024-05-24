@@ -37,6 +37,10 @@ function FunctionTableTop(props) {
             id: 3,
             name: "Водители",
           },
+          {
+            id: 4,
+            name: "Машины",
+          },
         ];
 
   const filteredData = (searchText) => {
