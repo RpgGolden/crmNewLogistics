@@ -73,13 +73,34 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
   };
 
   //! получить файл
+  // const getFile = () => {
+  //   console.log(context.selectedTr);
+  //   apiGetFile(context.selectedTr).then((response) => {
+  //     console.log(response);
+  //     const url = window.URL.createObjectURL(new Blob([response.data]));
+  //     const link = document.createElement("a");
+  //     link.href = url;
+  //     link.setAttribute("download", "расчетный_лист.docx");
+  //     document.body.appendChild(link);
+  //     link.click();
+  //   });
+  // };
+
   const getFile = () => {
     console.log(context.selectedTr);
-    apiGetFile(context.selectedTr).then((data) => {
-      console.log(data);
+    apiGetFile(context.selectedTr).then((response) => {
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        encoding: "utf-8",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "расчетный_лист.docx");
+      document.body.appendChild(link);
+      link.click();
     });
   };
-
   return (
     <>
       {state === "home" && context.selectedTable === "Заказы" ? (

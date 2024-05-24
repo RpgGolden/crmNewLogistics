@@ -12,7 +12,6 @@ export const tableHeadAppoint = [
   { key: "volume", value: "Объем" },
   { key: "weight", value: "Вес" },
   { key: "price", value: "Сумма" },
-  { key: "file", value: "Документ" },
 ];
 
 // export const tableHeadAppoint = [

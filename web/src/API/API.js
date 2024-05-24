@@ -321,7 +321,7 @@ export const apiGetAllOrdersDriver = async (driverId) => {
 export const apiGetFile = async (orderId) => {
   try {
     console.log("получить документ", orderId);
-    const response = await axios.post(
+    const response = await axios.get(
       `${server}/document/createDocument/${orderId}`,
       {
         headers: {
