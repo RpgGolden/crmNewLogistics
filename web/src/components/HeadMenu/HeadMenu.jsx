@@ -60,7 +60,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
   };
 
   const funMapGo = () => {
-    if (context.selectedTr) {
+    if (context.selectedTr && context.selectedTable === "Заказы") {
       let par = null;
       par = context.tableData.find((el) => el.id === context.selectedTr);
       console.log(par.geoLoading, par.geoUnLoading);
