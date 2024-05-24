@@ -59,6 +59,18 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
     });
   };
 
+  const funMapGo = () => {
+    if (context.selectedTr) {
+      let par = null;
+      par = context.tableData.find((el) => el.id === context.selectedTr);
+      console.log(par.geoLoading, par.geoUnLoading);
+      const url = `https://yandex.ru/maps/?rtext=${par.geoLoading.join(
+        ","
+      )}~${par.geoUnLoading.join(",")}`;
+      window.open(url, "_blank");
+    }
+  };
+
   return (
     <>
       {state === "home" && context.selectedTable === "Заказы" ? (
@@ -131,11 +143,9 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
         </div>
       ) : state === "driverPage" ? (
         <div className={styles.HeadMenu}>
-          <Link to="ViewMyAppointment">
-            <button>
-              <img src="./img/View.png" alt="View" />В путь
-            </button>
-          </Link>
+          <button onClick={funMapGo}>
+            <img src="./img/View.png" alt="View" />В путь
+          </button>
           <button onClick={() => context.setpopUp("PopUpNewCar")}>
             <img src="./img/add.svg" alt="View" />
             Добавить машину
