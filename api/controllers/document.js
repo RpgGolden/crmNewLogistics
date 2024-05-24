@@ -8,12 +8,11 @@ import { AppErrorMissing } from '../utils/errors.js';
 export default {
     async createDocument({ params: { orderId } }, res) {
         try {
-            // Find order by ID
+            // Find order by IDп
             const order = await Order.findOne({ where: { id: orderId } });
             if (!order) {
                 throw new AppErrorMissing('Order not found');
             }
-
             // Read the template file
             const templatePath = path.join('documents', 'template.docx');
             const content = fs.readFileSync(templatePath, 'binary');
@@ -59,9 +58,9 @@ export default {
             // Write the generated document to the file system
             fs.writeFileSync(fileName, buf);
             console.log(`Document generation completed: ${fileName}`);
-
+            const fileNameTrue = `${order.id}.docx`;
             // Send the file to the client for download
-            res.download(fileName, `${order.id}.docx`, err => {
+            res.download(fileName, fileNameTrue, err => {
                 if (err) {
                     console.error('Error downloading file:', err);
                     res.status(500).json({ success: false, message: 'Error downloading file' });

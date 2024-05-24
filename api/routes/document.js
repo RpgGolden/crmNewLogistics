@@ -10,8 +10,8 @@ const router = Router();
 router
     .route('/createDocument/:orderId')
     .get(
-        authenticateToken,
-        asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
+        // authenticateToken,
+        // asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
         asyncRoute(documentController.createDocument)
     );
 
