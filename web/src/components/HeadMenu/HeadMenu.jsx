@@ -5,6 +5,7 @@ import DataContext from "../../context";
 import {
   CustomersDelete,
   apiDeleteOrder,
+  apiGetFile,
   driverDelete,
   getAllCustomers,
 } from "./../../API/API";
@@ -71,6 +72,14 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
     }
   };
 
+  //! получить файл
+  const getFile = () => {
+    console.log(context.selectedTr);
+    apiGetFile(context.selectedTr).then((data) => {
+      console.log(data);
+    });
+  };
+
   return (
     <>
       {state === "home" && context.selectedTable === "Заказы" ? (
@@ -88,6 +97,10 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
           <button onClick={delOrder}>
             <img src="./img/File_dock.png" alt="View" />
             Удалить заказ
+          </button>
+          <button onClick={getFile}>
+            <img src="./img/File_dock.png" alt="View" />
+            Получить расчетный лист
           </button>
         </div>
       ) : context.selectedTable === "Клиенты" && state === "home" ? (

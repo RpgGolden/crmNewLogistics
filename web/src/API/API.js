@@ -317,6 +317,24 @@ export const apiGetAllOrdersDriver = async (driverId) => {
   }
 };
 
+//! запрос на получение файла
+export const apiGetFile = async (orderId) => {
+  try {
+    console.log("получить документ", orderId);
+    const response = await axios.post(
+      `${server}/document/createDocument/${orderId}`,
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("ошибка получения документа!");
+  }
+};
+
 //! запрос добавить машину
 export const apiAddCar = async (data) => {
   try {

@@ -58,13 +58,6 @@ function Table() {
       settableHeader(tableHeadAppoint);
     }
   }, [context.selectedTable]);
-  const [file, setFile] = useState(null);
-
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-    console.log("file", event.target.files[0]);
-    apiCreateFile(event.target.files[0], context.selectedTr);
-  };
 
   return (
     <>
