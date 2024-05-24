@@ -34,7 +34,6 @@ function TableDriverPage() {
   }, []);
 
   useEffect(() => {
-    console.log(context.selectedTable);
     if (context.selectedTable === "Машины") {
       getProfileDriver().then((response) => {
         apiGetAllCar(response.data.id).then((resp) => {
