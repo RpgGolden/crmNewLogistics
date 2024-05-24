@@ -11,10 +11,6 @@ export default class Document extends Model {
                     allowNull: false,
                     primaryKey: true,
                 },
-                path: {
-                    type: DataTypes.STRING,
-                    allowNull: false,
-                },
                 url: {
                     type: DataTypes.STRING,
                     allowNull: false,
