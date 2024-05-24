@@ -14,59 +14,61 @@ export default {
                 throw new AppErrorMissing('Order not found');
             }
 
-            const files = [`${order.id}`];
+            // Read the template file
+            const templatePath = path.join('documents', 'template.docx');
+            const content = fs.readFileSync(templatePath, 'binary');
 
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const content = fs.readFileSync(path.join('documents', 'template.docx'), 'binary');
+            // Load the DOCX template
+            const zip = new PizZip(content);
+            const doc = new Docxtemplater(zip);
 
-                const zip = new PizZip(content);
+            // Prepare data for the document
+            const dateContract = new Date();
+            const getMonthStr = date =>
+                [
+                    'января',
+                    'февраля',
+                    'марта',
+                    'апреля',
+                    'мая',
+                    'июня',
+                    'июля',
+                    'августа',
+                    'сентября',
+                    'октября',
+                    'ноября',
+                    'декабря',
+                ][date.getMonth()];
 
-                const doc = new Docxtemplater(zip);
-                const dateContract = new Date();
+            doc.setData({
+                date: dateContract.getDate(),
+                month: getMonthStr(dateContract),
+                year: dateContract.getFullYear(),
+                fullName: order.customerId,
+            });
 
-                const getMonthStr = (date = new Date()) =>
-                    [
-                        'января',
-                        'февраля',
-                        'марта',
-                        'апреля',
-                        'мая',
-                        'июня',
-                        'июля',
-                        'августа',
-                        'сентября',
-                        'октября',
-                        'ноября',
-                        'декабря',
-                    ][dateContract.getMonth()];
+            // Render the document
+            doc.render();
 
-                doc.setData({
-                    date: dateContract.getDate(),
-                    month: getMonthStr,
-                    year: dateContract.getFullYear(),
-                    fullName: order.customerId,
-                });
+            // Generate the document buffer
+            const buf = doc.getZip().generate({ type: 'nodebuffer' });
 
-                doc.render();
+            // Define the output file path
+            const fileName = path.join('documents', `${order.id}.docx`);
 
-                const buf = doc.getZip().generate({ type: 'nodebuffer' });
-                const fileName = `./documents/${file}.docx`;
+            // Write the generated document to the file system
+            fs.writeFileSync(fileName, buf);
+            console.log(`Document generation completed: ${fileName}`);
 
-                fs.writeFileSync(fileName, buf);
-                console.log(`Генерация документа(${fileName}) завершена.`);
-
-                // Нужно скачать созданный файл
-                res.download(fileName, (err) => {
-                    if(err) {
-                        console.error('Error downloading file:', err);
-                        throw new Error('Error downloading file');
-                    } else {
-                        console.log(`File downloaded: ${fileName}`)
-                    }
-                })
-                
-            }
+            // Send the file to the client for download
+            res.download(fileName, `${order.id}.docx`, err => {
+                if (err) {
+                    console.error('Error downloading file:', err);
+                    res.status(500).json({ success: false, message: 'Error downloading file' });
+                } else {
+                    console.log(`File downloaded: ${fileName}`);
+                }
+            });
         } catch (error) {
             console.error('Error generating document:', error);
             res.status(500).json({ success: false, message: 'Error generating document', error: error.message });
