@@ -92,7 +92,9 @@ function Table() {
                       {headerItem.key === "id" ? (
                         index + 1
                       ) : headerItem.key === "file" ? (
-                        <input type="file" onChange={handleFileChange}></input>
+                        <>
+                          <img width={22} src="./img/file.svg" />
+                        </>
                       ) : (
                         row[headerItem.key]
                       )}
