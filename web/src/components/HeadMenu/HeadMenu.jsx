@@ -45,6 +45,11 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
       });
   };
 
+  const DeleteCar = () =>{
+  
+    // ccontext.selectedTr);
+  }
+
   //! при нажатии редактировать аккаунт
   const editAkaunt = () => {
     context.setpopUp("AccounDriver");
@@ -103,6 +108,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Создать заказ
           </button>
+       
           <button onClick={() => context.setpopUp("PopUpEditDriver")}>
             <img src="./img/Edit.png" alt="View" />
             Редактировать
@@ -122,7 +128,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/Edit.png" alt="View" />
             Редактировать
           </button>
-          <button >
+          <button onClick={DeleteCar}>
             <img src="./img/File_dock.png" alt="View" />
             Удалить Машину
           </button>

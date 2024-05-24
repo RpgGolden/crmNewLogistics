@@ -4,7 +4,7 @@ import List from "../../UI/List/List";
 import Input from "../../UI/Input/Input";
 import DataContext from "../../context";
 import { testData } from "../../DataApi";
-import { apiGetAllOrders, getAllCustomers, getAllDriver } from "../../API/API";
+import { apiGetAllCar, apiGetAllOrders, getAllCustomers, getAllDriver, getProfileDriver } from "../../API/API";
 
 function FunctionTableTop(props) {
   const defaultValue = "Заказы";
@@ -54,9 +54,14 @@ function FunctionTableTop(props) {
     if (context.selectedTable === "Водители") {
       tableData = context.dataDrivers;
     }
-    if (context.selectedTable === "Машины") {
+    if (context.selectedTable === "Машины" && ud.role != "DRIVER") {
       tableData = context.dataCar;
     }
+    if ((ud.role === "DRIVER") && (context.selectedTable === "Машины")) {
+      tableData = context.dataCarDriver;
+
+    }
+
     const filteredData = tableData.filter((item) => {
       for (let key in item) {
         if (
@@ -96,12 +101,19 @@ function FunctionTableTop(props) {
       if (context.selectedTable === "Заказы") {
         context.setTableData([...context.dataAppoints]);
       }
-      if (context.selectedTable === "Машины") {
+      if (ud.role != "DRIVER" && context.selectedTable === "Машины") {
         context.setTableData([...context.dataCar]);
       }
       console.log(ud);
       if (ud.role === "DRIVER" && context.selectedTable === "Машины") {
-        context.setTableData([...context.dataAppoints]);
+        getProfileDriver().then((response) => {
+          apiGetAllCar(response.data.id).then((resp) => {
+            if (resp) {
+              context.setTableData(resp.data);
+            }
+          });
+        });
+       
       }
     }
   }, [textSearchTableData]);

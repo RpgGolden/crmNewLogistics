@@ -12,7 +12,7 @@ export const tableHeadCar = [
 ];
 
 export const tableHeadOrders = [
-  { key: "id", value: "Статус" },
+  { key: "id", value: "Номер" },
   { key: "status", value: "Период заказа" },
   { key: "client", value: "Клиент" },
   { key: "loading", value: "Загрузка" },

@@ -12,7 +12,7 @@ import AdminPage from "./pages/AdminPages/HomePage/AdminPage";
 import DriverPage from "./pages/DriverPage/HomePage/DriverPage";
 import HomePageDriver from "./pages/DriverPage/HomePageDriver/HomePageDriver";
 import AccounDriver from "./components/AccounDriver/AccounDriver";
-import { apiGetAllCarsLogistic, apiGetAllOrders, getAllCustomers, getAllDriver } from "./API/API";
+import { apiGetAllCar, apiGetAllCarsLogistic, apiGetAllOrders, getAllCustomers, getAllDriver, getProfileDriver } from "./API/API";
 
 function App() {
   const [tableData, setTableData] = useState(testData); // данные таблицы
@@ -21,6 +21,7 @@ function App() {
   const [searchDataForTable, setsearchDataForTable] = useState(" "); // поиск по таблице
   const [brands, setBrands] = useState([]);
   const [popUp, setpopUp] = useState("");
+  const ud = JSON.parse(localStorage.getItem("userData"));
   const [carData, setCarData] = useState({
     numberCar: null,
     markCar: null,
@@ -37,6 +38,8 @@ function App() {
   const [dataClients, setdataClient] = useState([]);
   const [dataDrivers, setdataDriver] = useState([]);
   const [dataCar, setdataCar] = useState([]);
+  const [dataCarDriver, setdataCarDriver] = useState([]);
+
   const updateDataTable = () => {
     console.log("Update");
     getAllCustomers().then((response) => {
@@ -70,6 +73,16 @@ function App() {
     apiGetAllCarsLogistic().then((response) => {
       setdataCar(response.data);
     });
+    if (ud.role === "DRIVER") {
+      getProfileDriver().then((response) => {
+          apiGetAllCar(response.data.id).then((resp) => {
+            if (resp) {
+              setdataCarDriver(resp.data);
+            }
+          });
+        });
+    }
+
   };
 
   useEffect(() => {
@@ -95,7 +108,8 @@ function App() {
     dataAppoints,
     dataClients,
     dataDrivers,
-    dataCar
+    dataCar,
+    dataCarDriver
   };
 
   const [carTableData, setCarTableData] = useState([]); // таблиычные данные всех машин у diver
