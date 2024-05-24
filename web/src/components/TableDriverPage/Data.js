@@ -8,7 +8,7 @@ export const tableHeadCar = [
   { key: "heightCar", value: "Высота, м" },
   { key: "volumeCar", value: "Объем, м3" },
   { key: "loadCapacity", value: "Грузоподъемность, т" },
-  { key: "numberOfPallet", value: "Колличесвто палет" },
+  { key: "numberOfPallet", value: "Колличество палет" },
 ];
 
 export const tableHeadOrders = [

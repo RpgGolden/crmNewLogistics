@@ -4,11 +4,13 @@ import { tableHeadAppoint, tableHeadClient, tableHeadDriver } from "./Data";
 import DataContext from "../../context";
 import {
   apiCreateFile,
+  apiGetAllCarsLogistic,
   apiGetAllOrders,
   getAllCustomers,
   getAllDriver,
   getProfileDriver,
 } from "../../API/API";
+import { tableHeadCar } from "../TableDriverPage/Data";
 
 function Table() {
   const { context } = React.useContext(DataContext);
@@ -42,6 +44,13 @@ function Table() {
         }
       });
     }
+    if (context.selectedTable === "Машины") {
+      apiGetAllCarsLogistic().then((response) => {
+        console.log("Все машины", response.data);
+        context.setTableData(response.data);
+        settableHeader(tableHeadCar);
+      });
+    }
     if (context.selectedTable === "Заказы") {
       apiGetAllOrders().then((resp) => {
         console.log("Заказы", resp.data);
@@ -49,7 +58,7 @@ function Table() {
         dat.map((item) => {
           item.car = item.car.markCar;
           item.customer = item.customer.fio;
-          item.driver = item.driver.name;
+          item.driver = `${item.driver.surname} ${item.driver.name} ${item.driver.patronymic}`;
           item.loading = JSON.parse(item.loading).adress;
           item.unloading = JSON.parse(item.unloading).adress;
         });

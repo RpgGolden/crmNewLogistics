@@ -54,6 +54,9 @@ function FunctionTableTop(props) {
     if (context.selectedTable === "Водители") {
       tableData = context.dataDrivers;
     }
+    if (context.selectedTable === "Машины") {
+      tableData = context.dataCar;
+    }
     const filteredData = tableData.filter((item) => {
       for (let key in item) {
         if (
@@ -77,7 +80,6 @@ function FunctionTableTop(props) {
   }, [textSearchTableData]);
 
   useEffect(() => {
-    console.log("Срабтал юз эфект");
     context.updateDataTable();
   }, []);
 
@@ -93,6 +95,9 @@ function FunctionTableTop(props) {
       }
       if (context.selectedTable === "Заказы") {
         context.setTableData([...context.dataAppoints]);
+      }
+      if (context.selectedTable === "Машины") {
+        context.setTableData([...context.dataCar]);
       }
       console.log(ud);
       if (ud.role === "DRIVER" && context.selectedTable === "Машины") {

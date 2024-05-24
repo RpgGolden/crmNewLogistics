@@ -31,32 +31,56 @@ function PopUpNewCar() {
   };
 
   const clickAddCar = () => {
-    getProfileDriver().then((response) => {
-      const ud = JSON.parse(localStorage.getItem("userData"));
-      console.log(ud);
-      apiAddCar(
-        ud.role === "ADMINISTRATOR"
-          ? { ...context.carData }
-          : { ...context.carData, driverId: response.data.id }
-      ).then((resp) => {
-        console.log("response", resp);
-        if (resp?.status === 200) {
-          context.setpopUp("");
-          context.setCarData({
-            numberCar: null,
-            markCar: null,
-            typeCar: null,
-            heightCar: null,
-            widthCar: null,
-            lengthCar: null,
-            volumeCar: null,
-            loadCapacity: null,
-            numberOfPallet: null,
-            driverId: null,
-          });
-        }
-      });
-    });
+    const ud = JSON.parse(localStorage.getItem("userData"));
+    if(ud.role === "ADMINISTRATOR"){
+        apiAddCar(
+           { ...context.carData }
+        ).then((resp) => {
+          console.log("response", resp);
+          if (resp?.status === 200) {
+            context.setpopUp("");
+            context.setCarData({
+              numberCar: null,
+              markCar: null,
+              typeCar: null,
+              heightCar: null,
+              widthCar: null,
+              lengthCar: null,
+              volumeCar: null,
+              loadCapacity: null,
+              numberOfPallet: null,
+              driverId: null,
+            });
+          }
+        });
+    }
+    else{
+      getProfileDriver().then((response) => {
+        const ud = JSON.parse(localStorage.getItem("userData"));
+        console.log(ud);
+        apiAddCar(
+            { ...context.carData, driverId: response.data.id }
+        ).then((resp) => {
+          console.log("response", resp);
+          if (resp?.status === 200) {
+            context.setpopUp("");
+            context.setCarData({
+              numberCar: null,
+              markCar: null,
+              typeCar: null,
+              heightCar: null,
+              widthCar: null,
+              lengthCar: null,
+              volumeCar: null,
+              loadCapacity: null,
+              numberOfPallet: null,
+              driverId: null,
+            });
+          }
+        });
+      })
+    }
+    
   };
 
   useEffect(() => {
