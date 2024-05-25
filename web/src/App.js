@@ -12,11 +12,18 @@ import AdminPage from "./pages/AdminPages/HomePage/AdminPage";
 import DriverPage from "./pages/DriverPage/HomePage/DriverPage";
 import HomePageDriver from "./pages/DriverPage/HomePageDriver/HomePageDriver";
 import AccounDriver from "./components/AccounDriver/AccounDriver";
-import { apiGetAllCar, apiGetAllCarsLogistic, apiGetAllOrders, getAllCustomers, getAllDriver, getProfileDriver } from "./API/API";
+import {
+  apiGetAllCar,
+  apiGetAllCarsLogistic,
+  apiGetAllOrders,
+  getAllCustomers,
+  getAllDriver,
+  getProfileDriver,
+} from "./API/API";
 import { tableHeadAppoint } from "./components/Table/Data";
 
 function App() {
-  const [tableData, setTableData] = useState(testData); // данные таблицы
+  const [tableData, setTableData] = useState([]); // данные таблицы
   const [selectedTr, setSelectedTr] = useState(null); // выбранная строка
   const [selectedTable, setSelectedTable] = useState("Заказы"); // выбранная таблица
   const [searchDataForTable, setsearchDataForTable] = useState(" "); // поиск по таблице
@@ -78,14 +85,13 @@ function App() {
     });
     if (ud.role === "DRIVER") {
       getProfileDriver().then((response) => {
-          apiGetAllCar(response.data.id).then((resp) => {
-            if (resp) {
-              setdataCarDriver(resp.data);
-            }
-          });
+        apiGetAllCar(response.data.id).then((resp) => {
+          if (resp) {
+            setdataCarDriver(resp.data);
+          }
         });
+      });
     }
-
   };
 
   useEffect(() => {
@@ -114,7 +120,7 @@ function App() {
     dataCar,
     dataCarDriver,
     tableHeader,
-    settableHeader
+    settableHeader,
   };
 
   const [carTableData, setCarTableData] = useState([]); // таблиычные данные всех машин у diver

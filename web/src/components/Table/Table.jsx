@@ -15,7 +15,6 @@ import { tableHeadCar } from "../TableDriverPage/Data";
 function Table() {
   const { context } = React.useContext(DataContext);
 
-
   const trClick = (row) => {
     context.setSelectedTr(row.id);
   };
@@ -54,15 +53,17 @@ function Table() {
       apiGetAllOrders().then((resp) => {
         console.log("Заказы", resp.data);
         const dat = [...resp.data];
-        dat.map((item) => {
-          item.car = item.car.markCar;
-          item.customer = item.customer.fio;
-          item.driver = `${item.driver.surname} ${item.driver.name} ${item.driver.patronymic}`;
-          item.loading = JSON.parse(item.loading).adress;
-          item.unloading = JSON.parse(item.unloading).adress;
-        });
-        context.setTableData(dat);
-        context.settableHeader(tableHeadAppoint);
+        if (dat.length > 0) {
+          dat.map((item) => {
+            item.car = item.car.markCar;
+            item.customer = item.customer.fio;
+            item.driver = `${item.driver.surname} ${item.driver.name} ${item.driver.patronymic}`;
+            item.loading = JSON.parse(item.loading).adress;
+            item.unloading = JSON.parse(item.unloading).adress;
+          });
+          context.setTableData(dat);
+          context.settableHeader(tableHeadAppoint);
+        }
       });
     }
   }, [context.selectedTable]);
@@ -74,7 +75,7 @@ function Table() {
           <table className={styles.TableInner}>
             <thead>
               <tr>
-                {  context.tableHeader.map((item) => (
+                {context.tableHeader.map((item) => (
                   <th key={item.key}>{item.value}</th>
                 ))}
               </tr>

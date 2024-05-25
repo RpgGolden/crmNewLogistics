@@ -4,7 +4,7 @@ import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
 import axios from "axios";
 import Input from "./InputNewCar/Input";
 import DataContext from "../../../context";
-import { apiAddCar, getProfileDriver } from "../../../API/API";
+import { apiAddCar, apiGetAllCar, getProfileDriver } from "../../../API/API";
 
 function PopUpNewCar() {
   const { context } = React.useContext(DataContext);
@@ -32,53 +32,67 @@ function PopUpNewCar() {
 
   const clickAddCar = () => {
     const ud = JSON.parse(localStorage.getItem("userData"));
-    if(ud.role === "ADMINISTRATOR"){
-        apiAddCar({ ...context.carData }).then((resp) => {
-          console.log("response", resp);
-          if (resp?.status === 200) {
-            context.setpopUp("");
-            context.setCarData({
-              numberCar: null,
-              markCar: null,
-              typeCar: null,
-              heightCar: null,
-              widthCar: null,
-              lengthCar: null,
-              volumeCar: null,
-              loadCapacity: null,
-              numberOfPallet: null,
-              driverId: null,
+    if (ud.role === "ADMINISTRATOR") {
+      apiAddCar({ ...context.carData }).then((resp) => {
+        console.log("response", resp);
+        if (resp?.status === 200) {
+          context.setpopUp("");
+          context.setCarData({
+            numberCar: null,
+            markCar: null,
+            typeCar: null,
+            heightCar: null,
+            widthCar: null,
+            lengthCar: null,
+            volumeCar: null,
+            loadCapacity: null,
+            numberOfPallet: null,
+            driverId: null,
+          });
+          getProfileDriver().then((response) => {
+            apiGetAllCar(response.data.id).then((resp) => {
+              if (resp) {
+                console.log("Машины", resp.data);
+                context.setTableData(resp.data);
+              }
             });
-          }
-        });
-    }
-    else{
+          });
+        }
+      });
+    } else {
       getProfileDriver().then((response) => {
         const ud = JSON.parse(localStorage.getItem("userData"));
         console.log(ud);
-        apiAddCar(
-            { ...context.carData, driverId: response.data.id }
-        ).then((resp) => {
-          console.log("response", resp);
-          if (resp?.status === 200) {
-            context.setpopUp("");
-            context.setCarData({
-              numberCar: null,
-              markCar: null,
-              typeCar: null,
-              heightCar: null,
-              widthCar: null,
-              lengthCar: null,
-              volumeCar: null,
-              loadCapacity: null,
-              numberOfPallet: null,
-              driverId: null,
-            });
+        apiAddCar({ ...context.carData, driverId: response.data.id }).then(
+          (resp) => {
+            console.log("response", resp);
+            if (resp?.status === 200) {
+              context.setpopUp("");
+              context.setCarData({
+                numberCar: null,
+                markCar: null,
+                typeCar: null,
+                heightCar: null,
+                widthCar: null,
+                lengthCar: null,
+                volumeCar: null,
+                loadCapacity: null,
+                numberOfPallet: null,
+                driverId: null,
+              });
+              getProfileDriver().then((response) => {
+                apiGetAllCar(response.data.id).then((resp) => {
+                  if (resp) {
+                    console.log("Машины", resp.data);
+                    context.setTableData(resp.data);
+                  }
+                });
+              });
+            }
           }
-        });
-      })
+        );
+      });
     }
-    
   };
 
   useEffect(() => {

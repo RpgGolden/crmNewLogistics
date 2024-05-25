@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Authorization.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { Login } from "../../../API/API";
+import DataContext from "../../../context";
 function Authorization() {
+  const { context } = React.useContext(DataContext);
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     login: "",
@@ -26,6 +29,10 @@ function Authorization() {
       }
     });
   };
+
+  useEffect(() => {
+    context.setTableData([]);
+  }, []);
 
   return (
     <div className={styles.AuthorRegistrar}>
