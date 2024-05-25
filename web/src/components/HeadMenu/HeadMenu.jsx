@@ -2,44 +2,112 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./HeadMenu.module.scss";
 import { Link } from "react-router-dom";
 import DataContext from "../../context";
-
+import {
+  CustomersDelete,
+  apiDeleteOrder,
+  apiGetFile,
+  driverDelete,
+  getAllCustomers,
+} from "./../../API/API";
 function HeadMenu({ state, setFiltredData, filtredData }) {
   const { context } = useContext(DataContext);
-  const accessToken = localStorage.getItem("accessToken");
 
-  const deletePatien = () => {};
-  console.log(
-    "d",
-    context.selectedTr,
-    sessionStorage.getItem("idClientSelect")
-  );
   const flag =
     context.selectedTr !== "null" &&
     sessionStorage.getItem("idClientSelect") !== "null"
       ? true
       : false;
-  useEffect(() => {
-    console.log(context.popUp);
-  }, [context]);
+
+  const DeleteDriver = () => {
+    console.log(context.selectedTr);
+    flag &&
+      driverDelete(context.selectedTr).then((response) => {
+        if (response.status === 200) {
+          alert("Водитель успешно удален!");
+          // context.setpopUp("")
+          // context.setSelectedTable("Клиенты")
+        }
+      });
+  };
+
+  const DeleteCus = () => {
+    flag &&
+      CustomersDelete(context.selectedTr).then((response) => {
+        if (response.status === 200 && context.selectedTable === "Клиенты") {
+          getAllCustomers().then((response) => {
+            if (response) {
+              context.setTableData(response.data);
+              context.updateDataTable();
+              alert("Пользователь успешно удален!");
+              context.setSelectedTable("Клиенты");
+            }
+          });
+        }
+      });
+  };
+
+  //! при нажатии редактировать аккаунт
+  const editAkaunt = () => {
+    context.setpopUp("AccounDriver");
+  };
+
+  const delOrder = () => {
+    apiDeleteOrder(context.selectedTr).then(() => {
+      // context.updateDataTable();
+      context.setTableData(
+        context.tableData.filter((item) => item.id !== context.selectedTr)
+      );
+    });
+  };
+
+  const funMapGo = () => {
+    if (context.selectedTr && context.selectedTable === "Заказы") {
+      let par = null;
+      par = context.tableData.find((el) => el.id === context.selectedTr);
+      console.log(par.geoLoading, par.geoUnLoading);
+      const url = `https://yandex.ru/maps/?rtext=${par.geoLoading.join(
+        ","
+      )}~${par.geoUnLoading.join(",")}`;
+      window.open(url, "_blank");
+    }
+  };
+
+  //! получить файл
+  const getFile = () => {
+    console.log(context.selectedTr);
+    apiGetFile(context.selectedTr).then((response) => {
+      console.log(response);
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "расчетный_лист.docx");
+      document.body.appendChild(link);
+      link.click();
+    });
+  };
+
+  // const getFile = () => {
+  //   console.log(context.selectedTr);
+  //   apiGetFile(context.selectedTr).then((response) => {
+  //     const blob = new Blob([response.data], {
+  //       type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  //       encoding: "utf-8",
+  //     });
+  //     const url = window.URL.createObjectURL(blob);
+  //     const link = document.createElement("a");
+  //     link.href = url;
+  //     link.setAttribute("download", "расчетный_лист.docx");
+  //     document.body.appendChild(link);
+  //     link.click();
+  //   });
+  // };
   return (
     <>
-      {state === "home" ? (
+      {state === "home" && context.selectedTable === "Заказы" ? (
         <div className={styles.HeadMenu}>
           <button onClick={() => context.setpopUp("PopUpNewAplication")}>
             <img src="./img/add.svg" alt="View" />
             Создать заказ
-          </button>
-          <button onClick={() => context.setpopUp("PopUpNewDriver")}>
-            <img src="./img/Add_ring.png" alt="View" />
-            Добавить водителя
-          </button>
-          <button onClick={() => context.setpopUp("PopUpNewCar")}>
-            <img src="./img/add.svg" alt="View" />
-            Добавить машину
-          </button>
-          <button onClick={() => context.setpopUp("PopUpNewClient")}>
-            <img src="./img/add.svg" alt="View" />
-            Добавить клиента
           </button>
           <Link to={flag && "./EditOrder"}>
             <button>
@@ -47,12 +115,56 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
               Редактировать
             </button>
           </Link>
-          <Link to={flag && "./MakeAppointmentRegistrar"}>
-            <button>
-              <img src="./img/File_dock.png" alt="View" />
-              Удалить заказ
-            </button>
-          </Link>
+          <button onClick={delOrder}>
+            <img src="./img/File_dock.png" alt="View" />
+            Удалить заказ
+          </button>
+          <button onClick={getFile}>
+            <img src="./img/File_dock.png" alt="View" />
+            Получить расчетный лист
+          </button>
+        </div>
+      ) : context.selectedTable === "Клиенты" && state === "home" ? (
+        <div className={styles.HeadMenu}>
+          <button onClick={() => context.setpopUp("PopUpNewAplication")}>
+            <img src="./img/add.svg" alt="View" />
+            Создать заказ
+          </button>
+          <button onClick={() => context.setpopUp("PopUpNewClient")}>
+            <img src="./img/add.svg" alt="View" />
+            Добавить клиента
+          </button>
+          <button onClick={() => context.setpopUp("PopUpEditClient")}>
+            <img src="./img/Edit.png" alt="View" />
+            Редактировать
+          </button>
+          <button onClick={DeleteCus}>
+            <img src="./img/File_dock.png" alt="View" />
+            Удалить клиента
+          </button>
+        </div>
+      ) : context.selectedTable === "Водители" && state === "home" ? (
+        <div className={styles.HeadMenu}>
+          <button onClick={() => context.setpopUp("PopUpNewAplication")}>
+            <img src="./img/add.svg" alt="View" />
+            Создать заказ
+          </button>
+          <button onClick={() => context.setpopUp("PopUpNewCar")}>
+            <img src="./img/add.svg" alt="View" />
+            Добавить машину
+          </button>
+          {/* <button onClick={() => context.setpopUp("PopUpNewClient")}>
+            <img src="./img/add.svg" alt="View" />
+            Добавить клиента
+          </button> */}
+          <button onClick={() => context.setpopUp("PopUpEditDriver")}>
+            <img src="./img/Edit.png" alt="View" />
+            Редактировать
+          </button>
+          <button onClick={DeleteDriver}>
+            <img src="./img/File_dock.png" alt="View" />
+            Удалить водителя
+          </button>
         </div>
       ) : state === "register" ? (
         <div className={styles.HeadMenu}>
@@ -63,30 +175,23 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             </button>
           </Link>
         </div>
-      ) : state === "HomeClient" ? (
+      ) : state === "driverPage" ? (
         <div className={styles.HeadMenu}>
-          <Link to="MakeAppointment">
-            <button>
-              <img src="./img/add.svg" alt="View" />
-              Записаться на прием
-            </button>
-          </Link>
-          <Link to="ViewMyAppointment">
-            <button>
-              <img src="./img/View.png" alt="View" />
-              Мои записи на прием
-            </button>
-          </Link>
-          <Link to="AccounClient">
-            <button>
-              <img src="./img/Home.png" alt="View" />
-              Редактировать аккаунт
-            </button>
-          </Link>
+          <button onClick={funMapGo}>
+            <img src="./img/View.png" alt="View" />В путь
+          </button>
+          <button onClick={() => context.setpopUp("PopUpNewCar")}>
+            <img src="./img/add.svg" alt="View" />
+            Добавить машину
+          </button>
+          <button onClick={editAkaunt}>
+            <img src="./img/Edit.png" alt="View" />
+            Редактировать аккаунт
+          </button>
         </div>
-      ) : state === "ViewMyAppointment" ? (
+      ) : state === "withBack" ? (
         <div className={styles.HeadMenu}>
-          <Link to="/Client">
+          <Link to="./..">
             <button>
               <img src="./../img/Home.png" alt="View" />
               На Главную

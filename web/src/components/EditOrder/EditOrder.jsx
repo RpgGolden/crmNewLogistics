@@ -1,23 +1,152 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./EditOrder.module.scss";
 import HeadMenu from "../HeadMenu/HeadMenu";
-import axios from "axios";
 import { AddressSuggestions } from "react-dadata";
 import "react-dadata/dist/react-dadata.css";
+
 import {
-  YMaps,
-  Map,
-  GeolocationControl,
-  RouteButton,
-  SearchControl,
-  TrafficControl,
-  ZoomControl,
-} from "react-yandex-maps";
+  MapContainer,
+  TileLayer,
+  Polyline,
+  Marker,
+  Popup,
+} from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import "leaflet-routing-machine";
+import L from "leaflet";
+
+import markerIconPng from "leaflet/dist/images/marker-icon.png";
+import DataContext from "../../context";
+import ClientForm from "./ClientForm";
+import DriverForm from "./DriverForm";
+import CarForm from "./CarForm";
+import GruzForm from "./GruzForm";
+import { apiAddOrder, apiGetAllOrders, apiUpdateOrder } from "../../API/API";
+import { useNavigate } from "react-router-dom";
+const markerIcon = new L.Icon({
+  iconUrl: markerIconPng,
+  iconSize: [25, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
+});
 
 const EditOredr = () => {
+  const { orderCon, context } = React.useContext(DataContext);
+
+  const [center, setCenter] = useState([47.222531, 39.718705]);
   const [cardData, setCardData] = useState([]);
   const [adressA, setAdressA] = useState("");
   const [adressB, setAdressB] = useState("");
+  const [pointCoor, setpointCoor] = useState([]); //! местки
+  //! сохраняем заказ
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(context.selectedTr);
+    apiGetAllOrders().then((resp) => {
+      console.log("Заказы", resp.data);
+      const dat = [...resp.data].find((el) => el.id === context.selectedTr);
+
+      if (dat) {
+        dat.loading = JSON.parse(dat.loading);
+        dat.unloading = JSON.parse(dat.unloading);
+        console.log(dat);
+        setAdressA(dat.loading.adress);
+        setAdressB(dat.unloading.adress);
+        setpointCoor([dat.loading?.geo, dat.unloading?.geo]);
+        orderCon.setOrderData({ ...dat });
+      }
+    });
+  }, []);
+
+  //! сохранить заказ
+  const saveClick = () => {
+    const md = { ...orderCon.orderData };
+
+    const datareq = {};
+    if (md.loading.geo) {
+      datareq.loading = JSON.stringify({
+        adress: adressA,
+        geo: [md.loading.geo[0], md.loading.geo[1]],
+      });
+    } else {
+      alert("Заполните поле Загрузки");
+      return;
+    }
+    if (md.unloading.geo) {
+      datareq.unloading = JSON.stringify({
+        adress: adressB,
+        geo: [md.unloading.geo[0], md.unloading.geo[1]],
+      });
+    } else {
+      alert("Заполните поле Разгрузки");
+      return;
+    }
+    if (context.selectedTr) {
+      if (md.dateBegin && md.dateEnd) {
+        datareq.dateBegin = md.dateBegin;
+        datareq.dateEnd = md.dateEnd;
+      } else {
+        alert("Заполните период выполнения");
+        return;
+      }
+    } else {
+      if (md.dateBegin.data && md.dateBegin.time) {
+        datareq.dateBegin = `${md.dateBegin.data} ${md.dateBegin.time}`;
+      } else {
+        alert("Заполните период выполнения");
+        return;
+      }
+      if (md.dateEnd.data && md.dateEnd.time) {
+        datareq.dateEnd = `${md.dateEnd.data} ${md.dateEnd.time}`;
+      } else {
+        alert("Заполните период выполнения");
+        return;
+      }
+    }
+
+    datareq.places = Number(md.places);
+    datareq.weight = Number(md.weight);
+    datareq.volume = Number(md.volume);
+    datareq.price = Number(md.price);
+
+    datareq.customerId = md.customer.id;
+    datareq.driverId = md.driver.id;
+    datareq.carId = md.car.id;
+    datareq.typeCargo = md.typeCargo;
+    console.log(datareq);
+    if (context.selectedTr) {
+      apiUpdateOrder(datareq, md.id).then((resp) => {
+        console.log(resp);
+      });
+    } else {
+      apiAddOrder(datareq).then((resp) => {
+        console.log(resp);
+        if (resp.status === 200) {
+          orderCon.setOrderData({ ...orderCon.orderObj });
+          navigate("..");
+        }
+      });
+    }
+    context.setpopUp("");
+  };
+
+  //! функция опредления положения меток на карте
+  const rendPlaysmark = (coordinates, key) => {
+    let mass = [...pointCoor];
+    mass[key] = [...coordinates];
+    setpointCoor(mass);
+    setCenter([...coordinates]);
+  };
+
+  const rotPan = useRef(null);
+  useEffect(() => {
+    if (rotPan.current) {
+      rotPan.current.state.set("from", [47.222531, 39.718705]);
+      rotPan.current.state.set("to", [47.20958, 38.935194]);
+    }
+  }, [rotPan, pointCoor]);
 
   const handleInput = (el, key) => {
     const query = el.target.value;
@@ -27,46 +156,172 @@ const EditOredr = () => {
   };
 
   useEffect(() => {
-    const longitude = 38.830598; // Замените этими координатами на свои
-    const latitude = 47.270719; // Замените этими координатами на свои
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
-        );
-        console.log(response);
-        setAdressA(
-          `${response.data.address.state}, ${response.data.address.suburb}, ${response.data.address.road}, ${response.data.address.house_number}`
-        );
-      } catch (error) {
-        console.log("Error fetching address:", error);
-      }
-    };
-    fetchData();
-
     const inputs = document.querySelectorAll(".react-dadata__input");
+    inputs[0].placeholder = adressA ? adressA : "Загрузка";
+    inputs[1].placeholder = adressB ? adressB : "Разгрузка";
     // Установить placeholder для каждого элемента
-    let text = "Загрузка";
-    inputs.forEach((input) => {
-      input.placeholder = text; // Текст placeholder
-      text = "Разгрузка";
-    });
-  }, []);
+  }, [adressA, adressB]);
 
-  const mapState = {
-    center: [47.222078, 39.720358],
-    zoom: 12,
-  };
-
-  const map = useRef(null);
-
-  //изменнение центра карты при клике
-  const handleClick = (e, id) => {
-    const placemarkCoords = e.get("coords");
-    if (map.current) {
-      map.current.setCenter(placemarkCoords);
+  const funSetAddress = (e) => {
+    if (e.data.geo_lat) {
+      const coor = [e.data.geo_lat, e.data.geo_lon];
+      rendPlaysmark([...coor], 0);
+    }
+    if (e.value) {
+      setAdressA(e.value);
+      const md = { ...orderCon.orderData };
+      md.loading.adress = e.value;
+      md.loading.geo = [e.data.geo_lat, e.data.geo_lon];
+      orderCon.setOrderData(md);
     }
   };
+  const funSetAddress2 = (e) => {
+    if (e.data.geo_lat) {
+      const coor = [e.data.geo_lat, e.data.geo_lon];
+      rendPlaysmark([...coor], 1);
+    }
+    if (e.value) {
+      setAdressB(e.value);
+      const md = { ...orderCon.orderData };
+      md.unloading.adress = e.value;
+      md.unloading.geo = [e.data.geo_lat, e.data.geo_lon];
+      orderCon.setOrderData(md);
+    }
+  };
+
+  const handleWheelScroll = (event) => {
+    const map = mapRef.current.leafletElement;
+    const currentZoom = map.getZoom();
+    const delta = Math.sign(event.deltaY);
+    const newZoom = currentZoom + delta;
+
+    if (newZoom >= 0 && newZoom <= 18) {
+      map.flyTo(map.getCenter(), newZoom);
+    }
+  };
+
+  //! ставим маркеры по координатам
+  const renderMarkers = () => {
+    return pointCoor.length > 0 ? (
+      pointCoor.map((item, index) => (
+        <Marker key={index} position={item} icon={markerIcon}>
+          <Popup>Маркер на координатах: {item}</Popup>
+        </Marker>
+      ))
+    ) : (
+      <Marker position={[51.505, -0.09]} icon={markerIcon}>
+        <Popup>
+          A pretty CSS3 popup. <br /> Easily customizable.
+        </Popup>
+      </Marker>
+    );
+  };
+  const mapRef = useRef(null);
+  const [map, setMap] = useState(null);
+
+  useEffect(() => {
+    if (mapRef.current) {
+      const leafletMap = mapRef.current.leafletElement;
+      setMap(leafletMap);
+    }
+  }, []);
+
+  const [route, setRoute] = useState(null);
+  useEffect(() => {
+    const fetchRoute = async () => {
+      if (pointCoor[0] && pointCoor[1]) {
+        const startPoint = L.latLng(pointCoor[0][0], pointCoor[0][1]); // Сан-Франциско
+        const endPoint = L.latLng(pointCoor[1][0], pointCoor[1][1]); // Сан-Хосе
+
+        const routingControl = L.Routing.control({
+          waypoints: [startPoint, endPoint],
+          router: L.Routing.osrmv1({
+            serviceUrl: "https://router.project-osrm.org/route/v1/",
+          }),
+        });
+
+        routingControl.on("routesfound", function (e) {
+          setRoute(e.routes[0]);
+        });
+        if (mapRef.current && routingControl) {
+          // Добавляем routingControl на карту
+          routingControl.addTo(mapRef.current);
+        }
+      }
+    };
+    if (mapRef && pointCoor.length === 2) {
+      fetchRoute();
+    }
+  }, [map, pointCoor]);
+
+  useEffect(() => {
+    const attributionControl = document.querySelector(
+      ".leaflet-control-attribution.leaflet-control"
+    );
+    if (attributionControl) {
+      attributionControl.style.display = "none";
+    }
+  }, [mapRef]);
+
+  const [tarif, setTarif] = useState({
+    klHors: 1000,
+    klKm: 25,
+    ispHors: 400,
+    ispKm: 25,
+  });
+
+  const [summZakaz, setSummZakaz] = useState({
+    kl: 0,
+    isp: 0,
+  });
+
+  const [pribil, setPribil] = useState({
+    sum: 0,
+    prc: 30,
+  });
+
+  useEffect(() => {
+    if (route) {
+      const km = (route.summary.totalDistance / 1000).toFixed(2);
+      const hours = (route.summary.totalTime / 60 / 60).toFixed(2);
+      let sz = { ...summZakaz };
+      sz.kl = hours * tarif.klHors + km * tarif.klKm;
+      sz.isp = hours * tarif.ispHors + km * tarif.ispKm;
+      let prib = { ...pribil };
+      prib.sum = (sz.kl - sz.isp).toFixed(2);
+      prib.prc = (prib.sum / (sz.kl / 100)).toFixed(2);
+      setSummZakaz(sz);
+      setPribil(prib);
+      const md = { ...orderCon.orderData };
+      md.price = prib.sum;
+      orderCon.setOrderData(md);
+      console.log(md);
+    }
+  }, [route, tarif]);
+
+  const funSetTarif = (el, key) => {
+    let tr = { ...tarif };
+    if (Number(el.target.value)) {
+      tr[key] = Number(el.target.value);
+    } else {
+      tr[key] = 0;
+    }
+    setTarif(tr);
+  };
+
+  const funSetSumZakaz = (el, key) => {
+    let tr = { ...summZakaz };
+    if (Number(el.target.value)) {
+      tr[key] = Number(el.target.value);
+    } else {
+      tr[key] = 0;
+    }
+    setSummZakaz(tr);
+  };
+
+  useEffect(() => {
+    console.log("c", center);
+  }, [center]);
 
   return (
     <div>
@@ -76,194 +331,180 @@ const EditOredr = () => {
         <div>
           <h1>Редактирование заказа</h1>
           <div className={styles.data_container}>
-            <div className={styles.leftbox}>
-              <p>Клиент</p>
-              <input
-                type="text"
-                placeholder="Фамилия"
-                onChange={(el) => handleInput(el, "surname")}
-                value={cardData.surname}
-              />
-              <input
-                type="text"
-                placeholder="Имя"
-                onChange={(el) => handleInput(el, "name")}
-                value={cardData.name}
-              />
-              <input
-                type="text"
-                placeholder="Отчество"
-                onChange={(el) => handleInput(el, "patronymic")}
-                value={cardData.patronymic}
-              />
-              <input
-                type="text"
-                placeholder="Телефон"
-                onChange={(el) => handleInput(el, "tel")}
-                value={cardData.passport}
-              />
-            </div>
-            <div className={styles.centerbox}>
-              <p>Заказ</p>
-              <input
-                type="text"
-                placeholder="Тип транспорта"
-                onChange={(el) => handleInput(el, "CarType")}
-                value={cardData.snils}
-              />
-              <div className={styles.address}>
-                <AddressSuggestions
-                  key={"adress"}
-                  token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
-                  value={adressA}
-                  onChange={setAdressA}
+            <div className={styles.driverCar}>
+              <ClientForm handleInput={handleInput} orderCon={orderCon} />
+              <div className={styles.centerbox}>
+                <p>Заказ</p>
+                <label>Тип транспорта</label>
+                <input
+                  type="text"
+                  placeholder="Тип транспорта"
+                  onChange={(el) => handleInput(el, "сarType")}
+                  value={orderCon.orderData?.car?.typeCar}
+                />
+                <label>Загрузка</label>
+                <div className={styles.address}>
+                  <AddressSuggestions
+                    key={"adress"}
+                    token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
+                    value={adressA}
+                    onChange={funSetAddress}
+                  />
+                </div>
+                <label>Разгрузка</label>
+                <div className={styles.address}>
+                  <AddressSuggestions
+                    key={"adressB"}
+                    token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
+                    value={adressB}
+                    onChange={funSetAddress2}
+                  />
+                </div>
+                <label>Период выполнения</label>
+                <input
+                  type="text"
+                  placeholder="Период выполнения с ... по ..."
+                  onChange={(el) => handleInput(el, "dateBegin")}
+                  value={
+                    orderCon.orderData?.dateBegin &&
+                    (typeof orderCon.orderData.dateBegin === "object"
+                      ? `с ${orderCon.orderData.dateBegin.data} по ${orderCon.orderData.dateEnd.data}`
+                      : `с ${orderCon.orderData.dateBegin} по ${orderCon.orderData.dateEnd}`)
+                  }
                 />
               </div>
-              <div className={styles.address}>
-                <AddressSuggestions
-                  key={"adressB"}
-                  token="fd4b34d07dd2ceb6237300e7e3d50298509830e0"
-                  value={adressB}
-                  onChange={setAdressB}
-                />
-              </div>
-
-              <input
-                type="text"
-                placeholder="Период выполнения с ... по ..."
-                onChange={(el) => handleInput(el, "period")}
-                value={cardData.birthDate}
-              />
+            </div>
+            <div className={styles.driverCar}>
+              <GruzForm handleInput={handleInput} orderCon={orderCon} />
+              <DriverForm handleInput={handleInput} orderCon={orderCon} />
             </div>
 
-            <div className={styles.rightbox}>
-              <p>Груз</p>
-              <input
-                type="text"
-                placeholder="Тип груза"
-                onChange={(el) => handleInput(el, "gruz")}
-                value={cardData.snils}
-              />
-              <input
-                type="text"
-                placeholder="Мест"
-                onChange={(el) => handleInput(el, "mest")}
-                value={cardData.oms}
-              />
-              <input
-                type="text"
-                placeholder="Вес"
-                onChange={(el) => handleInput(el, "weigth")}
-                value={cardData.phoneNumber}
-              />
-              <input
-                type="text"
-                placeholder="Объем"
-                onChange={(el) => handleInput(el, "obyom")}
-                value={cardData.birthDate}
-              />
+            <div className={styles.driverCar}>
+              <CarForm handleInput={handleInput} orderCon={orderCon} />
             </div>
           </div>
-
           <div className={styles.zakazgrup}>
             <div className={styles.summa}>
               <h2>Расчет стоимости</h2>
               <div className={styles.summa_inner}>
-                <div>
+                <div className={styles.put_km}>
                   КМ =
                   <input
                     type="text"
-                    placeholder="76"
+                    placeholder="0"
                     onChange={(el) => handleInput(el, "km")}
-                    value={cardData.birthDate}
+                    value={
+                      route && (route.summary.totalDistance / 1000).toFixed(2)
+                    }
                   />
                 </div>
-                <div>
+                <div className={styles.tarif}>
                   <h3>Тарифы</h3>
-                  <div>
-                    <h4>Клиент</h4>
-                    <div>
-                      1 час =
-                      <input
-                        type="text"
-                        placeholder="1000р"
-                        onChange={(el) => handleInput(el, "priceHoursKlient")}
-                        value={cardData.birthDate}
-                      />
-                      1 км =
-                      <input
-                        type="text"
-                        placeholder="25р"
-                        onChange={(el) => handleInput(el, "priceKmKlient")}
-                        value={cardData.birthDate}
-                      />
+                  <div className={styles.tarif_container}>
+                    <div className={styles.tarif_inner}>
+                      <div className={styles.tarif_inner_box}>
+                        <h4>Клиент</h4>
+                        <div className={styles.input_box}>
+                          1 час
+                          <input
+                            type="text"
+                            onChange={(el) => funSetTarif(el, "klHors")}
+                            value={tarif.klHors}
+                          />
+                          1 км
+                          <input
+                            type="text"
+                            onChange={(el) => funSetTarif(el, "klKm")}
+                            value={tarif.klKm}
+                          />
+                        </div>
+                      </div>
+                      <div className={styles.tarif_inner_box}>
+                        <h4>Исполнитель</h4>
+                        <div className={styles.input_box}>
+                          1 час
+                          <input
+                            type="text"
+                            onChange={(el) => funSetTarif(el, "ispHors")}
+                            value={tarif.ispHors}
+                          />
+                          1 км
+                          <input
+                            type="text"
+                            onChange={(el) => funSetTarif(el, "ispKm")}
+                            value={tarif.ispKm}
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <h4>Исполнитель</h4>
-                    <div>
-                      1 час =
-                      <input
-                        type="text"
-                        placeholder="1000р"
-                        onChange={(el) => handleInput(el, "birthDateIsp")}
-                        value={cardData.birthDate}
-                      />
-                      1 км =
-                      <input
-                        type="text"
-                        placeholder="25р"
-                        onChange={(el) => handleInput(el, "birthDateIsp")}
-                        value={cardData.birthDate}
-                      />
+                    <div className={styles.summ_zakaz_container}>
+                      <div className={styles.summ_zakaz}>
+                        <h4>Сумма заказа</h4>
+                        <div className={styles.summ_zakaz_inner}>
+                          <input
+                            type="text"
+                            onChange={(el) => funSetSumZakaz(el, "kl")}
+                            value={summZakaz.kl}
+                          />
+                          <div className={styles.checkbox}>
+                            <span>Оплачено</span>
+                            <input type="checkbox" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className={styles.ispolnitel_summ}>
+                        <h4>Исполнителю</h4>
+                        <div className={styles.summ_zakaz_inner}>
+                          <input
+                            type="text"
+                            onChange={(el) => funSetSumZakaz(el, "isp")}
+                            value={summZakaz.isp}
+                          />
+                          <div className={styles.checkbox}>
+                            <span>Оплачено</span>
+                            <input type="checkbox" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div>
-                <h4>Сумма заказа</h4>
-                <input
-                  type="text"
-                  placeholder="250 000"
-                  onChange={(el) => handleInput(el, "AllSumm")}
-                  value={cardData.birthDate}
-                />
-                <span>Оплачено</span>
-                <input type="checkbox" />
-              </div>
-              <div>
-                <h4>Исполнителю</h4>
-                <input
-                  type="text"
-                  placeholder="100 000"
-                  onChange={(el) => handleInput(el, "ispSumm")}
-                  value={cardData.birthDate}
-                />
-                <span>Оплачено</span>
-                <input type="checkbox" />
-              </div>
-              <div>
-                <h4>Прибыль</h4>
-                <div>110 000 р</div>
-                <div>30%</div>
+              <div className={styles.pribil}>
+                <h2>Прибыль</h2>
+                <div className={styles.pribil_inner}>
+                  <div className={styles.pribil_summ}>{pribil.sum} р</div>
+                  <div className={styles.pribil_prch}>{pribil.prc}%</div>
+                </div>
               </div>
             </div>
-            <div className={styles.map}>
-              <YMaps query={{ apikey: "f3c78576-996b-4eaa-84f8-12a8520d276a" }}>
-                <Map
-                  instanceRef={map}
-                  defaultState={mapState}
-                  modules={["templateLayoutFactory", "layout.ImageWithContent"]}
-                  style={{ width: "100%", height: "100%" }}
-                >
-                  <GeolocationControl options={{ float: "right" }} />
-                  <RouteButton options={{ float: "right" }} />
-                  <SearchControl options={{ float: "right" }} />
-                  <TrafficControl options={{ float: "right" }} />
-                  <ZoomControl options={{ float: "right" }} />
-                </Map>
-              </YMaps>
+            <div
+              className={styles.map}
+              style={{ height: "400px", width: "60%" }}
+            >
+              <MapContainer
+                ref={mapRef}
+                center={center}
+                zoom={10}
+                style={{ height: "100%", width: "100%" }}
+                scrollWheelZoom={handleWheelScroll}
+              >
+                <TileLayer
+                  attribution=""
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {renderMarkers()}
+                {route && (
+                  <Polyline
+                    pathOptions={{ color: "blue" }}
+                    positions={route.coordinates}
+                  />
+                )}
+              </MapContainer>
             </div>
+          </div>
+          <div className={styles.save}>
+            <button onClick={saveClick}>Сохранить</button>
           </div>
         </div>
       </div>

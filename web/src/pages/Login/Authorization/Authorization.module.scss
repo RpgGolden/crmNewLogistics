@@ -2,9 +2,14 @@
 @import "./../../../styles/mixins.scss";
 
 .AuthorRegistrar {
-  margin-top: 300px;
+  margin-top: 250px;
+  display: flex;
+  justify-content: center;
   .box {
-    padding: 36px 106px;
+    padding: 60px 0px;
+    margin-right: 80px;
+    width: 800px;
+
     background-color: var(--white-color);
     @include flexbox-center(17px);
 
@@ -27,12 +32,10 @@
       .button {
         @include button(var(--turquoise-color));
       }
-      .buttonReg{
+      .buttonReg {
         margin-top: 10px;
         @include button(var(--gray--button--color));
-
       }
-     
     }
   }
 }

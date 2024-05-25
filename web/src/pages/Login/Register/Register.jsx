@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styles from "./Register.module.scss";
-import { Link } from "react-router-dom";
-// import { Register } from "../../API/API";
+import { Link, useNavigate } from "react-router-dom";
+import { RegisterApi } from "../../../API/API";
 
 function Register() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -33,11 +33,11 @@ function Register() {
     ) {
       const { confirmPassword, ...dataWithoutConfirmPassword } = formData;
       console.log(formData);
-      // Register(dataWithoutConfirmPassword).then((registeredUserData) => {
-      //   if (registeredUserData) {
-      //     navigate("/Client");
-      //   }
-      // });
+      RegisterApi(dataWithoutConfirmPassword).then((registeredUserData) => {
+        if (registeredUserData) {
+          navigate("/AdminPage");
+        }
+      });
     } else {
       alert("Пожалуйста, заполните все поля и убедитесь, что пароли совпадают");
     }
