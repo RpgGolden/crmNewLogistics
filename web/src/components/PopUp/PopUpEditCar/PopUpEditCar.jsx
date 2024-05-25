@@ -1,72 +1,83 @@
-import React from "react";
+import React, { useState } from "react";
+import Input from "../PopUpNewCar/InputNewCar/Input";
+import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
+import styles from "./PopUpEditCar.module.scss";
+import DataContext from "../../../context";
 
 export function PopUpEditCar(){
+    const { context } = React.useContext(DataContext);
+    const [dataCar, setdataCar] = useState({
+        numberCar: null,
+        markCar: null,
+        typeCar: null,
+        heightCar: null,
+        widthCar: null,
+        lengthCar: null,
+        volumeCar: null,
+        loadCapacity: null,
+        numberOfPallet: null,
+        driverId: null,
+    })
+
+    const handleInputChange = (name, value) => {
+        setdataCar(prevState => ({ ...prevState, [name]: value }));
+    }
     return(
         <PopUpContainer title={"Редактирование авто"} mT={200}>
         <div className={styles.newCarInnew}>
         <Input
             Textlabel={"Марка авто:"}
-            value={context.carData.markCar}
-            itemKey={"markCar"}
-            onChangeInput={onChangeInput}
+            name={"markCar"}
+            handleInputChange={handleInputChange}
         />
 
         <Input
             Textlabel={"Номер авто:"}
             placeholder={"A000AA000"}
-            itemKey={"numberCar"}
-            value={context.carData.numberCar}
-            onChangeInput={onChangeInput}
-        />
+            name={"numberCar"}
+            handleInputChange={handleInputChange}        />
         <Input
             placeholder="1"
             Textlabel={"Тип авто:"}
-            value={context.carData.markCtypeCarar}
-            itemKey={"typeCar"}
-            onChangeInput={onChangeInput}
+            name={"typeCar"}
+            handleInputChange={handleInputChange}
         />
         <div className={styles.type1}>
             <Input
             Textlabel={"Длина, м:"}
-            itemKey={"lengthCar"}
-            value={context.carData.lengthCar}
-            onChangeInput={onChangeInput}
+            name={"lengthCar"}
+            handleInputChange={handleInputChange}
             />
             <Input
             Textlabel={"Ширина, м:"}
-            value={context.carData.widthCar}
-            itemKey={"widthCar"}
-            onChangeInput={onChangeInput}
+            name={"widthCar"}
+            handleInputChange={handleInputChange}
             />
             <Input
             Textlabel={"Высота, м:"}
-            value={context.carData.heightCar}
-            itemKey={"heightCar"}
-            onChangeInput={onChangeInput}
+            name={"heightCar"}
+            handleInputChange={handleInputChange}
             />
             <Input
             Textlabel={"Объем, м3:"}
-            value={context.carData.volumecare}
-            itemKey={"volumeCar"}
-            onChangeInput={onChangeInput}
+            name={"volumeCar"}
+            handleInputChange={handleInputChange}
             />
         </div>
         <div className={styles.type2}>
             <Input
             Textlabel={"Грузоподъемность, т:"}
-            value={context.carData.loadCapacity}
-            itemKey={"loadCapacity"}
-            onChangeInput={onChangeInput}
+            name={"loadCapacity"}
+            handleInputChange={handleInputChange}
             />
             <Input
             Textlabel={"Количество палет:"}
-            value={context.carData.numberOfPallet}
-            itemKey={"numberOfPallet"}
-            onChangeInput={onChangeInput}
+            name={"numberOfPallet"}
+            handleInputChange={handleInputChange}
             />
         </div>
         <div className={styles.button}>
-            <button className={styles.buttonSave} onClick={clickAddCar}>
+            <button className={styles.buttonSave} >
             Добавить
             </button>
         </div>

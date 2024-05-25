@@ -178,7 +178,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Добавить машину
           </button>
-          <button>
+          <button onClick={() => context.setpopUp("PopUpEditCar")}>
             <img src="./img/Edit.png" alt="View" />
             Редактировать
           </button>
