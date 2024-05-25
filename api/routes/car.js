@@ -44,7 +44,7 @@ router
     );
 router
     .route('/updateCar/:carId')
-    .delete(
+    .post(
         authenticateToken,
         asyncRoute(checkRole([roles.ADMINISTRATOR, roles.DRIVER])),
         asyncRoute(carController.updateCar)
