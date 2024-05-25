@@ -52,9 +52,7 @@ export default {
                 ][date.getMonth()];
 
             doc.setData({
-                date: dateContract.getDate(),
-                month: getMonthStr(dateContract),
-                year: dateContract.getFullYear(),
+                currentDate: dateContract.getDate() + ' ' + getMonthStr(dateContract) + ' ' + dateContract.getFullYear(),
                 customerCompany: data.customer.nameCompany,
                 loading: data.loading,
                 unloading: data.unloading,
