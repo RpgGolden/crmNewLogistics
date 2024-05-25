@@ -4,11 +4,14 @@ import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
 import axios from "axios";
 import Input from "./InputNewCar/Input";
 import DataContext from "../../../context";
-import { apiAddCar, apiGetAllCar, apiGetAllCarsLogistic, getProfileDriver } from "../../../API/API";
-import { tableHeadCar } from "../../TableDriverPage/Data";
+import { apiAddCar, apiGetAllCar, getProfileDriver } from "../../../API/API";
 
 function PopUpNewCar() {
   const { context } = React.useContext(DataContext);
+
+  useEffect(() => {
+    console.log(context.selectedTable);
+  }, [context.selectedTable]);
 
   const onChangeInput = (e, inputKey) => {
     const value = e.target.value;
@@ -50,9 +53,13 @@ function PopUpNewCar() {
             numberOfPallet: null,
             driverId: null,
           });
-          apiGetAllCarsLogistic().then((response) => {
-            context.setTableData(response.data);
-            context.settableHeader(tableHeadCar);
+          getProfileDriver().then((response) => {
+            apiGetAllCar(response.data.id).then((resp) => {
+              if (resp) {
+                console.log("Машины", resp.data);
+                context.setTableData(resp.data);
+              }
+            });
           });
         }
       });
@@ -131,6 +138,7 @@ function PopUpNewCar() {
           itemKey={"typeCar"}
           onChangeInput={onChangeInput}
         />
+
         <div className={styles.type1}>
           <Input
             Textlabel={"Длина, м:"}
