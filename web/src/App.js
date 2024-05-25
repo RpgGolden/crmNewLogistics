@@ -72,7 +72,9 @@ function App() {
         dat.map((item) => {
           item.car = item.car.markCar;
           item.customer = item.customer.fio;
-          item.driver = `${item.driver.surname} ${item.driver.name} ${item.driver.patronymic}`;
+          if (item.driver !== null) {
+            item.driver = `${item.driver.surname} ${item.driver.name} ${item.driver.patronymic}`;
+          }
           item.loading = JSON.parse(item.loading).adress;
           item.unloading = JSON.parse(item.unloading).adress;
         });
