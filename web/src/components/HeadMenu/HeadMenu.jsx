@@ -8,6 +8,7 @@ import {
   apiGetFile,
   driverDelete,
   getAllCustomers,
+  getAllDriver,
 } from "./../../API/API";
 function HeadMenu({ state, setFiltredData, filtredData }) {
   const { context } = useContext(DataContext);
@@ -23,7 +24,18 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
     flag &&
       driverDelete(context.selectedTr).then((response) => {
         if (response.status === 200) {
-          alert("Водитель успешно удален!");
+          getAllDriver().then((response) => {
+            if (response) {
+              const dataTable = response.data.map((driver) => ({
+                ...driver,
+                id: driver.id,
+                fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
+              }));
+              context.setTableData(dataTable);
+              context.setSelectedTable("Водители");
+              alert("Водитель успешно удален!");
+            }
+          });
         }
       });
   };

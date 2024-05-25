@@ -4,7 +4,8 @@ import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
 import axios from "axios";
 import Input from "./InputNewCar/Input";
 import DataContext from "../../../context";
-import { apiAddCar, apiGetAllCar, getProfileDriver } from "../../../API/API";
+import { apiAddCar, apiGetAllCar, apiGetAllCarsLogistic, getProfileDriver } from "../../../API/API";
+import { tableHeadCar } from "../../TableDriverPage/Data";
 
 function PopUpNewCar() {
   const { context } = React.useContext(DataContext);
@@ -49,13 +50,9 @@ function PopUpNewCar() {
             numberOfPallet: null,
             driverId: null,
           });
-          getProfileDriver().then((response) => {
-            apiGetAllCar(response.data.id).then((resp) => {
-              if (resp) {
-                console.log("Машины", resp.data);
-                context.setTableData(resp.data);
-              }
-            });
+          apiGetAllCarsLogistic().then((response) => {
+            context.setTableData(response.data);
+            context.settableHeader(tableHeadCar);
           });
         }
       });
