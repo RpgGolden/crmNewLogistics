@@ -46,10 +46,9 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
       });
   };
 
-  const DeleteCar = () =>{
-  
+  const DeleteCar = () => {
     // ccontext.selectedTr);
-  }
+  };
 
   //! при нажатии редактировать аккаунт
   const editAkaunt = () => {
@@ -154,7 +153,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Создать заказ
           </button>
-       
+
           <button onClick={() => context.setpopUp("PopUpEditDriver")}>
             <img src="./img/Edit.png" alt="View" />
             Редактировать
@@ -164,13 +163,13 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             Удалить водителя
           </button>
         </div>
-      ): context.selectedTable === "Машины" && state === "home" ? (
+      ) : context.selectedTable === "Машины" && state === "home" ? (
         <div className={styles.HeadMenu}>
           <button onClick={() => context.setpopUp("PopUpNewCar")}>
             <img src="./img/add.svg" alt="View" />
             Добавить машину
           </button>
-          <button >
+          <button>
             <img src="./img/Edit.png" alt="View" />
             Редактировать
           </button>
@@ -200,6 +199,10 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
           <button onClick={editAkaunt}>
             <img src="./img/Edit.png" alt="View" />
             Редактировать аккаунт
+          </button>
+          <button onClick={getFile}>
+            <img src="./img/File_dock.png" alt="View" />
+            Получить расчетный лист
           </button>
         </div>
       ) : state === "withBack" ? (
