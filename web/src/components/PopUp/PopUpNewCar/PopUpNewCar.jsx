@@ -33,9 +33,7 @@ function PopUpNewCar() {
   const clickAddCar = () => {
     const ud = JSON.parse(localStorage.getItem("userData"));
     if(ud.role === "ADMINISTRATOR"){
-        apiAddCar(
-           { ...context.carData }
-        ).then((resp) => {
+        apiAddCar({ ...context.carData }).then((resp) => {
           console.log("response", resp);
           if (resp?.status === 200) {
             context.setpopUp("");

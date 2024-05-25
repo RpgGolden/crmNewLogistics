@@ -13,6 +13,7 @@ import DriverPage from "./pages/DriverPage/HomePage/DriverPage";
 import HomePageDriver from "./pages/DriverPage/HomePageDriver/HomePageDriver";
 import AccounDriver from "./components/AccounDriver/AccounDriver";
 import { apiGetAllCar, apiGetAllCarsLogistic, apiGetAllOrders, getAllCustomers, getAllDriver, getProfileDriver } from "./API/API";
+import { tableHeadAppoint } from "./components/Table/Data";
 
 function App() {
   const [tableData, setTableData] = useState(testData); // данные таблицы
@@ -21,6 +22,8 @@ function App() {
   const [searchDataForTable, setsearchDataForTable] = useState(" "); // поиск по таблице
   const [brands, setBrands] = useState([]);
   const [popUp, setpopUp] = useState("");
+  const [tableHeader, settableHeader] = useState(tableHeadAppoint);
+
   const ud = JSON.parse(localStorage.getItem("userData"));
   const [carData, setCarData] = useState({
     numberCar: null,
@@ -32,7 +35,6 @@ function App() {
     volumeCar: null,
     loadCapacity: null,
     numberOfPallet: null,
-    // driverId: null,
   });
   const [dataAppoints, setdataAppoint] = useState([]);
   const [dataClients, setdataClient] = useState([]);
@@ -68,6 +70,7 @@ function App() {
           item.unloading = JSON.parse(item.unloading).adress;
         });
         setdataAppoint(dat);
+        settableHeader(tableHeadAppoint);
       }
     });
     apiGetAllCarsLogistic().then((response) => {
@@ -109,7 +112,9 @@ function App() {
     dataClients,
     dataDrivers,
     dataCar,
-    dataCarDriver
+    dataCarDriver,
+    tableHeader,
+    settableHeader
   };
 
   const [carTableData, setCarTableData] = useState([]); // таблиычные данные всех машин у diver

@@ -14,7 +14,7 @@ import { tableHeadCar } from "../TableDriverPage/Data";
 
 function Table() {
   const { context } = React.useContext(DataContext);
-  const [tableHeader, settableHeader] = useState(tableHeadAppoint);
+
 
   const trClick = (row) => {
     context.setSelectedTr(row.id);
@@ -25,9 +25,8 @@ function Table() {
     if (context.selectedTable === "Клиенты") {
       getAllCustomers().then((response) => {
         if (response) {
-          console.log(response.data);
           context.setTableData(response.data);
-          settableHeader(tableHeadClient);
+          context.settableHeader(tableHeadClient);
         }
       });
     }
@@ -40,7 +39,7 @@ function Table() {
             fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
           }));
           context.setTableData(dataTable);
-          settableHeader(tableHeadDriver);
+          context.settableHeader(tableHeadDriver);
         }
       });
     }
@@ -48,7 +47,7 @@ function Table() {
       apiGetAllCarsLogistic().then((response) => {
         console.log("Все машины", response.data);
         context.setTableData(response.data);
-        settableHeader(tableHeadCar);
+        context.settableHeader(tableHeadCar);
       });
     }
     if (context.selectedTable === "Заказы") {
@@ -63,8 +62,8 @@ function Table() {
           item.unloading = JSON.parse(item.unloading).adress;
         });
         context.setTableData(dat);
+        context.settableHeader(tableHeadAppoint);
       });
-      settableHeader(tableHeadAppoint);
     }
   }, [context.selectedTable]);
   const [file, setFile] = useState(null);
@@ -82,7 +81,7 @@ function Table() {
           <table className={styles.TableInner}>
             <thead>
               <tr>
-                {tableHeader.map((item) => (
+                {  context.tableHeader.map((item) => (
                   <th key={item.key}>{item.value}</th>
                 ))}
               </tr>
@@ -96,7 +95,7 @@ function Table() {
                     context.selectedTr === row.id ? styles.setectedTr : null
                   }
                 >
-                  {tableHeader.map((headerItem) => (
+                  {context.tableHeader.map((headerItem) => (
                     <td key={headerItem.key}>
                       {headerItem.key === "id" ? (
                         index + 1
