@@ -12,7 +12,8 @@ import AdminPage from "./pages/AdminPages/HomePage/AdminPage";
 import DriverPage from "./pages/DriverPage/HomePage/DriverPage";
 import HomePageDriver from "./pages/DriverPage/HomePageDriver/HomePageDriver";
 import AccounDriver from "./components/AccounDriver/AccounDriver";
-import { apiGetAllOrders, getAllCustomers, getAllDriver } from "./API/API";
+import { apiGetAllCar, apiGetAllCarsLogistic, apiGetAllOrders, getAllCustomers, getAllDriver, getProfileDriver } from "./API/API";
+import { tableHeadAppoint } from "./components/Table/Data";
 
 function App() {
   const [tableData, setTableData] = useState(testData); // данные таблицы
@@ -21,6 +22,9 @@ function App() {
   const [searchDataForTable, setsearchDataForTable] = useState(" "); // поиск по таблице
   const [brands, setBrands] = useState([]);
   const [popUp, setpopUp] = useState("");
+  const [tableHeader, settableHeader] = useState(tableHeadAppoint);
+
+  const ud = JSON.parse(localStorage.getItem("userData"));
   const [carData, setCarData] = useState({
     numberCar: null,
     markCar: null,
@@ -31,11 +35,12 @@ function App() {
     volumeCar: null,
     loadCapacity: null,
     numberOfPallet: null,
-    // driverId: null,
   });
   const [dataAppoints, setdataAppoint] = useState([]);
   const [dataClients, setdataClient] = useState([]);
   const [dataDrivers, setdataDriver] = useState([]);
+  const [dataCar, setdataCar] = useState([]);
+  const [dataCarDriver, setdataCarDriver] = useState([]);
 
   const updateDataTable = () => {
     console.log("Update");
@@ -47,17 +52,40 @@ function App() {
     getAllDriver().then((response) => {
       if (response) {
         const dataTable = response.data.map((driver) => ({
+          ...driver,
           id: driver.id,
           fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
         }));
         setdataDriver(dataTable);
       }
     });
-    apiGetAllOrders().then((response) => {
-      if (response) {
-        setdataAppoint(response.data);
+    apiGetAllOrders().then((resp) => {
+      if (resp) {
+        const dat = [...resp.data];
+        dat.map((item) => {
+          item.car = item.car.markCar;
+          item.customer = item.customer.fio;
+          item.driver = `${item.driver.surname} ${item.driver.name} ${item.driver.patronymic}`;
+          item.loading = JSON.parse(item.loading).adress;
+          item.unloading = JSON.parse(item.unloading).adress;
+        });
+        setdataAppoint(dat);
+        settableHeader(tableHeadAppoint);
       }
     });
+    apiGetAllCarsLogistic().then((response) => {
+      setdataCar(response.data);
+    });
+    if (ud.role === "DRIVER") {
+      getProfileDriver().then((response) => {
+          apiGetAllCar(response.data.id).then((resp) => {
+            if (resp) {
+              setdataCarDriver(resp.data);
+            }
+          });
+        });
+    }
+
   };
 
   useEffect(() => {
@@ -83,6 +111,10 @@ function App() {
     dataAppoints,
     dataClients,
     dataDrivers,
+    dataCar,
+    dataCarDriver,
+    tableHeader,
+    settableHeader
   };
 
   const [carTableData, setCarTableData] = useState([]); // таблиычные данные всех машин у diver

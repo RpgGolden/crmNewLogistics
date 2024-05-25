@@ -8,11 +8,11 @@ export const tableHeadCar = [
   { key: "heightCar", value: "Высота, м" },
   { key: "volumeCar", value: "Объем, м3" },
   { key: "loadCapacity", value: "Грузоподъемность, т" },
-  { key: "numberOfPallet", value: "Колличесвто палет" },
+  { key: "numberOfPallet", value: "Колличество палет" },
 ];
 
 export const tableHeadOrders = [
-  { key: "id", value: "Статус" },
+  { key: "id", value: "Номер" },
   { key: "status", value: "Период заказа" },
   { key: "client", value: "Клиент" },
   { key: "loading", value: "Загрузка" },

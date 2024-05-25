@@ -4,15 +4,17 @@ import { tableHeadAppoint, tableHeadClient, tableHeadDriver } from "./Data";
 import DataContext from "../../context";
 import {
   apiCreateFile,
+  apiGetAllCarsLogistic,
   apiGetAllOrders,
   getAllCustomers,
   getAllDriver,
   getProfileDriver,
 } from "../../API/API";
+import { tableHeadCar } from "../TableDriverPage/Data";
 
 function Table() {
   const { context } = React.useContext(DataContext);
-  const [tableHeader, settableHeader] = useState(tableHeadAppoint);
+
 
   const trClick = (row) => {
     context.setSelectedTr(row.id);
@@ -23,9 +25,8 @@ function Table() {
     if (context.selectedTable === "Клиенты") {
       getAllCustomers().then((response) => {
         if (response) {
-          console.log(response.data);
           context.setTableData(response.data);
-          settableHeader(tableHeadClient);
+          context.settableHeader(tableHeadClient);
         }
       });
     }
@@ -38,8 +39,15 @@ function Table() {
             fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
           }));
           context.setTableData(dataTable);
-          settableHeader(tableHeadDriver);
+          context.settableHeader(tableHeadDriver);
         }
+      });
+    }
+    if (context.selectedTable === "Машины") {
+      apiGetAllCarsLogistic().then((response) => {
+        console.log("Все машины", response.data);
+        context.setTableData(response.data);
+        context.settableHeader(tableHeadCar);
       });
     }
     if (context.selectedTable === "Заказы") {
@@ -49,13 +57,13 @@ function Table() {
         dat.map((item) => {
           item.car = item.car.markCar;
           item.customer = item.customer.fio;
-          item.driver = item.driver.name;
+          item.driver = `${item.driver.surname} ${item.driver.name} ${item.driver.patronymic}`;
           item.loading = JSON.parse(item.loading).adress;
           item.unloading = JSON.parse(item.unloading).adress;
         });
         context.setTableData(dat);
+        context.settableHeader(tableHeadAppoint);
       });
-      settableHeader(tableHeadAppoint);
     }
   }, [context.selectedTable]);
 
@@ -66,7 +74,7 @@ function Table() {
           <table className={styles.TableInner}>
             <thead>
               <tr>
-                {tableHeader.map((item) => (
+                {  context.tableHeader.map((item) => (
                   <th key={item.key}>{item.value}</th>
                 ))}
               </tr>
@@ -80,7 +88,7 @@ function Table() {
                     context.selectedTr === row.id ? styles.setectedTr : null
                   }
                 >
-                  {tableHeader.map((headerItem) => (
+                  {context.tableHeader.map((headerItem) => (
                     <td key={headerItem.key}>
                       {headerItem.key === "id" ? (
                         index + 1

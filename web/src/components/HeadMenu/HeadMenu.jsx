@@ -46,6 +46,11 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
       });
   };
 
+  const DeleteCar = () =>{
+  
+    // ccontext.selectedTr);
+  }
+
   //! при нажатии редактировать аккаунт
   const editAkaunt = () => {
     context.setpopUp("AccounDriver");
@@ -149,14 +154,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Создать заказ
           </button>
-          <button onClick={() => context.setpopUp("PopUpNewCar")}>
-            <img src="./img/add.svg" alt="View" />
-            Добавить машину
-          </button>
-          {/* <button onClick={() => context.setpopUp("PopUpNewClient")}>
-            <img src="./img/add.svg" alt="View" />
-            Добавить клиента
-          </button> */}
+       
           <button onClick={() => context.setpopUp("PopUpEditDriver")}>
             <img src="./img/Edit.png" alt="View" />
             Редактировать
@@ -164,6 +162,21 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
           <button onClick={DeleteDriver}>
             <img src="./img/File_dock.png" alt="View" />
             Удалить водителя
+          </button>
+        </div>
+      ): context.selectedTable === "Машины" && state === "home" ? (
+        <div className={styles.HeadMenu}>
+          <button onClick={() => context.setpopUp("PopUpNewCar")}>
+            <img src="./img/add.svg" alt="View" />
+            Добавить машину
+          </button>
+          <button >
+            <img src="./img/Edit.png" alt="View" />
+            Редактировать
+          </button>
+          <button onClick={DeleteCar}>
+            <img src="./img/File_dock.png" alt="View" />
+            Удалить Машину
           </button>
         </div>
       ) : state === "register" ? (
