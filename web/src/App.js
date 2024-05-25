@@ -95,6 +95,8 @@ function App() {
     }
   };
 
+  const [editCarData, setEditCarData] = useState(false);
+
   const context = {
     tableData,
     setTableData,
@@ -118,6 +120,8 @@ function App() {
     dataCarDriver,
     tableHeader,
     settableHeader,
+    editCarData,
+    setEditCarData,
   };
 
   const [carTableData, setCarTableData] = useState([]); // таблиычные данные всех машин у diver

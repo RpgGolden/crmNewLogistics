@@ -21,7 +21,7 @@ export const tableHeadClient = [
   { key: "additionalPhoneNumber", value: "Доп-телефон" },
   { key: "login", value: "Почта" },
   { key: "nameCompany", value: "Наим. орг." },
-  { key: "address", value: "Адресс" },
+  { key: "address", value: "Адрес" },
   { key: "inn", value: "ИНН" },
   { key: "kc", value: "К/С" },
   { key: "bik", value: "БИК" },

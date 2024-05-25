@@ -34,7 +34,7 @@ function PopUpNewClient() {
   };
 
   return (
-    <PopUpContainer styles={{ width: "auto" }} title={"Новый клиент"} mT={200}>
+    <PopUpContainer width={true} title={"Новый клиент"} mT={200}>
       <div className={styles.popBox}>
         <div className={styles.popLeft}>
           <Input

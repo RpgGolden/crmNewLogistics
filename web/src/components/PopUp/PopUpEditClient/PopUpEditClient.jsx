@@ -24,12 +24,7 @@ function PopUpEditClient() {
     const idCustomer = context.selectedTr;
     getCustomeriD(idCustomer).then((response) => {
       console.log("responseClient", response);
-      setdataNewClient({
-        fio: response.data.fio,
-        login: response.data.login,
-        phoneNumber: response.data.phoneNumber,
-        additionalPhoneNumber: response.data.additionalPhoneNumber,
-      });
+      setdataNewClient({ ...response.data });
     });
   }, []);
 
@@ -52,38 +47,79 @@ function PopUpEditClient() {
   };
 
   return (
-    <PopUpContainer title={"Редактирование клиента"} mT={200}>
-      <div>
-        <Input
-          Textlabel={"Фио"}
-          handleInputChange={handleInputChange}
-          name="fio"
-          value={dataNewClient.fio}
-        />
-        <Input
-          Textlabel={"Телефон"}
-          handleInputChange={handleInputChange}
-          name="phoneNumber"
-          value={dataNewClient.phoneNumber}
-        />
-        <Input
-          Textlabel={"Доп.Телефон"}
-          handleInputChange={handleInputChange}
-          name="additionalPhoneNumber"
-          value={dataNewClient.additionalPhoneNumber}
-        />
-        <Input
-          Textlabel={"E-mail"}
-          handleInputChange={handleInputChange}
-          name="login"
-          value={dataNewClient.login}
-        />
-
-        <div className={styles.button}>
-          <button className={styles.buttonSave} onClick={EditClient}>
-            Добавить
-          </button>
+    <PopUpContainer width={true} title={"Редактирование клиента"} mT={200}>
+      <div className={styles.popBox}>
+        <div className={styles.popLeft}>
+          <Input
+            Textlabel={"Фио"}
+            handleInputChange={handleInputChange}
+            name="fio"
+            value={dataNewClient.fio}
+          />
+          <Input
+            Textlabel={"Телефон"}
+            handleInputChange={handleInputChange}
+            name="phoneNumber"
+            value={dataNewClient.phoneNumber}
+          />
+          <Input
+            Textlabel={"Доп.Телефон"}
+            handleInputChange={handleInputChange}
+            name="additionalPhoneNumber"
+            value={dataNewClient.additionalPhoneNumber}
+          />
+          <Input
+            Textlabel={"E-mail"}
+            handleInputChange={handleInputChange}
+            name="login"
+            value={dataNewClient.login}
+          />
+          <Input
+            Textlabel={"Наименование организации"}
+            handleInputChange={handleInputChange}
+            name="nameCompany"
+            value={dataNewClient.nameCompany}
+          />
         </div>
+
+        <div className={styles.popRigth}>
+          <Input
+            Textlabel={"Адресс клиента"}
+            handleInputChange={handleInputChange}
+            name="address"
+            value={dataNewClient.address}
+          />
+          <Input
+            Textlabel={"ИНН"}
+            handleInputChange={handleInputChange}
+            name="inn"
+            value={dataNewClient.inn}
+          />
+          <Input
+            Textlabel={"К/С"}
+            handleInputChange={handleInputChange}
+            name="kc"
+            value={dataNewClient.kc}
+          />
+          <Input
+            Textlabel={"БИК"}
+            handleInputChange={handleInputChange}
+            name="bik"
+            value={dataNewClient.bik}
+          />
+          <Input
+            Textlabel={"КПП"}
+            handleInputChange={handleInputChange}
+            name="kpp"
+            value={dataNewClient.kpp}
+          />
+        </div>
+      </div>
+
+      <div className={styles.button}>
+        <button className={styles.buttonSave} onClick={EditClient}>
+          Сохранить
+        </button>
       </div>
     </PopUpContainer>
   );

@@ -125,6 +125,21 @@ export const CustomersDelete = async (IdCustomer) => {
   }
 };
 
+//! Удаление машины
+export const apiDelCar = async (IdCar) => {
+  console.log(IdCar);
+  try {
+    const response = await axios.delete(`${server}/car/deleteCar/${IdCar}`, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при удалении машины!");
+  }
+};
+
 //! Удаление заказа
 export const apiDeleteOrder = async (idOrder) => {
   try {
@@ -315,24 +330,6 @@ export const apiGetAllOrdersDriver = async (driverId) => {
   }
 };
 
-//! запрос на получение файла
-// export const apiGetFile = async (orderId) => {
-//   try {
-//     console.log("получить документ", orderId);
-//     const response = await axios.get(
-//       `${server}/document/createDocument/${orderId}`,
-//       {
-//         headers: {
-//           Authorization: `${localStorage.getItem("accessToken")}`,
-//         },
-//       }
-//     );
-//     return response;
-//   } catch (error) {
-//     console.error("ошибка получения документа!");
-//   }
-// };
-
 export const apiGetFile = async (orderId) => {
   try {
     console.log("получить документ", orderId);
@@ -410,6 +407,26 @@ export const apiUpdateOrder = async (data, orderId) => {
     console.log("обновить заказ", data);
     const response = await axios.post(
       `${server}/order/updateOrder/${orderId}`,
+      { ...data },
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    alert("Заказ обновлен");
+    return response;
+  } catch (error) {
+    alert("При обновлении заказа возникла ошибка");
+  }
+};
+
+//! запрос обновить машину
+export const apiUpdateCar = async (data, carId) => {
+  try {
+    console.log("обновить заказ", data, carId);
+    const response = await axios.post(
+      `${server}/car/updateCar/${carId}`,
       { ...data },
       {
         headers: {

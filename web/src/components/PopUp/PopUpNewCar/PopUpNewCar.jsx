@@ -10,6 +10,7 @@ import {
   getProfileDriver,
   apiGetAllCarsLogistiс,
   apiGetAllCarsLogistic,
+  apiUpdateCar,
 } from "../../../API/API";
 
 function PopUpNewCar() {
@@ -103,6 +104,36 @@ function PopUpNewCar() {
     }
   };
 
+  const clickeditCar = () => {
+    const newObject = { ...context.carData };
+    delete newObject.id;
+    apiUpdateCar({ ...newObject }, context.selectedTr).then((resp) => {
+      console.log("response", resp);
+      if (resp?.status === 200) {
+        context.setpopUp("");
+        context.setCarData({
+          numberCar: null,
+          markCar: null,
+          typeCar: null,
+          heightCar: null,
+          widthCar: null,
+          lengthCar: null,
+          volumeCar: null,
+          loadCapacity: null,
+          numberOfPallet: null,
+          driverId: null,
+        });
+        apiGetAllCarsLogistic().then((resp) => {
+          if (resp) {
+            console.log("Машины", resp.data);
+            context.setTableData(resp.data);
+          }
+        });
+        context.setEditCarData(false);
+      }
+    });
+  };
+
   useEffect(() => {
     // Отправить запрос к бесплатному API
     axios(
@@ -184,8 +215,11 @@ function PopUpNewCar() {
           />
         </div>
         <div className={styles.button}>
-          <button className={styles.buttonSave} onClick={clickAddCar}>
-            Добавить
+          <button
+            className={styles.buttonSave}
+            onClick={context.editCarData ? clickeditCar : clickAddCar}
+          >
+            {context.editCarData ? "Сохранить" : "Добавить"}
           </button>
         </div>
       </div>
