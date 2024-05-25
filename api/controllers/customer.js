@@ -5,12 +5,16 @@ import { AppErrorInvalid, AppErrorMissing } from '../utils/errors.js';
 export default {
     async createCustomer(req, res) {
         const data = req.body;
-        const { fio, login, phoneNumber, additionalPhoneNumber } = data;
+        const { fio, login, phoneNumber, additionalPhoneNumber, address, inn, kc, bik } = data;
         const customer = await Customer.create({
             fio,
             login,
             phoneNumber,
             additionalPhoneNumber,
+            address,
+            inn,
+            kc,
+            bik
         });
         const customerDto = new CustomerDto(customer);
         res.json(customerDto);
@@ -32,7 +36,7 @@ export default {
         res.json({ success: true });
     },
     
-    async updateProfileCustomer({ params: { customerId }, body: { fio, login, phoneNumber, additionalPhoneNumber } },res) {
+    async updateProfileCustomer({ params: { customerId }, body: { fio, login, phoneNumber, additionalPhoneNumber, address, inn, kc, bik } },res) {
         const customer = await Customer.findOne({ where: { id: customerId } });
         if (!customer) {
             throw new AppErrorMissing('Customer not found');
@@ -42,7 +46,11 @@ export default {
             fio,
             login,
             phoneNumber,
-            additionalPhoneNumber
+            additionalPhoneNumber,
+            address,
+            inn,
+            kc,
+            bik
         });
 
         const profileDto = new CustomerDto(customer);
