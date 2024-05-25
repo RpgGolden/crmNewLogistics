@@ -1,5 +1,4 @@
 import ProfileDto from './profile-dto.js';
-import {map as typeCarsMap} from '../utils/map.js';
 
 export default class CarDto {
     id;
