@@ -5,20 +5,30 @@ import Docxtemplater from 'docxtemplater';
 import Order from '../models/order.js';
 import { AppErrorMissing } from '../utils/errors.js';
 import OrderDto from '../dtos/order-dto.js';
+import Car from '../models/car.js';
+import Driver from '../models/driver.js';
+import Customer from '../models/customer.js';
+import {map as typeCarsMap} from '../config/type.js';
+
+const formatCustomerFio = (fio) => {
+    const [surname, name, patronymic] = fio.split(' ');
+    const initialName = name ? name.charAt(0).toUpperCase() + '.' : '';
+    const initialPatronymic = patronymic ? patronymic.charAt(0).toUpperCase() + '.' : '';
+    return `${surname} ${initialName} ${initialPatronymic}`;
+};
 
 export default {
     async createDocument({ params: { orderId } }, res) {
         try {
             // Find order by ID
-            const order = await Order.findOne({ where: { id: orderId } });
+            const order = await Order.findOne({ where: { id: orderId }, include: [Customer, Driver, Car] });
             if (!order) {
                 throw new AppErrorMissing('Order not found');
             }
-            const orderDto = new OrderDto(order);
+            const data = new OrderDto(order);
             // Read the template file
             const templatePath = path.join('documents', 'template.docx');
             const content = fs.readFileSync(templatePath, 'binary');
-
             // Load the DOCX template
             const zip = new PizZip(content);
             const doc = new Docxtemplater(zip);
@@ -45,7 +55,37 @@ export default {
                 date: dateContract.getDate(),
                 month: getMonthStr(dateContract),
                 year: dateContract.getFullYear(),
-                fullName: order.customerId,
+                customerCompany: data.customer.nameCompany,
+                loading: data.loading,
+                unloading: data.unloading,
+                dateBegin: data.dateBegin.split(' ')[0],
+                dateEnd: data.dateEnd.split(' ')[0],
+                dateTimeBegin: data.dateBegin.split(' ')[1].slice(0, 5),
+                dateTimeEnd: data.dateEnd.split(' ')[1].slice(0, 5),
+                driverName: data.driver.name + ' ' + data.driver.surname + ' ' + data.driver.patronymic,
+                driverPhone: data.driver.phoneNumber,
+                customerName: data.customer.fio,
+                customerPhone: data.customer.phoneNumber,
+                typeCargo: data.typeCargo,
+                places: data.places,
+                weight: data.weight,
+                volume: data.volume,
+                typeCar: typeCarsMap[data.car.typeCar],
+                price: data.price,
+                driverFio: data.driver.name + ' ' + data.driver.surname + ' ' + data.driver.patronymic,
+                driverPhone1: data.driver.phoneNumber,
+                passport: data.driver.passportNumber + ' ' + data.driver.passportSerial + ' ' + data.driver.passportIssueBy + ' ' + data.driver.passportIssueDate,
+                car: data.car.numberCar + ' ' + data.car.markCar,
+                customerCompanyName: data.customer.nameCompany,
+                unloadingCompany: data.customer.address,
+                customerPhone1: data.customer.phoneNumber,
+                customerPhone2: data.customer.additionalPhoneNumber,
+                customerMail: data.customer.login,
+                inn: data.customer.inn,
+                kpp: data.customer.kpp,
+                kc: data.customer.kc,
+                bik: data.customer.bik,
+                customerFIO: formatCustomerFio(data.customer.fio),
             });
 
             // Render the document
