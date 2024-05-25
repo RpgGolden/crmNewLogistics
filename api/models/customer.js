@@ -29,6 +29,22 @@ export default class Customer extends Model {
                     type: DataTypes.STRING,
                     allowNull: true,
                 },
+                address: {
+                    type: DataTypes.JSON,
+                    allowNull: true,
+                },
+                inn: {
+                    type: DataTypes.STRING,
+                    allowNull: true,
+                },
+                kc: {
+                    type: DataTypes.STRING,
+                    allowNull: true,
+                },
+                bik: {
+                    type: DataTypes.STRING,
+                    allowNull: true,
+                }
             },
             {
                 sequelize,

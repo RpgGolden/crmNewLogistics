@@ -35,5 +35,19 @@ router
         asyncRoute(checkRole([roles.ADMINISTRATOR, roles.DRIVER])),
         asyncRoute(carController.addCarToDriver)
     );
+router
+    .route('/deleteCar/:carId')
+    .delete(
+        authenticateToken,
+        asyncRoute(checkRole([roles.ADMINISTRATOR, roles.DRIVER])),
+        asyncRoute(carController.deleteCar)
+    );
+router
+    .route('/updateCar/:carId')
+    .delete(
+        authenticateToken,
+        asyncRoute(checkRole([roles.ADMINISTRATOR, roles.DRIVER])),
+        asyncRoute(carController.updateCar)
+    );
 
 export default router;

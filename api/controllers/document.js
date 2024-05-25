@@ -4,6 +4,7 @@ import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
 import Order from '../models/order.js';
 import { AppErrorMissing } from '../utils/errors.js';
+import OrderDto from '../dtos/order-dto.js';
 
 export default {
     async createDocument({ params: { orderId } }, res) {
@@ -13,6 +14,7 @@ export default {
             if (!order) {
                 throw new AppErrorMissing('Order not found');
             }
+            const orderDto = new OrderDto(order);
             // Read the template file
             const templatePath = path.join('documents', 'template.docx');
             const content = fs.readFileSync(templatePath, 'binary');

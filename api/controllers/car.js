@@ -6,11 +6,21 @@ import { AppErrorInvalid } from '../utils/errors.js';
 export default {
     async createCar(req, res) {
         const data = req.body;
-        const { numberCar, markCar, typeCar, heightCar, widthCar, lengthCar, volumeCar, loadCapacity, numberOfPallet, driverId} =
-            data;
+        const {
+            numberCar,
+            markCar,
+            typeCar,
+            heightCar,
+            widthCar,
+            lengthCar,
+            volumeCar,
+            loadCapacity,
+            numberOfPallet,
+            driverId,
+        } = data;
         let driver;
 
-        if(driverId) {
+        if (driverId) {
             driver = await Driver.findOne({ where: { id: driverId } });
         }
         const car = await Car.create({
@@ -57,6 +67,55 @@ export default {
             driverId,
         });
 
+        await car.reload({ include: [Driver] });
+        const carDto = new CarDto(car);
+        res.json(carDto);
+    },
+    async deleteCar({ params: { carId } }, res) {
+        const car = await Car.findOne({ where: { id: carId } });
+
+        if (!car) {
+            throw new AppErrorInvalid('Car not found');
+        }
+
+        await car.destroy({ force: true });
+    },
+    async updateCar(
+        {
+            params: { carId },
+            body: {
+                numberCar,
+                markCar,
+                typeCar,
+                heightCar,
+                widthCar,
+                lengthCar,
+                volumeCar,
+                loadCapacity,
+                numberOfPallet,
+                driverId,
+            },
+        },
+        res
+    ) {
+        const car = await Car.findOne({ where: { id: carId } });
+
+        if (!car) {
+            throw new AppErrorInvalid('Car not found');
+        }
+        const driver = await Driver.findOne({ where: { id: driverId } });
+        await car.update({
+            numberCar,
+            markCar,
+            typeCar,
+            heightCar,
+            widthCar,
+            lengthCar,
+            volumeCar,
+            loadCapacity,
+            numberOfPallet,
+            driverId: driver ? driver.id : undefined,
+        });
         await car.reload({ include: [Driver] });
         const carDto = new CarDto(car);
         res.json(carDto);
