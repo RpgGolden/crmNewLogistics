@@ -24,8 +24,6 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
       driverDelete(context.selectedTr).then((response) => {
         if (response.status === 200) {
           alert("Водитель успешно удален!");
-          // context.setpopUp("")
-          // context.setSelectedTable("Клиенты")
         }
       });
   };
@@ -37,7 +35,6 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
           getAllCustomers().then((response) => {
             if (response) {
               context.setTableData(response.data);
-              context.updateDataTable();
               alert("Пользователь успешно удален!");
               context.setSelectedTable("Клиенты");
             }

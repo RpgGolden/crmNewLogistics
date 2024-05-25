@@ -41,6 +41,7 @@ function App() {
   const [dataDrivers, setdataDriver] = useState([]);
   const [dataCar, setdataCar] = useState([]);
   const [dataCarDriver, setdataCarDriver] = useState([]);
+  // settableHeader(tableHeadAppoint);
 
   const updateDataTable = () => {
     console.log("Update");
@@ -70,7 +71,6 @@ function App() {
           item.unloading = JSON.parse(item.unloading).adress;
         });
         setdataAppoint(dat);
-        settableHeader(tableHeadAppoint);
       }
     });
     apiGetAllCarsLogistic().then((response) => {

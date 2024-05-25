@@ -28,4 +28,5 @@ export const tableHeadDriver = [
   { key: "phoneNumber", value: "Номер телефона" },
   { key: "additionalPhoneNumber", value: "Доп-телефон" },
   { key: "birthDate", value: "Дата рождения" },
+  { key: "addressReg", value: "Адрес" },
 ];
