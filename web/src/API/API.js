@@ -318,6 +318,23 @@ export const apiGetAllOrdersDriver = async (driverId) => {
 };
 
 //! запрос на получение файла
+// export const apiGetFile = async (orderId) => {
+//   try {
+//     console.log("получить документ", orderId);
+//     const response = await axios.get(
+//       `${server}/document/createDocument/${orderId}`,
+//       {
+//         headers: {
+//           Authorization: `${localStorage.getItem("accessToken")}`,
+//         },
+//       }
+//     );
+//     return response;
+//   } catch (error) {
+//     console.error("ошибка получения документа!");
+//   }
+// };
+
 export const apiGetFile = async (orderId) => {
   try {
     console.log("получить документ", orderId);
@@ -327,11 +344,26 @@ export const apiGetFile = async (orderId) => {
         headers: {
           Authorization: `${localStorage.getItem("accessToken")}`,
         },
+        responseType: "blob", // указываем, что ожидаем получить файл в виде Blob
       }
     );
+
+    // Создаем временную ссылку на файл
+    const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+
+    // Создаем ссылку для скачивания файла
+    const tempLink = document.createElement("a");
+    tempLink.href = fileURL;
+    tempLink.setAttribute("download", "file.docx"); // задаем имя файла
+    tempLink.click();
+
+    // Очищаем временную ссылку
+    window.URL.revokeObjectURL(fileURL);
+
     return response;
   } catch (error) {
     console.error("ошибка получения документа!");
+    throw error;
   }
 };
 
