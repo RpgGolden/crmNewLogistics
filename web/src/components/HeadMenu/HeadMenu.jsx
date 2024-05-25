@@ -5,6 +5,7 @@ import DataContext from "../../context";
 import {
   CustomersDelete,
   apiDeleteOrder,
+  apiGetFile,
   driverDelete,
   getAllCustomers,
 } from "./../../API/API";
@@ -64,6 +65,47 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
     });
   };
 
+  const funMapGo = () => {
+    if (context.selectedTr && context.selectedTable === "Заказы") {
+      let par = null;
+      par = context.tableData.find((el) => el.id === context.selectedTr);
+      console.log(par.geoLoading, par.geoUnLoading);
+      const url = `https://yandex.ru/maps/?rtext=${par.geoLoading.join(
+        ","
+      )}~${par.geoUnLoading.join(",")}`;
+      window.open(url, "_blank");
+    }
+  };
+
+  //! получить файл
+  const getFile = () => {
+    console.log(context.selectedTr);
+    apiGetFile(context.selectedTr).then((response) => {
+      console.log(response);
+      // const url = window.URL.createObjectURL(new Blob([response.data]));
+      // const link = document.createElement("a");
+      // link.href = url;
+      // link.setAttribute("download", "расчетный_лист.docx");
+      // document.body.appendChild(link);
+      // link.click();
+    });
+  };
+
+  // const getFile = () => {
+  //   console.log(context.selectedTr);
+  //   apiGetFile(context.selectedTr).then((response) => {
+  //     const blob = new Blob([response.data], {
+  //       type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  //       encoding: "utf-8",
+  //     });
+  //     const url = window.URL.createObjectURL(blob);
+  //     const link = document.createElement("a");
+  //     link.href = url;
+  //     link.setAttribute("download", "расчетный_лист.docx");
+  //     document.body.appendChild(link);
+  //     link.click();
+  //   });
+  // };
   return (
     <>
       {state === "home" && context.selectedTable === "Заказы" ? (
@@ -81,6 +123,10 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
           <button onClick={delOrder}>
             <img src="./img/File_dock.png" alt="View" />
             Удалить заказ
+          </button>
+          <button onClick={getFile}>
+            <img src="./img/File_dock.png" alt="View" />
+            Получить расчетный лист
           </button>
         </div>
       ) : context.selectedTable === "Клиенты" && state === "home" ? (
@@ -144,11 +190,9 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
         </div>
       ) : state === "driverPage" ? (
         <div className={styles.HeadMenu}>
-          <Link to="ViewMyAppointment">
-            <button>
-              <img src="./img/View.png" alt="View" />В путь
-            </button>
-          </Link>
+          <button onClick={funMapGo}>
+            <img src="./img/View.png" alt="View" />В путь
+          </button>
           <button onClick={() => context.setpopUp("PopUpNewCar")}>
             <img src="./img/add.svg" alt="View" />
             Добавить машину

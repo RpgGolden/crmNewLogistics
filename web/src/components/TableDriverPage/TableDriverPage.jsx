@@ -7,8 +7,7 @@ import {
   apiGetAllOrdersDriver,
   getProfileDriver,
 } from "../../API/API";
-import { tableHeadAppoint } from "../Table/Data";
-import PopUpEditDriver from "../PopUp/PopUpEditDriver/PopUpEditDriver";
+import { tableHeadAppoint } from "./Data";
 import AccounDriver from "../AccounDriver/AccounDriver";
 
 function TableDriverPage() {
@@ -28,6 +27,7 @@ function TableDriverPage() {
 
     apiGetAllOrdersDriver(id).then((data) => {
       console.log("заказы", data);
+
       drivCon.setOrdersTableData([data]);
       // settableHeader(tableHeadOrders);
     });
@@ -53,11 +53,18 @@ function TableDriverPage() {
             console.log("заказы", resp.data);
             let zak = [...resp.data];
             zak.map((item) => {
+              console.log(item);
               item.car = item.car.markCar;
               item.customer = item.customer.fio;
               item.driver = item.driver.name;
+              const l = JSON.parse(item.loading);
+              const u = JSON.parse(item.unloading);
+              item.loading = l.adress;
+              item.unloading = u.adress;
+              item.geoLoading = l.geo;
+              item.geoUnLoading = u.geo;
             });
-            context.setTableData(resp.data);
+            context.setTableData(zak);
             settableHeader(tableHeadAppoint);
           }
         });

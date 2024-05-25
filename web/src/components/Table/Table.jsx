@@ -66,13 +66,6 @@ function Table() {
       });
     }
   }, [context.selectedTable]);
-  const [file, setFile] = useState(null);
-
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-    console.log("file", event.target.files[0]);
-    apiCreateFile(event.target.files[0], context.selectedTr);
-  };
 
   return (
     <>
@@ -100,7 +93,9 @@ function Table() {
                       {headerItem.key === "id" ? (
                         index + 1
                       ) : headerItem.key === "file" ? (
-                        <input type="file" onChange={handleFileChange}></input>
+                        <>
+                          <img width={22} src="./img/file.svg" />
+                        </>
                       ) : (
                         row[headerItem.key]
                       )}
