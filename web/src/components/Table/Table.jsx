@@ -20,7 +20,6 @@ function Table() {
   };
 
   useEffect(() => {
-    console.log(context.selectedTable);
     if (context.selectedTable === "Клиенты") {
       getAllCustomers().then((response) => {
         if (response) {
@@ -66,7 +65,6 @@ function Table() {
       apiGetAllOrders().then((resp) => {
         console.log("Заказы", resp.data);
         const dat = [...resp.data];
-        console.log("dat", dat, context.tableHeader);
 
         if (dat.length > 0) {
           dat.map((item) => {

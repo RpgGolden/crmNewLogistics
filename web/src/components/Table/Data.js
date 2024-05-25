@@ -20,6 +20,12 @@ export const tableHeadClient = [
   { key: "phoneNumber", value: "Номер телефона" },
   { key: "additionalPhoneNumber", value: "Доп-телефон" },
   { key: "login", value: "Почта" },
+  { key: "nameCompany", value: "Наим. орг." },
+  { key: "address", value: "Адресс" },
+  { key: "inn", value: "ИНН" },
+  { key: "kc", value: "К/С" },
+  { key: "bik", value: "БИК" },
+  { key: "kpp", value: "КПП" },
 ];
 
 export const tableHeadDriver = [

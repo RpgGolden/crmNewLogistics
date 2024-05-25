@@ -41,7 +41,7 @@ function Register() {
       console.log(formData);
       RegisterApi(dataWithoutConfirmPassword).then((registeredUserData) => {
         if (registeredUserData) {
-          navigate("/AdminPage");
+          navigate("/DriverPage");
         }
       });
     } else {
@@ -58,14 +58,14 @@ function Register() {
             type="text"
             placeholder="Фамилия"
             name="name"
-            value={formData.name}
+            value={formData.surname}
             onChange={handleInputChange}
           ></input>
           <input
             type="text"
             placeholder="Имя"
             name="surname"
-            value={formData.surname}
+            value={formData.name}
             onChange={handleInputChange}
           ></input>
           <input

@@ -51,7 +51,6 @@ function App() {
   // settableHeader(tableHeadAppoint);
 
   const updateDataTable = () => {
-    console.log("Update");
     getAllCustomers().then((response) => {
       if (response) {
         setdataClient(response.data);
@@ -95,10 +94,6 @@ function App() {
       });
     }
   };
-
-  useEffect(() => {
-    console.log(selectedTr);
-  }, [selectedTr]);
 
   const context = {
     tableData,

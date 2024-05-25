@@ -12,9 +12,6 @@ import PopUpEditDriver from "../../../components/PopUp/PopUpEditDriver/PopUpEdit
 import PopUpEditClient from "../../../components/PopUp/PopUpEditClient/PopUpEditClient";
 function HomePageAdmin() {
   const { context } = React.useContext(DataContext);
-  useEffect(() => {
-    console.log(context.popUp);
-  }, [context.popUp]);
 
   const TableName = [
     {
@@ -44,17 +41,14 @@ function HomePageAdmin() {
       />
       <FunctionTableTop TableName={TableName} />
       <div className={styles.Table}>
-     
         <Table />
-     
       </div>
       {context.popUp === "PopUpNewAplication" && <PopUpNewAplication />}
       {context.popUp === "PopUpNewClient" && <PopUpNewClient />}
       {context.popUp === "PopUpNewCar" && <PopUpNewCar />}
       {context.popUp === "PopUpNewDriver" && <PopUpNewDriver />}
       {context.popUp === "PopUpEditDriver" && <PopUpEditDriver />}
-      {context.popUp === "PopUpEditClient" && <PopUpEditClient/>}
-
+      {context.popUp === "PopUpEditClient" && <PopUpEditClient />}
     </div>
   );
 }
