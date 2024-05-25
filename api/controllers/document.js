@@ -8,7 +8,7 @@ import { AppErrorMissing } from '../utils/errors.js';
 export default {
     async createDocument({ params: { orderId } }, res) {
         try {
-            // Find order by IDп
+            // Find order by ID
             const order = await Order.findOne({ where: { id: orderId } });
             if (!order) {
                 throw new AppErrorMissing('Order not found');
@@ -59,15 +59,16 @@ export default {
             fs.writeFileSync(fileName, buf);
             console.log(`Document generation completed: ${fileName}`);
             const fileNameTrue = `${order.id}.docx`;
-            // Send the file to the client for download
-            res.download(fileName, fileNameTrue, err => {
-                if (err) {
-                    console.error('Error downloading file:', err);
-                    res.status(500).json({ success: false, message: 'Error downloading file' });
-                } else {
-                    console.log(`File downloaded: ${fileName}`);
-                }
+
+            // Set the response headers
+            res.set({
+                'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'Content-Disposition': `attachment; filename="${fileNameTrue}"`,
             });
+
+            // Send the file to the client for download
+            res.send(buf);
+            console.log(`File sent: ${fileName}`);
         } catch (error) {
             console.error('Error generating document:', error);
             res.status(500).json({ success: false, message: 'Error generating document', error: error.message });
