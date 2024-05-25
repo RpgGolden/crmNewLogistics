@@ -10,6 +10,10 @@ export default class Customer extends Model {
                     allowNull: false,
                     primaryKey: true,
                 },
+                nameCompany: {
+                    type: DataTypes.STRING,
+                    allowNull: false,
+                },
                 fio: {
                     type: DataTypes.STRING,
                     allowNull: false,
@@ -42,6 +46,10 @@ export default class Customer extends Model {
                     allowNull: true,
                 },
                 bik: {
+                    type: DataTypes.STRING,
+                    allowNull: true,
+                },
+                kpp: {
                     type: DataTypes.STRING,
                     allowNull: true,
                 }
