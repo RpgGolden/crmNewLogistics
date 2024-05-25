@@ -45,7 +45,20 @@ function Table() {
     if (context.selectedTable === "Машины") {
       apiGetAllCarsLogistic().then((response) => {
         console.log("Все машины", response.data);
-        context.setTableData(response.data);
+        const type = {
+          1: "Тентовый 5т",
+          2: "Контейнер",
+          4: "Микро автобус",
+          5: "Газель 6м",
+          6: "Еврофура 82м",
+        };
+
+        let cd = [...response.data];
+        cd.map((item) => {
+          item.typeCar = type[Number(item.typeCar)];
+        });
+
+        context.setTableData(cd);
         context.settableHeader(tableHeadCar);
       });
     }
