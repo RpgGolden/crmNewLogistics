@@ -22,10 +22,12 @@ function Authorization() {
 
   const handleLogin = () => {
     Login(formData).then((LoginUserData) => {
-      if (LoginUserData.role === "DRIVER") {
-        navigate("/DriverPage");
-      } else {
-        navigate("/AdminPage");
+      if(LoginUserData){
+        if (LoginUserData.role === "DRIVER") {
+          navigate("/DriverPage");
+        } else {
+          navigate("/AdminPage");
+        }
       }
     });
   };

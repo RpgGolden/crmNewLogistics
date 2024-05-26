@@ -107,7 +107,7 @@ export const AddClient = async (ClientData) => {
   }
 };
 
-//! Удаление Клиент
+//! Удаление Клиента
 export const CustomersDelete = async (IdCustomer) => {
   try {
     const response = await axios.delete(
@@ -121,7 +121,7 @@ export const CustomersDelete = async (IdCustomer) => {
 
     return response;
   } catch (error) {
-    alert("Возникла ошибка при удалении заказчика!");
+    alert("Возникла ошибка при удалении клиента!");
   }
 };
 
@@ -191,7 +191,6 @@ export const editDriverInfo = async (idSelectDriver, data) => {
     return response;
   } catch (error) {
     alert("Возникла ошибка при обновление данных драйвера!");
-    console.error(error);
   }
 };
 
@@ -209,6 +208,7 @@ export const editDriverDriv = async (data) => {
     alert("Возникла ошибка при обновление данных драйвера!");
   }
 };
+
 //! Запрос на получение всех клиентов
 export const getAllCustomers = async () => {
   try {
@@ -235,7 +235,7 @@ export const getProfileDriver = async () => {
 
     return response;
   } catch (error) {
-    alert("Возникла ошибка при добавлении нового клиента!");
+    alert("Возникла ошибка при получении информации о водителе!");
   }
 };
 
@@ -295,7 +295,7 @@ export const apiGetAllCar = async (driverId) => {
     });
     return response;
   } catch (error) {
-    console.error("Пользователь не найден!");
+    alert("Возникла ошибка при получении машин водителя!");
   }
 };
 
@@ -310,7 +310,7 @@ export const apiGetAllCarsLogistic = async () => {
 
     return response;
   } catch (error) {
-    alert("Возникла ошибка при получении водителя!");
+    alert("Возникла ошибка при получении всех машин водителя!");
   }
 };
 
@@ -327,7 +327,7 @@ export const apiGetAllOrdersDriver = async (driverId) => {
     );
     return response;
   } catch (error) {
-    console.error("Пользователь не найден!");
+    alert("Возникла ошибка при получении заказов водителя!");
   }
 };
 
@@ -354,7 +354,7 @@ export const apiGetFile = async (orderId) => {
     window.URL.revokeObjectURL(fileURL);
     return response;
   } catch (error) {
-    console.error("ошибка получения документа!");
+    alert("ошибка получения документа!");
     throw error;
   }
 };
@@ -382,7 +382,7 @@ export const apiGetFile2 = async (orderId) => {
     window.URL.revokeObjectURL(fileURL);
     return response;
   } catch (error) {
-    console.error("ошибка получения документа!");
+    alert("ошибка получения документа!");
     throw error;
   }
 };
@@ -402,7 +402,7 @@ export const apiAddCar = async (data) => {
     );
     return response;
   } catch (error) {
-    console.error("машина не добавлена");
+    alert("Вознникла ошибка при добавлении машины!");
   }
 };
 
@@ -462,7 +462,7 @@ export const apiUpdateCar = async (data, carId) => {
     alert("Заказ обновлен");
     return response;
   } catch (error) {
-    alert("При обновлении заказа возникла ошибка");
+    alert("При обновлении машины возникла ошибка");
   }
 };
 
@@ -476,11 +476,11 @@ export const apiGetAllOrders = async () => {
     });
     return response;
   } catch (error) {
-    console.error("Пользователь не найден!");
+    alert("При получении всех заказов возникла ошибка");
   }
 };
 
-//! запрос на данных клиента по Id
+//! запрос на получение данных клиента по Id
 export const getCustomeriD = async (CustomerId) => {
   try {
     const response = await axios.get(
@@ -493,7 +493,7 @@ export const getCustomeriD = async (CustomerId) => {
     );
     return response;
   } catch (error) {
-    console.error("Пользователь не найден!");
+    alert("При получении данных клиента возникла ошибка");
   }
 };
 
@@ -511,7 +511,7 @@ export const UpdateProfileCustomer = async (CustomerId, data) => {
     );
     return response;
   } catch (error) {
-    console.error("Пользователь не найден!");
+    alert("При обновлении данных клиента возникла ошибка");
   }
 };
 
@@ -530,6 +530,6 @@ export const apiCreateFile = async (data, id) => {
     );
     return response;
   } catch (error) {
-    console.error("файл не сформирован");
+    alert("файл не сформирован");
   }
 };
