@@ -7,12 +7,15 @@ import documentController from '../controllers/document.js';
 
 const router = Router();
 
-router
-    .route('/createDocument/:orderId')
-    .get(
-        // authenticateToken,
-        // asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
-        asyncRoute(documentController.createDocument)
-    );
+router.route('/createDocument/:orderId').get(
+    // authenticateToken,
+    // asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
+    asyncRoute(documentController.createDocument)
+);
+router.route('/createTravel/:orderId').get(
+    // authenticateToken,
+    // asyncRoute(checkRole([roles.DRIVER, roles.ADMINISTRATOR])),
+    asyncRoute(documentController.createTravel)
+);
 
 export default router;
