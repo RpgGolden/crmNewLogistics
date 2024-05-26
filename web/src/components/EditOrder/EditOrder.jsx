@@ -117,6 +117,8 @@ const EditOredr = () => {
     datareq.weight = Number(md.weight);
     datareq.volume = Number(md.volume);
     datareq.price = Number(md.price);
+    datareq.salary = Number(summZakaz.isp);
+    datareq.km = Number((route.summary.totalDistance / 1000).toFixed(2));
 
     datareq.customerId = md.customer.id;
     datareq.driverId = md.driver.id;

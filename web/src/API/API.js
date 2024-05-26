@@ -191,6 +191,7 @@ export const editDriverInfo = async (idSelectDriver, data) => {
     return response;
   } catch (error) {
     alert("Возникла ошибка при обновление данных драйвера!");
+    console.error(error);
   }
 };
 
@@ -342,19 +343,43 @@ export const apiGetFile = async (orderId) => {
         responseType: "blob", // указываем, что ожидаем получить файл в виде Blob
       }
     );
-
     // Создаем временную ссылку на файл
     const fileURL = window.URL.createObjectURL(new Blob([response.data]));
-
     // Создаем ссылку для скачивания файла
     const tempLink = document.createElement("a");
     tempLink.href = fileURL;
     tempLink.setAttribute("download", "file.docx"); // задаем имя файла
     tempLink.click();
-
     // Очищаем временную ссылку
     window.URL.revokeObjectURL(fileURL);
+    return response;
+  } catch (error) {
+    console.error("ошибка получения документа!");
+    throw error;
+  }
+};
 
+export const apiGetFile2 = async (orderId) => {
+  try {
+    console.log("получить документ 2", orderId);
+    const response = await axios.get(
+      `${server}/document/createTravel/${orderId}`,
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+        responseType: "blob", // указываем, что ожидаем получить файл в виде Blob
+      }
+    );
+    // Создаем временную ссылку на файл
+    const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+    // Создаем ссылку для скачивания файла
+    const tempLink = document.createElement("a");
+    tempLink.href = fileURL;
+    tempLink.setAttribute("download", "file.docx"); // задаем имя файла
+    tempLink.click();
+    // Очищаем временную ссылку
+    window.URL.revokeObjectURL(fileURL);
     return response;
   } catch (error) {
     console.error("ошибка получения документа!");
