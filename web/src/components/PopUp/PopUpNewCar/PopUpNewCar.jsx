@@ -106,7 +106,7 @@ function PopUpNewCar() {
 
   const clickeditCar = () => {
     const newObject = { ...context.carData };
-    delete newObject.id;
+    // delete newObject.id;
     apiUpdateCar({ ...newObject }, context.selectedTr).then((resp) => {
       console.log("response", resp);
       if (resp?.status === 200) {
@@ -150,7 +150,10 @@ function PopUpNewCar() {
   }, []);
 
   return (
-    <PopUpContainer title={"Новый авто"} mT={200}>
+    <PopUpContainer
+      title={context.editCarData ? "Редактировать авто" : "Новый авто"}
+      mT={200}
+    >
       <div className={styles.newCarInnew}>
         <Input
           Textlabel={"Марка авто:"}
