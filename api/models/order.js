@@ -59,6 +59,14 @@ export default class Order extends Model {
                     type: DataTypes.FLOAT,
                     allowNull: false,
                 },
+                salary: {
+                    type: DataTypes.FLOAT,
+                    allowNull: false,
+                },
+                km: {
+                    type: DataTypes.FLOAT,
+                    allowNull: false,
+                },
                 status: {
                     type: DataTypes.SMALLINT,
                     allowNull: false,

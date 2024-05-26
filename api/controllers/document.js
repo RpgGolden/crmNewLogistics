@@ -43,7 +43,7 @@ export default {
                     'апреля',
                     'мая',
                     'июня',
-                    'июля', 
+                    'июля',
                     'августа',
                     'сентября',
                     'октября',
@@ -74,9 +74,9 @@ export default {
                 driverFio: data.driver.name + ' ' + data.driver.surname + ' ' + data.driver.patronymic,
                 driverPhone1: data.driver.phoneNumber,
                 passport:
-                    data.driver.passportNumber +
-                    ' ' +
                     data.driver.passportSerial +
+                    ' ' +
+                    data.driver.passportNumber +
                     ' ' +
                     data.driver.passportIssueBy +
                     ' ' +

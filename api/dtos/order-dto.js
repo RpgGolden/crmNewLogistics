@@ -15,6 +15,8 @@ export default class OrderDto {
     weight;
     volume;
     price;
+    salary;
+    km;
     status;
     constructor(model) {
         this.id = model.id;
@@ -30,6 +32,8 @@ export default class OrderDto {
         this.weight = model.weight;
         this.volume = model.volume;
         this.price = model.price;
+        this.salary = model.salary;
+        this.km = model.km;
         this.status = model.status;
     }
 }

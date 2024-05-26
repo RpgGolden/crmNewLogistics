@@ -22,6 +22,8 @@ export default {
             weight,
             volume,
             price,
+            salary,
+            km
         } = data;
 
         const customer = await Customer.findOne({ where: { id: customerId } });
@@ -50,6 +52,8 @@ export default {
             weight,
             volume,
             price,
+            salary,
+            km
         });
 
         await order.reload({ include: [Customer, Driver, Car] });
@@ -83,6 +87,8 @@ export default {
                 weight,
                 volume,
                 price,
+                salary,
+                km
             },
         },
         res
@@ -118,6 +124,8 @@ export default {
             weight,
             volume,
             price,
+            salary,
+            km
         });
 
         await order.reload({ include: [Customer, Driver, Car] });
