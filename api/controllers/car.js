@@ -105,7 +105,7 @@ export default {
         if (!car) {
             throw new AppErrorInvalid('Car not found');
         }
-        const driver = await Driver.findOne({ where: { id: driverId } });
+        // const driver = await Driver.findOne({ where: { id: driverId } });
         await car.update({
             numberCar,
             markCar,
@@ -116,7 +116,7 @@ export default {
             volumeCar,
             loadCapacity,
             numberOfPallet,
-            driverId: driver ? driver.id : undefined,
+            driverId: driverId || undefined,
         });
         await car.reload({ include: [Driver] });
         const carDto = new CarDto(car);
