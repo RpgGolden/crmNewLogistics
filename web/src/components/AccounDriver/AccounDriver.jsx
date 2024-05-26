@@ -70,8 +70,8 @@ function AccounDriver() {
     console.log("dataNewClient", dataNewClient);
     editDriverDriv(dataNewClient).then((response) => {
       if (response) {
-        console.log(response);
-        console.log("Worked");
+        alert("Данные водителя обновлены!");
+        context.setpopUp("");
       }
     });
   };

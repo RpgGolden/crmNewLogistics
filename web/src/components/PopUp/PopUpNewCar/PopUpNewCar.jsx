@@ -94,6 +94,7 @@ function PopUpNewCar() {
                   if (resp) {
                     console.log("Машины", resp.data);
                     context.setTableData(resp.data);
+                    
                   }
                 });
               });
@@ -123,11 +124,22 @@ function PopUpNewCar() {
           numberOfPallet: null,
           driverId: null,
         });
-        apiGetAllCarsLogistic().then((resp) => {
-          if (resp) {
-            console.log("Машины", resp.data);
-            context.setTableData(resp.data);
-          }
+        apiGetAllCarsLogistic().then((response) => {
+          console.log("Все машины", response.data);
+          const type = {
+            1: "Тентовый 5т",
+            2: "Контейнер",
+            4: "Микро автобус",
+            5: "Газель 6м",
+            6: "Еврофура 82м",
+          };
+  
+          let cd = [...response.data];
+          cd.map((item) => {
+            item.typeCar = type[Number(item.typeCar)];
+          });
+  
+          context.setTableData(cd);
         });
         context.setEditCarData(false);
       }
@@ -170,9 +182,9 @@ function PopUpNewCar() {
           onChangeInput={onChangeInput}
         />
         <Input
-          placeholder="1"
+          placeholder="Выберите тип авто"
           Textlabel={"Тип авто:"}
-          value={context.carData.markCtypeCarar}
+          value={context.carData.typeCar}
           itemKey={"typeCar"}
           onChangeInput={onChangeInput}
         />
@@ -198,7 +210,7 @@ function PopUpNewCar() {
           />
           <Input
             Textlabel={"Объем, м3:"}
-            value={context.carData.volumecare}
+            value={context.carData.volumeCar}
             itemKey={"volumeCar"}
             onChangeInput={onChangeInput}
           />

@@ -6,3 +6,12 @@
     @include container;
   }
 }
+.button{
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  .buttonSave{
+      margin-top: 20px;
+      @include buttonSave(var(--green-color));
+  }
+}
