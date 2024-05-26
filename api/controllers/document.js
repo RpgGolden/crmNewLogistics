@@ -132,7 +132,7 @@ export default {
             }
             const data = new OrderDto(order);
             // Read the template file
-            const templatePath = path.join('documents', 'template2.docx');
+            const templatePath = path.join('travels', 'template2.docx');
             const content = fs.readFileSync(templatePath, 'binary');
             // Load the DOCX template
             const zip = new PizZip(content);
