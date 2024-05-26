@@ -8,6 +8,7 @@ import {
   apiDeleteOrder,
   apiGetAllCarsLogistic,
   apiGetFile,
+  apiGetFile2,
   driverDelete,
   getAllCustomers,
   getAllDriver,
@@ -100,6 +101,13 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
       console.log(response);
     });
   };
+  //! получить файл
+  const getFile2 = () => {
+    console.log(context.selectedTr);
+    apiGetFile2(context.selectedTr).then((response) => {
+      console.log(response);
+    });
+  };
 
   //! редактирование авто
   const editCar = () => {
@@ -129,7 +137,11 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
           </button>
           <button onClick={getFile}>
             <img src="./img/File_dock.png" alt="View" />
-            Получить расчетный лист
+            Получить расчетный лист 1
+          </button>
+          <button onClick={getFile2}>
+            <img src="./img/File_dock.png" alt="View" />
+            Получить расчетный лист 2
           </button>
         </div>
       ) : context.selectedTable === "Клиенты" && state === "home" ? (

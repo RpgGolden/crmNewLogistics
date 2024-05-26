@@ -57,14 +57,14 @@ function Register() {
           <input
             type="text"
             placeholder="Фамилия"
-            name="name"
+            name="surname"
             value={formData.surname}
             onChange={handleInputChange}
           ></input>
           <input
             type="text"
             placeholder="Имя"
-            name="surname"
+            name="name"
             value={formData.name}
             onChange={handleInputChange}
           ></input>
