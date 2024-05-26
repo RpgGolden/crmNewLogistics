@@ -79,6 +79,8 @@ export default {
         }
 
         await car.destroy({ force: true });
+
+        res.json({ message: 'Car deleted' });
     },
     async updateCar(
         {
