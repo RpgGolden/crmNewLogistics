@@ -167,7 +167,6 @@ export default {
                 driverName: data.driver.name + ' ' + data.driver.surname + ' ' + data.driver.patronymic,
                 numberLicense: data.driver.numberLicense,
                 categoryLicense: data.driver.categoryLicense,
-                passportCode: data.driver.passportCode,
                 passportSerial: data.driver.passportSerial,
                 passportNumber: data.driver.passportNumber,
                 typeCar: typeCarsMap[data.car.typeCar],
