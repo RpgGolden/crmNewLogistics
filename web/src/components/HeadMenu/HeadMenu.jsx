@@ -132,16 +132,16 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             </button>
           </Link>
           <button onClick={delOrder}>
-            <img src="./img/File_dock.png" alt="View" />
+            <img src="./img/Trash.png" alt="View" />
             Удалить заказ
           </button>
           <button onClick={getFile}>
             <img src="./img/File_dock.png" alt="View" />
-            Получить расчетный лист 1
+            Получить расчетный лист
           </button>
           <button onClick={getFile2}>
             <img src="./img/File_dock.png" alt="View" />
-            Получить расчетный лист 2
+            Получить путевой лист
           </button>
         </div>
       ) : context.selectedTable === "Клиенты" && state === "home" ? (
@@ -159,7 +159,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             Редактировать
           </button>
           <button onClick={DeleteCus}>
-            <img src="./img/File_dock.png" alt="View" />
+            <img src="./img/Trash.png" alt="View" />
             Удалить клиента
           </button>
         </div>
@@ -175,7 +175,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             Редактировать
           </button>
           <button onClick={DeleteDriver}>
-            <img src="./img/File_dock.png" alt="View" />
+            <img src="./img/Trash.png" alt="View" />
             Удалить водителя
           </button>
         </div>
@@ -190,7 +190,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             Редактировать машину
           </button>
           <button onClick={DeleteCar}>
-            <img src="./img/File_dock.png" alt="View" />
+            <img src="./img/Trash.png" alt="View" />
             Удалить машину
           </button>
         </div>
@@ -219,6 +219,10 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
           <button onClick={getFile}>
             <img src="./img/File_dock.png" alt="View" />
             Получить расчетный лист
+          </button>
+          <button onClick={getFile2}>
+            <img src="./img/File_dock.png" alt="View" />
+            Получить путевой лист
           </button>
         </div>
       ) : state === "withBack" ? (
