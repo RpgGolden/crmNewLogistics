@@ -459,7 +459,7 @@ export const apiUpdateCar = async (data, carId) => {
         },
       }
     );
-    alert("Заказ обновлен");
+    alert("Машина обновлена!");
     return response;
   } catch (error) {
     alert("При обновлении машины возникла ошибка");

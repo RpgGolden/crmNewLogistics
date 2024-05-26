@@ -64,9 +64,9 @@ function Table() {
     if (context.selectedTable === "Заказы") {
       apiGetAllOrders().then((resp) => {
         console.log("Заказы", resp.data);
+        console.log("sssss")
         const dat = [...resp.data];
 
-        if (dat.length > 0) {
           dat.map((item) => {
             item.car = item.car.markCar;
             item.customer = item.customer.fio;
@@ -78,7 +78,7 @@ function Table() {
           });
           context.setTableData(dat);
           context.settableHeader(tableHeadAppoint);
-        }
+        
       });
     }
   }, [context.selectedTable]);
