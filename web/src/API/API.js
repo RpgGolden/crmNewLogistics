@@ -125,6 +125,21 @@ export const CustomersDelete = async (IdCustomer) => {
   }
 };
 
+//! Удаление машины
+export const apiDelCar = async (IdCar) => {
+  console.log(IdCar);
+  try {
+    const response = await axios.delete(`${server}/car/deleteCar/${IdCar}`, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    alert("Возникла ошибка при удалении машины!");
+  }
+};
+
 //! Удаление заказа
 export const apiDeleteOrder = async (idOrder) => {
   try {
@@ -272,7 +287,6 @@ export const getOneDriverData = async (idDriver) => {
 //! Запрос на получение всех машшин водителя
 export const apiGetAllCar = async (driverId) => {
   try {
-    console.log("получить машины водителя", driverId);
     const response = await axios.get(`${server}/car/getCars/${driverId}`, {
       headers: {
         Authorization: `${localStorage.getItem("accessToken")}`,
@@ -302,7 +316,6 @@ export const apiGetAllCarsLogistic = async () => {
 //! запрос на получение заказов водителя
 export const apiGetAllOrdersDriver = async (driverId) => {
   try {
-    console.log("получить заказов водителя", driverId);
     const response = await axios.get(
       `${server}/order/getOrderByDriverId/${driverId}`,
       {
@@ -316,24 +329,6 @@ export const apiGetAllOrdersDriver = async (driverId) => {
     console.error("Пользователь не найден!");
   }
 };
-
-//! запрос на получение файла
-// export const apiGetFile = async (orderId) => {
-//   try {
-//     console.log("получить документ", orderId);
-//     const response = await axios.get(
-//       `${server}/document/createDocument/${orderId}`,
-//       {
-//         headers: {
-//           Authorization: `${localStorage.getItem("accessToken")}`,
-//         },
-//       }
-//     );
-//     return response;
-//   } catch (error) {
-//     console.error("ошибка получения документа!");
-//   }
-// };
 
 export const apiGetFile = async (orderId) => {
   try {
@@ -426,10 +421,29 @@ export const apiUpdateOrder = async (data, orderId) => {
   }
 };
 
+//! запрос обновить машину
+export const apiUpdateCar = async (data, carId) => {
+  try {
+    console.log("обновить заказ", data, carId);
+    const response = await axios.post(
+      `${server}/car/updateCar/${carId}`,
+      { ...data },
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    alert("Заказ обновлен");
+    return response;
+  } catch (error) {
+    alert("При обновлении заказа возникла ошибка");
+  }
+};
+
 //! запрос на получение всех заказов
 export const apiGetAllOrders = async () => {
   try {
-    console.log("получить заказов водителя");
     const response = await axios.get(`${server}/order/getAllOrders`, {
       headers: {
         Authorization: `${localStorage.getItem("accessToken")}`,

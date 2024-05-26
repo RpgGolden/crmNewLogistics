@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Register.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterApi } from "../../../API/API";
+import DataContext from "../../../context";
 
 function Register() {
+  const { context } = React.useContext(DataContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -22,6 +24,10 @@ function Register() {
     }));
   };
 
+  useEffect(() => {
+    context.setTableData([]);
+  }, []);
+
   const handleRegistration = () => {
     if (
       formData.name &&
@@ -35,7 +41,7 @@ function Register() {
       console.log(formData);
       RegisterApi(dataWithoutConfirmPassword).then((registeredUserData) => {
         if (registeredUserData) {
-          navigate("/AdminPage");
+          navigate("/DriverPage");
         }
       });
     } else {
@@ -52,14 +58,14 @@ function Register() {
             type="text"
             placeholder="Фамилия"
             name="name"
-            value={formData.name}
+            value={formData.surname}
             onChange={handleInputChange}
           ></input>
           <input
             type="text"
             placeholder="Имя"
             name="surname"
-            value={formData.surname}
+            value={formData.name}
             onChange={handleInputChange}
           ></input>
           <input

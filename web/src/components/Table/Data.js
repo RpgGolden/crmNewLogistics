@@ -14,24 +14,18 @@ export const tableHeadAppoint = [
   { key: "price", value: "Сумма" },
 ];
 
-// export const tableHeadAppoint = [
-//   { key: "id", value: "Номер" },
-//   { key: "status", value: "Статус" },
-//   { key: "client", value: "Клиент" },
-//   { key: "loading", value: "Загрузка" },
-//   { key: "unloading", value: "Разгрузка" },
-//   { key: "typeCargo", value: "Груз" },
-//   { key: "executor", value: "Исполнитель" },
-//   { key: "numberCar", value: "Номер машины" },
-//   { key: "driver", value: "Водитель" },
-//   { key: "cost", value: "Сумма" },
-// ];
 export const tableHeadClient = [
   { key: "id", value: "Номер" },
   { key: "fio", value: "ФИО" },
   { key: "phoneNumber", value: "Номер телефона" },
   { key: "additionalPhoneNumber", value: "Доп-телефон" },
   { key: "login", value: "Почта" },
+  { key: "nameCompany", value: "Наим. орг." },
+  { key: "address", value: "Адрес" },
+  { key: "inn", value: "ИНН" },
+  { key: "kc", value: "К/С" },
+  { key: "bik", value: "БИК" },
+  { key: "kpp", value: "КПП" },
 ];
 
 export const tableHeadDriver = [
@@ -40,6 +34,5 @@ export const tableHeadDriver = [
   { key: "phoneNumber", value: "Номер телефона" },
   { key: "additionalPhoneNumber", value: "Доп-телефон" },
   { key: "birthDate", value: "Дата рождения" },
-  // { key: "Car", value: "Машина" },
-  // { key: "NumberCar", value: "Номер машины" },
+  { key: "addressReg", value: "Адрес" },
 ];

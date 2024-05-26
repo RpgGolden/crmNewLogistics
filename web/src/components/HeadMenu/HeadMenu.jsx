@@ -4,10 +4,13 @@ import { Link } from "react-router-dom";
 import DataContext from "../../context";
 import {
   CustomersDelete,
+  apiDelCar,
   apiDeleteOrder,
+  apiGetAllCarsLogistic,
   apiGetFile,
   driverDelete,
   getAllCustomers,
+  getAllDriver,
 } from "./../../API/API";
 function HeadMenu({ state, setFiltredData, filtredData }) {
   const { context } = useContext(DataContext);
@@ -23,9 +26,18 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
     flag &&
       driverDelete(context.selectedTr).then((response) => {
         if (response.status === 200) {
-          alert("Водитель успешно удален!");
-          // context.setpopUp("")
-          // context.setSelectedTable("Клиенты")
+          getAllDriver().then((response) => {
+            if (response) {
+              const dataTable = response.data.map((driver) => ({
+                ...driver,
+                id: driver.id,
+                fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
+              }));
+              context.setTableData(dataTable);
+              context.setSelectedTable("Водители");
+              alert("Водитель успешно удален!");
+            }
+          });
         }
       });
   };
@@ -37,13 +49,22 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
           getAllCustomers().then((response) => {
             if (response) {
               context.setTableData(response.data);
-              context.updateDataTable();
               alert("Пользователь успешно удален!");
               context.setSelectedTable("Клиенты");
             }
           });
         }
       });
+  };
+
+  //! удалить машину
+  const DeleteCar = () => {
+    apiDelCar(context.selectedTr).then((rs) => {
+      console.log(rs);
+    });
+    let d = [...context.tableData];
+    const f = d.filter((item) => item.id !== context.selectedTr);
+    context.setTableData(f);
   };
 
   //! при нажатии редактировать аккаунт
@@ -77,30 +98,17 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
     console.log(context.selectedTr);
     apiGetFile(context.selectedTr).then((response) => {
       console.log(response);
-      // const url = window.URL.createObjectURL(new Blob([response.data]));
-      // const link = document.createElement("a");
-      // link.href = url;
-      // link.setAttribute("download", "расчетный_лист.docx");
-      // document.body.appendChild(link);
-      // link.click();
     });
   };
 
-  // const getFile = () => {
-  //   console.log(context.selectedTr);
-  //   apiGetFile(context.selectedTr).then((response) => {
-  //     const blob = new Blob([response.data], {
-  //       type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  //       encoding: "utf-8",
-  //     });
-  //     const url = window.URL.createObjectURL(blob);
-  //     const link = document.createElement("a");
-  //     link.href = url;
-  //     link.setAttribute("download", "расчетный_лист.docx");
-  //     document.body.appendChild(link);
-  //     link.click();
-  //   });
-  // };
+  //! редактирование авто
+  const editCar = () => {
+    const car = context.tableData.find((el) => el.id === context.selectedTr);
+    context.setCarData({ ...car });
+    context.setEditCarData(true);
+    context.setpopUp("PopUpNewCar");
+  };
+
   return (
     <>
       {state === "home" && context.selectedTable === "Заказы" ? (
@@ -149,14 +157,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Создать заказ
           </button>
-          <button onClick={() => context.setpopUp("PopUpNewCar")}>
-            <img src="./img/add.svg" alt="View" />
-            Добавить машину
-          </button>
-          {/* <button onClick={() => context.setpopUp("PopUpNewClient")}>
-            <img src="./img/add.svg" alt="View" />
-            Добавить клиента
-          </button> */}
+
           <button onClick={() => context.setpopUp("PopUpEditDriver")}>
             <img src="./img/Edit.png" alt="View" />
             Редактировать
@@ -164,6 +165,21 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
           <button onClick={DeleteDriver}>
             <img src="./img/File_dock.png" alt="View" />
             Удалить водителя
+          </button>
+        </div>
+      ) : context.selectedTable === "Машины" && state === "home" ? (
+        <div className={styles.HeadMenu}>
+          <button onClick={() => context.setpopUp("PopUpNewCar")}>
+            <img src="./img/add.svg" alt="View" />
+            Добавить машину
+          </button>
+          <button onClick={editCar}>
+            <img src="./img/Edit.png" alt="View" />
+            Редактировать машину
+          </button>
+          <button onClick={DeleteCar}>
+            <img src="./img/File_dock.png" alt="View" />
+            Удалить машину
           </button>
         </div>
       ) : state === "register" ? (
@@ -187,6 +203,10 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
           <button onClick={editAkaunt}>
             <img src="./img/Edit.png" alt="View" />
             Редактировать аккаунт
+          </button>
+          <button onClick={getFile}>
+            <img src="./img/File_dock.png" alt="View" />
+            Получить расчетный лист
           </button>
         </div>
       ) : state === "withBack" ? (

@@ -4,10 +4,21 @@ import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
 import axios from "axios";
 import Input from "./InputNewCar/Input";
 import DataContext from "../../../context";
-import { apiAddCar, getProfileDriver } from "../../../API/API";
+import {
+  apiAddCar,
+  apiGetAllCar,
+  getProfileDriver,
+  apiGetAllCarsLogistiс,
+  apiGetAllCarsLogistic,
+  apiUpdateCar,
+} from "../../../API/API";
 
 function PopUpNewCar() {
   const { context } = React.useContext(DataContext);
+
+  useEffect(() => {
+    console.log(context.selectedTable);
+  }, [context.selectedTable]);
 
   const onChangeInput = (e, inputKey) => {
     const value = e.target.value;
@@ -31,14 +42,9 @@ function PopUpNewCar() {
   };
 
   const clickAddCar = () => {
-    getProfileDriver().then((response) => {
-      const ud = JSON.parse(localStorage.getItem("userData"));
-      console.log(ud);
-      apiAddCar(
-        ud.role === "ADMINISTRATOR"
-          ? { ...context.carData }
-          : { ...context.carData, driverId: response.data.id }
-      ).then((resp) => {
+    const ud = JSON.parse(localStorage.getItem("userData"));
+    if (ud.role === "ADMINISTRATOR") {
+      apiAddCar({ ...context.carData }).then((resp) => {
         console.log("response", resp);
         if (resp?.status === 200) {
           context.setpopUp("");
@@ -54,8 +60,77 @@ function PopUpNewCar() {
             numberOfPallet: null,
             driverId: null,
           });
+          apiGetAllCarsLogistic().then((resp) => {
+            if (resp) {
+              console.log("Машины", resp.data);
+              context.setTableData(resp.data);
+            }
+          });
         }
       });
+    } else {
+      getProfileDriver().then((response) => {
+        const ud = JSON.parse(localStorage.getItem("userData"));
+        console.log(ud);
+        apiAddCar({ ...context.carData, driverId: response.data.id }).then(
+          (resp) => {
+            console.log("response", resp);
+            if (resp?.status === 200) {
+              context.setpopUp("");
+              context.setCarData({
+                numberCar: null,
+                markCar: null,
+                typeCar: null,
+                heightCar: null,
+                widthCar: null,
+                lengthCar: null,
+                volumeCar: null,
+                loadCapacity: null,
+                numberOfPallet: null,
+                driverId: null,
+              });
+              getProfileDriver().then((response) => {
+                apiGetAllCar(response.data.id).then((resp) => {
+                  if (resp) {
+                    console.log("Машины", resp.data);
+                    context.setTableData(resp.data);
+                  }
+                });
+              });
+            }
+          }
+        );
+      });
+    }
+  };
+
+  const clickeditCar = () => {
+    const newObject = { ...context.carData };
+    delete newObject.id;
+    apiUpdateCar({ ...newObject }, context.selectedTr).then((resp) => {
+      console.log("response", resp);
+      if (resp?.status === 200) {
+        context.setpopUp("");
+        context.setCarData({
+          numberCar: null,
+          markCar: null,
+          typeCar: null,
+          heightCar: null,
+          widthCar: null,
+          lengthCar: null,
+          volumeCar: null,
+          loadCapacity: null,
+          numberOfPallet: null,
+          driverId: null,
+        });
+        apiGetAllCarsLogistic().then((resp) => {
+          if (resp) {
+            console.log("Машины", resp.data);
+            context.setTableData(resp.data);
+          }
+        });
+        context.setEditCarData(false);
+      }
     });
   };
 
@@ -98,6 +173,7 @@ function PopUpNewCar() {
           itemKey={"typeCar"}
           onChangeInput={onChangeInput}
         />
+
         <div className={styles.type1}>
           <Input
             Textlabel={"Длина, м:"}
@@ -139,8 +215,11 @@ function PopUpNewCar() {
           />
         </div>
         <div className={styles.button}>
-          <button className={styles.buttonSave} onClick={clickAddCar}>
-            Добавить
+          <button
+            className={styles.buttonSave}
+            onClick={context.editCarData ? clickeditCar : clickAddCar}
+          >
+            {context.editCarData ? "Сохранить" : "Добавить"}
           </button>
         </div>
       </div>

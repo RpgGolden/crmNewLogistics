@@ -2,117 +2,106 @@ import React from "react";
 import styles from "./EditOrder.module.scss";
 
 function CarForm(props) {
+  const typeCar = {
+    1: "Тентовый 5т",
+    2: "Контейнер",
+    3: "Микро автобус",
+    4: "Газель 6м",
+    5: "Еврофура 82м",
+  };
   return (
     <div className={styles.leftbox} style={{ height: "100%" }}>
-      <p>Машина</p>
+      <p className={styles.title}>
+        <span>Машина</span>{" "}
+        <span
+          className={styles.editText}
+          onClick={(e) => props.editData(e, "car")}
+        >
+          изменить
+        </span>
+      </p>
+
       <label>Марка</label>
       <div className={styles.leftbox_lll}>
         <input
+          style={{ backgroundColor: "#eee" }}
           type="text"
           placeholder="Марка"
           onChange={(el) => props.handleInput(el, "markCar")}
-          // value={
-          //   props.orderCon.cars.find(
-          //     (el) => el.id === props.orderCon.orderData.carId
-          //   )?.markCar
-          // }
+          readOnly
           value={props.orderCon.orderData.car?.markCar}
         />
         <label>Гос номер</label>
         <input
+          style={{ backgroundColor: "#eee" }}
           type="text"
           placeholder="Гос номер"
           onChange={(el) => props.handleInput(el, "numberCar")}
-          // value={
-          //   props.orderCon.cars.find(
-          //     (el) => el.id === props.orderCon.orderData.carId
-          //   )?.numberCar
-          // }
+          readOnly
           value={props.orderCon.orderData.car?.numberCar}
         />
         <label>Тип авто</label>
         <input
+          style={{ backgroundColor: "#eee" }}
           type="text"
           placeholder="Тип авто"
           onChange={(el) => props.handleInput(el, "typeCar")}
-          // value={
-          //   props.orderCon.cars.find(
-          //     (el) => el.id === props.orderCon.orderData.carId
-          //   )?.typeCar
-          // }
-          value={props.orderCon.orderData.car?.typeCar}
+          readOnly
+          value={typeCar[props.orderCon.orderData.car?.typeCar]}
         />
         <label>Длина, м</label>
 
         <input
+          style={{ backgroundColor: "#eee" }}
           type="text"
           placeholder="Длина, м"
           onChange={(el) => props.handleInput(el, "lengthCar")}
-          // value={
-          //   props.orderCon.cars.find(
-          //     (el) => el.id === props.orderCon.orderData.carId
-          //   )?.lengthCar
-          // }
+          readOnly
           value={props.orderCon.orderData.car?.lengthCar}
         />
         <label>Ширина, м</label>
         <input
+          style={{ backgroundColor: "#eee" }}
           type="text"
           placeholder="Ширина, м"
           onChange={(el) => props.handleInput(el, "widthCar")}
-          // value={
-          //   props.orderCon.cars.find(
-          //     (el) => el.id === props.orderCon.orderData.carId
-          //   )?.widthCar
-          // }
+          readOnly
           value={props.orderCon.orderData.car?.widthCar}
         />
         <label>Высота, м</label>
         <input
+          style={{ backgroundColor: "#eee" }}
           type="text"
           placeholder="Высота, м"
           onChange={(el) => props.handleInput(el, "heightCar")}
-          // value={
-          //   props.orderCon.cars.find(
-          //     (el) => el.id === props.orderCon.orderData.carId
-          //   )?.heightCar
-          // }
+          readOnly
           value={props.orderCon.orderData.car?.heightCar}
         />
         <label>Объем, м3</label>
         <input
+          style={{ backgroundColor: "#eee" }}
           type="text"
           placeholder="Объем, м3"
           onChange={(el) => props.handleInput(el, "volumeCar")}
-          // value={
-          //   props.orderCon.cars.find(
-          //     (el) => el.id === props.orderCon.orderData.carId
-          //   )?.volumeCar
-          // }
+          readOnly
           value={props.orderCon.orderData.car?.volumeCar}
         />
         <label>Грузоподъемность, т</label>
         <input
+          style={{ backgroundColor: "#eee" }}
           type="text"
           placeholder="Грузоподъемность, т"
           onChange={(el) => props.handleInput(el, "loadCapacity")}
-          // value={
-          //   props.orderCon.cars.find(
-          //     (el) => el.id === props.orderCon.orderData.carId
-          //   )?.loadCapacity
-          // }
+          readOnly
           value={props.orderCon.orderData.car?.loadCapacity}
         />
         <label>Колличесвто палет</label>
         <input
+          style={{ backgroundColor: "#eee" }}
           type="text"
           placeholder="Колличесвто палет"
           onChange={(el) => props.handleInput(el, "numberOfPallet")}
-          // value={
-          //   props.orderCon.cars.find(
-          //     (el) => el.id === props.orderCon.orderData.carId
-          //   )?.numberOfPallet
-          // }
+          readOnly
           value={props.orderCon.orderData.car?.numberOfPallet}
         />
       </div>

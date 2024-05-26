@@ -22,8 +22,15 @@ import ClientForm from "./ClientForm";
 import DriverForm from "./DriverForm";
 import CarForm from "./CarForm";
 import GruzForm from "./GruzForm";
-import { apiAddOrder, apiGetAllOrders, apiUpdateOrder } from "../../API/API";
+import {
+  apiAddOrder,
+  apiGetAllCarsLogistic,
+  apiGetAllOrders,
+  apiUpdateOrder,
+  getAllDriver,
+} from "../../API/API";
 import { useNavigate } from "react-router-dom";
+import EditForm from "./EditForm";
 const markerIcon = new L.Icon({
   iconUrl: markerIconPng,
   iconSize: [25, 32],
@@ -150,9 +157,9 @@ const EditOredr = () => {
 
   const handleInput = (el, key) => {
     const query = el.target.value;
-    let date = cardData;
+    let date = { ...orderCon.orderData };
     date[key] = query;
-    setCardData({ ...date });
+    orderCon.setOrderData({ ...date });
   };
 
   useEffect(() => {
@@ -227,28 +234,38 @@ const EditOredr = () => {
   }, []);
 
   const [route, setRoute] = useState(null);
+  const [routingControl, setRoutingControl] = useState(null);
   useEffect(() => {
     const fetchRoute = async () => {
       if (pointCoor[0] && pointCoor[1]) {
-        const startPoint = L.latLng(pointCoor[0][0], pointCoor[0][1]); // Сан-Франциско
-        const endPoint = L.latLng(pointCoor[1][0], pointCoor[1][1]); // Сан-Хосе
+        const startPoint = L.latLng(pointCoor[0][0], pointCoor[0][1]);
+        const endPoint = L.latLng(pointCoor[1][0], pointCoor[1][1]);
 
-        const routingControl = L.Routing.control({
+        if (routingControl) {
+          // Удаляем предыдущий путь
+          routingControl.remove();
+          setRoutingControl(null);
+        }
+
+        const newRoutingControl = L.Routing.control({
           waypoints: [startPoint, endPoint],
           router: L.Routing.osrmv1({
             serviceUrl: "https://router.project-osrm.org/route/v1/",
           }),
         });
 
-        routingControl.on("routesfound", function (e) {
+        newRoutingControl.on("routesfound", function (e) {
           setRoute(e.routes[0]);
         });
-        if (mapRef.current && routingControl) {
-          // Добавляем routingControl на карту
-          routingControl.addTo(mapRef.current);
+
+        if (mapRef.current) {
+          // Добавляем новый routingControl на карту
+          newRoutingControl.addTo(mapRef.current);
+          setRoutingControl(newRoutingControl);
         }
       }
     };
+
     if (mapRef && pointCoor.length === 2) {
       fetchRoute();
     }
@@ -293,7 +310,7 @@ const EditOredr = () => {
       setSummZakaz(sz);
       setPribil(prib);
       const md = { ...orderCon.orderData };
-      md.price = prib.sum;
+      md.price = sz.kl;
       orderCon.setOrderData(md);
       console.log(md);
     }
@@ -323,24 +340,84 @@ const EditOredr = () => {
     console.log("c", center);
   }, [center]);
 
+  const typeCar = {
+    1: "Тентовый 5т",
+    2: "Контейнер",
+    3: "Микро автобус",
+    4: "Газель 6м",
+    5: "Еврофура 82м",
+  };
+
+  const [editForm, setEditForm] = useState(false);
+  const [editFormData, setEditFormData] = useState({ type: null, data: [] });
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const editData = (el, type) => {
+    console.log(el);
+    setPosition({ x: el.pageY, y: el.pageX - 150 });
+    setEditForm(!editForm);
+    if (type === "car") {
+      apiGetAllCarsLogistic().then((resp) => {
+        if (resp) {
+          console.log("Машины", resp.data);
+          setEditFormData({ type: type, data: resp.data });
+        }
+      });
+    }
+    if (type === "driver") {
+      getAllDriver().then((response) => {
+        if (response) {
+          const dataTable = response.data.map((driver) => ({
+            ...driver,
+            id: driver.id,
+            fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
+          }));
+          console.log(dataTable);
+
+          setEditFormData({ type: type, data: dataTable });
+        }
+      });
+    }
+  };
+  const liClick = (item) => {
+    console.log(item);
+    const md = { ...orderCon.orderData };
+    md[editFormData.type] = editFormData.data.find((el) => el.id === item.id);
+    orderCon.setOrderData(md);
+    setEditFormData({ type: null, data: [] });
+    setEditForm(false);
+  };
   return (
     <div>
       <HeadMenu state={"register"} />
 
       <div className={styles.EditPatient}>
+        {editForm && (
+          <EditForm
+            liClick={liClick}
+            position={position}
+            dataList={editFormData}
+          />
+        )}
         <div>
           <h1>Редактирование заказа</h1>
           <div className={styles.data_container}>
             <div className={styles.driverCar}>
-              <ClientForm handleInput={handleInput} orderCon={orderCon} />
+              <ClientForm
+                editData={editData}
+                handleInput={handleInput}
+                orderCon={orderCon}
+              />
               <div className={styles.centerbox}>
                 <p>Заказ</p>
                 <label>Тип транспорта</label>
                 <input
                   type="text"
+                  style={{ backgroundColor: "#eee" }}
+                  readOnly
                   placeholder="Тип транспорта"
                   onChange={(el) => handleInput(el, "сarType")}
-                  value={orderCon.orderData?.car?.typeCar}
+                  value={typeCar[orderCon.orderData?.car?.typeCar]}
                 />
                 <label>Загрузка</label>
                 <div className={styles.address}>
@@ -376,11 +453,19 @@ const EditOredr = () => {
             </div>
             <div className={styles.driverCar}>
               <GruzForm handleInput={handleInput} orderCon={orderCon} />
-              <DriverForm handleInput={handleInput} orderCon={orderCon} />
+              <DriverForm
+                editData={editData}
+                handleInput={handleInput}
+                orderCon={orderCon}
+              />
             </div>
 
             <div className={styles.driverCar}>
-              <CarForm handleInput={handleInput} orderCon={orderCon} />
+              <CarForm
+                editData={editData}
+                handleInput={handleInput}
+                orderCon={orderCon}
+              />
             </div>
           </div>
           <div className={styles.zakazgrup}>

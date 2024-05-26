@@ -4,28 +4,27 @@ import { tableHeadAppoint, tableHeadClient, tableHeadDriver } from "./Data";
 import DataContext from "../../context";
 import {
   apiCreateFile,
+  apiGetAllCarsLogistic,
   apiGetAllOrders,
   getAllCustomers,
   getAllDriver,
   getProfileDriver,
 } from "../../API/API";
+import { tableHeadCar } from "../TableDriverPage/Data";
 
 function Table() {
   const { context } = React.useContext(DataContext);
-  const [tableHeader, settableHeader] = useState(tableHeadAppoint);
 
   const trClick = (row) => {
     context.setSelectedTr(row.id);
   };
 
   useEffect(() => {
-    console.log(context.selectedTable);
     if (context.selectedTable === "Клиенты") {
       getAllCustomers().then((response) => {
         if (response) {
-          console.log(response.data);
           context.setTableData(response.data);
-          settableHeader(tableHeadClient);
+          context.settableHeader(tableHeadClient);
         }
       });
     }
@@ -38,24 +37,49 @@ function Table() {
             fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
           }));
           context.setTableData(dataTable);
-          settableHeader(tableHeadDriver);
+          context.settableHeader(tableHeadDriver);
         }
+      });
+    }
+    if (context.selectedTable === "Машины") {
+      apiGetAllCarsLogistic().then((response) => {
+        console.log("Все машины", response.data);
+        const type = {
+          1: "Тентовый 5т",
+          2: "Контейнер",
+          4: "Микро автобус",
+          5: "Газель 6м",
+          6: "Еврофура 82м",
+        };
+
+        let cd = [...response.data];
+        cd.map((item) => {
+          item.typeCar = type[Number(item.typeCar)];
+        });
+
+        context.setTableData(cd);
+        context.settableHeader(tableHeadCar);
       });
     }
     if (context.selectedTable === "Заказы") {
       apiGetAllOrders().then((resp) => {
         console.log("Заказы", resp.data);
         const dat = [...resp.data];
-        dat.map((item) => {
-          item.car = item.car.markCar;
-          item.customer = item.customer.fio;
-          item.driver = item.driver.name;
-          item.loading = JSON.parse(item.loading).adress;
-          item.unloading = JSON.parse(item.unloading).adress;
-        });
-        context.setTableData(dat);
+
+        if (dat.length > 0) {
+          dat.map((item) => {
+            item.car = item.car.markCar;
+            item.customer = item.customer.fio;
+            if (item.driver !== null) {
+              item.driver = `${item.driver.surname} ${item.driver.name} ${item.driver.patronymic}`;
+            }
+            item.loading = JSON.parse(item.loading).adress;
+            item.unloading = JSON.parse(item.unloading).adress;
+          });
+          context.setTableData(dat);
+          context.settableHeader(tableHeadAppoint);
+        }
       });
-      settableHeader(tableHeadAppoint);
     }
   }, [context.selectedTable]);
 
@@ -66,7 +90,7 @@ function Table() {
           <table className={styles.TableInner}>
             <thead>
               <tr>
-                {tableHeader.map((item) => (
+                {context.tableHeader.map((item) => (
                   <th key={item.key}>{item.value}</th>
                 ))}
               </tr>
@@ -80,7 +104,7 @@ function Table() {
                     context.selectedTr === row.id ? styles.setectedTr : null
                   }
                 >
-                  {tableHeader.map((headerItem) => (
+                  {context.tableHeader.map((headerItem) => (
                     <td key={headerItem.key}>
                       {headerItem.key === "id" ? (
                         index + 1

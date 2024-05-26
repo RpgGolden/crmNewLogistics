@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import styles from "./PopUpEditDriver.module.scss";
 import PopUpContainer from "../../../UI/PopUpContainer/PopUpContainer";
 import Input from "../../../UI/Input/Input";
-import { EditDriverInfo, editDriverInfo, getOneDriverData } from "../../../API/API";
+import { EditDriverInfo, editDriverInfo, getAllDriver, getOneDriverData } from "../../../API/API";
 import DataContext from "../../../context";
 import InputOnlyDate from "../../../UI/InputOnlyDate/InputOnlyDate";
+import { tableHeadDriver } from "../../Table/Data";
 
 function PopUpEditDriver() {
     const { context } = React.useContext(DataContext);
@@ -69,8 +70,19 @@ function PopUpEditDriver() {
     console.log('dataNewClient', dataNewClient)
     editDriverInfo(idSelectDriver, dataNewClient).then((response)=>{
         if(response){
-            console.log(response);
-            console.log("Worked")
+            getAllDriver().then((response) => {
+                if (response) {
+                  const dataTable = response.data.map((driver) => ({
+                    ...driver,
+                    id: driver.id,
+                    fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
+                  }));
+                  context.setTableData(dataTable);
+                  context.settableHeader(tableHeadDriver);
+                  alert("Данные водителя обновлены!")
+                  context.setpopUp("")
+                }
+              });
         }
     })
    }

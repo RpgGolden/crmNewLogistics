@@ -8,9 +8,9 @@ import OrderDto from '../dtos/order-dto.js';
 import Car from '../models/car.js';
 import Driver from '../models/driver.js';
 import Customer from '../models/customer.js';
-import {map as typeCarsMap} from '../config/type.js';
+import { map as typeCarsMap } from '../config/type.js';
 
-const formatCustomerFio = (fio) => {
+const formatCustomerFio = fio => {
     const [surname, name, patronymic] = fio.split(' ');
     const initialName = name ? name.charAt(0).toUpperCase() + '.' : '';
     const initialPatronymic = patronymic ? patronymic.charAt(0).toUpperCase() + '.' : '';
@@ -52,10 +52,11 @@ export default {
                 ][date.getMonth()];
 
             doc.setData({
-                currentDate: dateContract.getDate() + ' ' + getMonthStr(dateContract) + ' ' + dateContract.getFullYear(),
+                currentDate:
+                    dateContract.getDate() + ' ' + getMonthStr(dateContract) + ' ' + dateContract.getFullYear(),
                 customerCompany: data.customer.nameCompany,
-                loading: data.loading,
-                unloading: data.unloading,
+                loading: JSON.parse(data.loading).adress,
+                unloading: JSON.parse(data.unloading).adress,
                 dateBegin: data.dateBegin.split(' ')[0],
                 dateEnd: data.dateEnd.split(' ')[0],
                 dateTimeBegin: data.dateBegin.split(' ')[1].slice(0, 5),
@@ -72,7 +73,14 @@ export default {
                 price: data.price,
                 driverFio: data.driver.name + ' ' + data.driver.surname + ' ' + data.driver.patronymic,
                 driverPhone1: data.driver.phoneNumber,
-                passport: data.driver.passportNumber + ' ' + data.driver.passportSerial + ' ' + data.driver.passportIssueBy + ' ' + data.driver.passportIssueDate,
+                passport:
+                    data.driver.passportNumber +
+                    ' ' +
+                    data.driver.passportSerial +
+                    ' ' +
+                    data.driver.passportIssueBy +
+                    ' ' +
+                    data.driver.passportIssueDate,
                 car: data.car.numberCar + ' ' + data.car.markCar,
                 customerCompanyName: data.customer.nameCompany,
                 unloadingCompany: data.customer.address,

@@ -7,38 +7,29 @@ function ClientForm(props) {
       <p>Клиент</p>
       <label>Фамилия</label>
       <input
+        style={{ backgroundColor: "#eee" }}
         type="text"
         placeholder="Фамилия"
         onChange={(el) => props.handleInput(el, "surname")}
-        // value={
-        //   props.orderCon.clients
-        //     .find((el) => el.id === props.orderCon.orderData.customerId)
-        //     ?.fio.split(" ")[0]
-        // }
         value={props.orderCon.orderData.customer?.fio.split(" ")[0]}
+        readOnly
       />
       <label>Имя</label>
       <input
+        style={{ backgroundColor: "#eee" }}
         type="text"
         placeholder="Имя"
         onChange={(el) => props.handleInput(el, "name")}
-        // value={
-        //   props.orderCon.clients
-        //     .find((el) => el.id === props.orderCon.orderData.customerId)
-        //     ?.fio.split(" ")[1]
-        // }
+        readOnly
         value={props.orderCon.orderData.customer?.fio.split(" ")[1]}
       />
       <label>Отчество</label>
       <input
+        style={{ backgroundColor: "#eee" }}
         type="text"
         placeholder="Отчество"
         onChange={(el) => props.handleInput(el, "patronymic")}
-        // value={
-        //   props.orderCon.clients
-        //     .find((el) => el.id === props.orderCon.orderData.customerId)
-        //     ?.fio.split(" ")[2]
-        // }
+        readOnly
         value={props.orderCon.orderData.customer?.fio.split(" ")[2]}
       />
       <label>Телефон</label>
@@ -46,11 +37,6 @@ function ClientForm(props) {
         type="text"
         placeholder="Телефон"
         onChange={(el) => props.handleInput(el, "tel")}
-        // value={
-        //   props.orderCon.clients.find(
-        //     (el) => el.id === props.orderCon.orderData.customerId
-        //   )?.phoneNumber
-        // }
         value={props.orderCon.orderData.customer?.phoneNumber}
       />
     </div>
