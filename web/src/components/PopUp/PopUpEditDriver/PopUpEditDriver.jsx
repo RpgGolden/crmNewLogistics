@@ -219,7 +219,7 @@ function PopUpEditDriver() {
           name="actualAdress"
         />
         <div className={styles.button}>
-          <button className={styles.buttonSave} onClick={saveDataDriver} style={{backgroundColor:"#000"}}>
+          <button className={styles.buttonSave} onClick={saveDataDriver}>
             Сохранить
           </button>
         </div>
