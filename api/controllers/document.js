@@ -172,7 +172,7 @@ export default {
                 typeCar: typeCarsMap[data.car.typeCar],
                 numberCar2: data.car.numberCar,
                 driverName2: data.driver.name + ' ' + data.driver.surname + ' ' + data.driver.patronymic,
-                addressCustomer: data.customer.address,
+                addressCustomer: data.customer.nameCompany + ' ' + data.customer.address,
                 typeCargo: data.typeCargo,
                 km: data.km,
                 weight: data.weight,
