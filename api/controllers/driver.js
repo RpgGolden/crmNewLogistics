@@ -8,7 +8,7 @@ export default {
     async getProfile(req, res) {
         const driver = await Driver.findOne({ where: { userId: req.user.id } });
         console.log(req.user.id)
-        if (!driver) { 
+        if (!driver) {
             throw new AppErrorMissing('Driver not found');
         }
         const profile = new ProfileDto(driver);
