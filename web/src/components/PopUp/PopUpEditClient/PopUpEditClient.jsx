@@ -84,7 +84,7 @@ function PopUpEditClient() {
 
         <div className={styles.popRigth}>
           <Input
-            Textlabel={"Адресс клиента"}
+            Textlabel={"Адрес клиента"}
             handleInputChange={handleInputChange}
             name="address"
             value={dataNewClient.address}
