@@ -48,7 +48,6 @@ function App() {
   const [dataDrivers, setdataDriver] = useState([]);
   const [dataCar, setdataCar] = useState([]);
   const [dataCarDriver, setdataCarDriver] = useState([]);
-  // settableHeader(tableHeadAppoint);
 
   const updateDataTable = () => {
     getAllCustomers().then((response) => {
@@ -84,6 +83,8 @@ function App() {
     apiGetAllCarsLogistic().then((response) => {
       setdataCar(response.data);
     });
+    console.log('ud.role', ud.role)
+    console.log('ud', ud)
     if (ud.role === "DRIVER") {
       getProfileDriver().then((response) => {
         apiGetAllCar(response.data.id).then((resp) => {

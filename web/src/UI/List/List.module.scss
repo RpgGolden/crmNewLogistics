@@ -4,6 +4,7 @@
 .List {
   display: flex;
   justify-content: center;
+  font-size: 16px;
   input {
     @include input-text(420px, 8px);
     margin-bottom: 18px;
@@ -39,7 +40,8 @@
     border-bottom: 1px solid #adadad;
     background-color: #fff;
     .NameForList {
-      font-size: 18px;
+      font-size: 16px;
+      margin-left: 7px;
       cursor: pointer;
       &:hover {
         color: var(--turquoise-color);
