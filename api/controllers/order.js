@@ -10,6 +10,7 @@ export default {
     async createOrder(req, res) {
         const data = req.body;
         const {
+            numberOrder,
             customerId,
             driverId,
             carId,
@@ -40,6 +41,7 @@ export default {
         }
 
         const order = await Order.create({
+            numberOrder,
             customerId: customer.id,
             driverId: driver.id,
             carId: car.id,

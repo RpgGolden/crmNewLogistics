@@ -3,6 +3,7 @@ import DriverDto from './profile-dto.js';
 import CarDto from './car-dto.js';
 export default class OrderDto {
     id;
+    numberOrder;
     customer;
     driver;
     car;
@@ -20,6 +21,7 @@ export default class OrderDto {
     status;
     constructor(model) {
         this.id = model.id;
+        this.numberOrder = model.numberOrder;
         this.customer = model.Customer ? new CustomerDto(model.Customer) : null;
         this.driver = model.Driver ? new DriverDto(model.Driver) : null;
         this.car = model.Car ? new CarDto(model.Car) : null;

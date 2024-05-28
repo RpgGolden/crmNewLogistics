@@ -11,6 +11,10 @@ export default class Order extends Model {
                     allowNull: false,
                     primaryKey: true,
                 },
+                numberOrder: {
+                  type: DataTypes.INTEGER,
+                  allowNull: false,
+                },
                 customerId: {
                     type: DataTypes.UUID,
                     allowNull: false,
