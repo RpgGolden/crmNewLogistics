@@ -32,7 +32,7 @@ function App() {
   const [tableHeader, settableHeader] = useState(tableHeadAppoint);
 
   const ud = JSON.parse(localStorage.getItem("userData"));
-  const [carData, setCarData] = useState({
+  const carDataObj = {
     numberCar: null,
     markCar: null,
     typeCar: null,
@@ -42,7 +42,8 @@ function App() {
     volumeCar: null,
     loadCapacity: null,
     numberOfPallet: null,
-  });
+  };
+  const [carData, setCarData] = useState(carDataObj);
   const [dataAppoints, setdataAppoint] = useState([]);
   const [dataClients, setdataClient] = useState([]);
   const [dataDrivers, setdataDriver] = useState([]);
@@ -99,6 +100,7 @@ function App() {
   const [editCarData, setEditCarData] = useState(false);
 
   const context = {
+    carDataObj,
     tableData,
     setTableData,
     selectedTr,

@@ -181,7 +181,13 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
         </div>
       ) : context.selectedTable === "Машины" && state === "home" ? (
         <div className={styles.HeadMenu}>
-          <button onClick={() => context.setpopUp("PopUpNewCar")}>
+          <button
+            onClick={() => {
+              context.setCarData(context.carDataObj);
+              context.setSelectedTr(null);
+              context.setpopUp("PopUpNewCar");
+            }}
+          >
             <img src="./img/add.svg" alt="View" />
             Добавить машину
           </button>
