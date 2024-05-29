@@ -6,6 +6,7 @@ import {
   apiCreateFile,
   apiGetAllCarsLogistic,
   apiGetAllOrders,
+  apiUpdateStatus,
   getAllCustomers,
   getAllDriver,
   getProfileDriver,
@@ -64,24 +65,37 @@ function Table() {
     if (context.selectedTable === "Заказы") {
       apiGetAllOrders().then((resp) => {
         console.log("Заказы", resp.data);
-        console.log("sssss")
+        console.log("sssss");
         const dat = [...resp.data];
 
-          dat.map((item) => {
-            item.car = item.car.markCar;
-            item.customer = item.customer.fio;
-            if (item.driver !== null) {
-              item.driver = `${item.driver.surname} ${item.driver.name} ${item.driver.patronymic}`;
-            }
-            item.loading = JSON.parse(item.loading).adress;
-            item.unloading = JSON.parse(item.unloading).adress;
-          });
-          context.setTableData(dat);
-          context.settableHeader(tableHeadAppoint);
-        
+        dat.map((item) => {
+          item.car = item.car.markCar;
+          item.customer = item.customer.fio;
+          if (item.driver !== null) {
+            item.driver = `${item.driver.surname} ${item.driver.name} ${item.driver.patronymic}`;
+          }
+          item.loading = JSON.parse(item.loading).adress;
+          item.unloading = JSON.parse(item.unloading).adress;
+        });
+        context.setTableData(dat);
+        context.settableHeader(tableHeadAppoint);
       });
     }
   }, [context.selectedTable]);
+
+  const status = {
+    1: "Создан",
+    2: "Подтвержден",
+    3: "Отклонен",
+    4: "Завершен",
+  };
+  const [shovStatusPop, setshovStatusPop] = useState(false);
+  const editStatus = (value) => {
+    console.log(value);
+    apiUpdateStatus(context.selectedTr, value).then(() => {
+      console.log("ss");
+    });
+  };
 
   return (
     <>
@@ -108,10 +122,27 @@ function Table() {
                     <td key={headerItem.key}>
                       {headerItem.key === "id" ? (
                         index + 1
-                      ) : headerItem.key === "file" ? (
-                        <>
-                          <img width={22} src="./img/file.svg" />
-                        </>
+                      ) : headerItem.key === "status" ? (
+                        <div
+                          onClick={() => setshovStatusPop(!shovStatusPop)}
+                          className={styles.statusClick}
+                        >
+                          {status[row[headerItem.key]]}
+                          {shovStatusPop && (
+                            <div className={styles.shovStatusPop}>
+                              <ul>
+                                {Object.values(status).map((value, index) => (
+                                  <li
+                                    onClick={() => editStatus(index + 1)}
+                                    key={index}
+                                  >
+                                    {value}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
                       ) : (
                         row[headerItem.key]
                       )}
