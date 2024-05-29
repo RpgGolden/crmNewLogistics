@@ -104,6 +104,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
   };
 
   const funMapGo = () => {
+    if(context.selectedTr != null){
     if (context.selectedTr && context.selectedTable === "Заказы") {
       let par = null;
       par = context.tableData.find((el) => el.id === context.selectedTr);
@@ -112,6 +113,8 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
         ","
       )}~${par.geoUnLoading.join(",")}`;
       window.open(url, "_blank");
+    }}else{
+      alert("Сначала выберите заказ!")
     }
   };
 
@@ -240,23 +243,10 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             Удалить машину
           </button>
         </div>
-      ) : state === "register" ? (
-        <div className={styles.HeadMenu}>
-          <Link to="./..">
-            <button>
-              <img src="./../img/Home.png" alt="View" />
-              На главную
-            </button>
-          </Link>
-        </div>
-      ) : state === "driverPage" ? (
+      ) : (state === "driverPage" &&  context.selectedTable === "Заказы") ?(
         <div className={styles.HeadMenu}>
           <button onClick={funMapGo}>
             <img src="./img/View.png" alt="View" />В путь
-          </button>
-          <button onClick={() => context.setpopUp("PopUpNewCar")}>
-            <img src="./img/add.svg" alt="View" />
-            Добавить машину
           </button>
           <button onClick={editAkaunt}>
             <img src="./img/Edit.png" alt="View" />
@@ -271,38 +261,17 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             Получить путевой лист
           </button>
         </div>
-      ) : state === "withBack" ? (
+      ):(state === "driverPage" &&  context.selectedTable === "Машины") &&(
         <div className={styles.HeadMenu}>
-          <Link to="./..">
-            <button>
-              <img src="./../img/Home.png" alt="View" />
-              На Главную
-            </button>
-          </Link>
+          <button onClick={() => context.setpopUp("PopUpNewCar")}>
+            <img src="./img/add.svg" alt="View" />
+            Добавить машину
+          </button>
+          <button onClick={editCar}>
+            <img src="./img/Edit.png" alt="View" />
+            Редактировать машину
+          </button>
         </div>
-      ) : (
-        state === "card" && (
-          <div className={styles.HeadMenu}>
-            <Link to="./..">
-              <button>
-                <img src="./../img/Home.png" alt="View" />
-                На главную
-              </button>
-            </Link>
-            <Link to="./../MakeAppointmentRegistrar">
-              <button>
-                <img src="./../img/File_dock.png" alt="View" />
-                Записать на прием
-              </button>
-            </Link>
-            <Link to="./../EditPatient">
-              <button>
-                <img src="./../img/Edit.png" alt="View" />
-                Редактировать
-              </button>
-            </Link>
-          </div>
-        )
       )}
     </>
   );
