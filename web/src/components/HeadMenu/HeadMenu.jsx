@@ -23,63 +23,63 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
       : false;
 
   const DeleteDriver = () => {
-    if(context.selectedTr != null){
-    flag &&
-      driverDelete(context.selectedTr).then((response) => {
-        if (response.status === 200) {
-          getAllDriver().then((response) => {
-            if (response) {
-              const dataTable = response.data.map((driver) => ({
-                ...driver,
-                id: driver.id,
-                fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
-              }));
-              context.setTableData(dataTable);
-              context.setSelectedTable("Водители");
-              alert("Водитель успешно удален!");
-              context.updateDataTable();
-            }
-          });
-        }
-      });
-    }else{
-      alert("Сначала выберите водителя!")
+    if (context.selectedTr != null) {
+      flag &&
+        driverDelete(context.selectedTr).then((response) => {
+          if (response.status === 200) {
+            getAllDriver().then((response) => {
+              if (response) {
+                const dataTable = response.data.map((driver) => ({
+                  ...driver,
+                  id: driver.id,
+                  fio: `${driver.name} ${driver.surname} ${driver.patronymic}`,
+                }));
+                context.setTableData(dataTable);
+                context.setSelectedTable("Водители");
+                alert("Водитель успешно удален!");
+                context.updateDataTable();
+              }
+            });
+          }
+        });
+    } else {
+      alert("Сначала выберите водителя!");
     }
   };
 
   const DeleteCus = () => {
-    if(context.selectedTr != null){
-    flag &&
-      CustomersDelete(context.selectedTr).then((response) => {
-        if (response.status === 200 && context.selectedTable === "Клиенты") {
-          getAllCustomers().then((response) => {
-            if (response) {
-              context.setTableData(response.data);
-              alert("Пользователь успешно удален!");
-              context.setSelectedTable("Клиенты");
-              context.updateDataTable();
-            }
-          });
-        }
-      });
-    }else{
-      alert("Сначала выберите клиента!")
+    if (context.selectedTr != null) {
+      flag &&
+        CustomersDelete(context.selectedTr).then((response) => {
+          if (response.status === 200 && context.selectedTable === "Клиенты") {
+            getAllCustomers().then((response) => {
+              if (response) {
+                context.setTableData(response.data);
+                alert("Пользователь успешно удален!");
+                context.setSelectedTable("Клиенты");
+                context.updateDataTable();
+              }
+            });
+          }
+        });
+    } else {
+      alert("Сначала выберите клиента!");
     }
   };
 
   //! удалить машину
   const DeleteCar = () => {
-    if(context.selectedTr != null){
-    apiDelCar(context.selectedTr).then((rs) => {
-      alert("Машина удалена!")
-      context.updateDataTable();
-    });
-    let d = [...context.tableData];
-    const f = d.filter((item) => item.id !== context.selectedTr);
-    context.setTableData(f);
-  }else{
-    alert("Сначала выберите машину!")
-  }
+    if (context.selectedTr != null) {
+      apiDelCar(context.selectedTr).then((rs) => {
+        alert("Машина удалена!");
+        context.updateDataTable();
+      });
+      let d = [...context.tableData];
+      const f = d.filter((item) => item.id !== context.selectedTr);
+      context.setTableData(f);
+    } else {
+      alert("Сначала выберите машину!");
+    }
   };
 
   //! при нажатии редактировать аккаунт
@@ -88,70 +88,69 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
   };
 
   const delOrder = () => {
-    if(context.selectedTr != null){
-    apiDeleteOrder(context.selectedTr).then(() => {
-      // context.updateDataTable();
-      context.setTableData(
-        context.tableData.filter((item) => item.id !== context.selectedTr)
-      );
-      context.updateDataTable();
-      alert("Заказ удален!")
-
-    });
-  }else{
-    alert("Сначала выберите заказ!")
-  }
+    if (context.selectedTr != null) {
+      apiDeleteOrder(context.selectedTr).then(() => {
+        // context.updateDataTable();
+        context.setTableData(
+          context.tableData.filter((item) => item.id !== context.selectedTr)
+        );
+        context.updateDataTable();
+        alert("Заказ удален!");
+      });
+    } else {
+      alert("Сначала выберите заказ!");
+    }
   };
 
   const funMapGo = () => {
-    if(context.selectedTr != null){
-    if (context.selectedTr && context.selectedTable === "Заказы") {
-      let par = null;
-      par = context.tableData.find((el) => el.id === context.selectedTr);
-      console.log(par.geoLoading, par.geoUnLoading);
-      const url = `https://yandex.ru/maps/?rtext=${par.geoLoading.join(
-        ","
-      )}~${par.geoUnLoading.join(",")}`;
-      window.open(url, "_blank");
-    }}else{
-      alert("Сначала выберите заказ!")
+    if (context.selectedTr != null) {
+      if (context.selectedTr && context.selectedTable === "Заказы") {
+        let par = null;
+        par = context.tableData.find((el) => el.id === context.selectedTr);
+        console.log(par.geoLoading, par.geoUnLoading);
+        const url = `https://yandex.ru/maps/?rtext=${par.geoLoading.join(
+          ","
+        )}~${par.geoUnLoading.join(",")}`;
+        window.open(url, "_blank");
+      }
+    } else {
+      alert("Сначала выберите заказ!");
     }
   };
 
   //! получить файл
   const getFile = () => {
-    if(context.selectedTr != null){
-    console.log(context.selectedTr);
-    apiGetFile(context.selectedTr).then((response) => {
-      console.log(response);
-    });
-  }else{
-      alert("Сначала выберите заказ!")
+    if (context.selectedTr != null) {
+      console.log(context.selectedTr);
+      apiGetFile(context.selectedTr).then((response) => {
+        console.log(response);
+      });
+    } else {
+      alert("Сначала выберите заказ!");
     }
   };
   //! получить файл
   const getFile2 = () => {
-    if(context.selectedTr != null){
-    console.log(context.selectedTr);
-    apiGetFile2(context.selectedTr).then((response) => {
-      console.log(response);
-    });
-  }else{
-    alert("Сначала выберите заказ!")
-  }
+    if (context.selectedTr != null) {
+      console.log(context.selectedTr);
+      apiGetFile2(context.selectedTr).then((response) => {
+        console.log(response);
+      });
+    } else {
+      alert("Сначала выберите заказ!");
+    }
   };
 
   //! редактирование авто
   const editCar = () => {
-    if(context.selectedTr != null){
+    if (context.selectedTr != null) {
       const car = context.tableData.find((el) => el.id === context.selectedTr);
       context.setCarData({ ...car });
       context.setEditCarData(true);
       context.setpopUp("PopUpNewCar");
-    }else{
-      alert("Сначала выберите машину!")
+    } else {
+      alert("Сначала выберите машину!");
     }
-   
   };
 
   return (
@@ -170,7 +169,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
               </button>
             </Link>
           ) : (
-            <button onClick={() => alert('Сначала выберите заказ!')}>
+            <button onClick={() => alert("Сначала выберите заказ!")}>
               <img src="./img/Edit.png" alt="View" />
               Редактировать
             </button>
@@ -200,7 +199,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
               Редактировать
             </button>
           ) : (
-            <button onClick={() => alert('Сначала выберите клиента!')}>
+            <button onClick={() => alert("Сначала выберите клиента!")}>
               <img src="./img/Edit.png" alt="View" />
               Редактировать
             </button>
@@ -218,7 +217,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
               Редактировать
             </button>
           ) : (
-            <button onClick={() => alert('Сначала выберите водителя!')}>
+            <button onClick={() => alert("Сначала выберите водителя!")}>
               <img src="./img/Edit.png" alt="View" />
               Редактировать
             </button>
@@ -249,7 +248,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             Удалить машину
           </button>
         </div>
-      ) : (state === "driverPage" &&  context.selectedTable === "Заказы") ?(
+      ) : state === "driverPage" && context.selectedTable === "Заказы" ? (
         <div className={styles.HeadMenu}>
           <button onClick={funMapGo}>
             <img src="./img/View.png" alt="View" />В путь
@@ -267,17 +266,26 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             Получить путевой лист
           </button>
         </div>
-      ):(state === "driverPage" &&  context.selectedTable === "Машины") &&(
-        <div className={styles.HeadMenu}>
-          <button onClick={() => context.setpopUp("PopUpNewCar")}>
-            <img src="./img/add.svg" alt="View" />
-            Добавить машину
-          </button>
-          <button onClick={editCar}>
-            <img src="./img/Edit.png" alt="View" />
-            Редактировать машину
-          </button>
-        </div>
+      ) : (
+        state === "driverPage" &&
+        context.selectedTable === "Машины" && (
+          <div className={styles.HeadMenu}>
+            <button
+              onClick={() => {
+                context.setCarData(context.carDataObj);
+                context.setSelectedTr(null);
+                context.setpopUp("PopUpNewCar");
+              }}
+            >
+              <img src="./img/add.svg" alt="View" />
+              Добавить машину
+            </button>
+            <button onClick={editCar}>
+              <img src="./img/Edit.png" alt="View" />
+              Редактировать машину
+            </button>
+          </div>
+        )
       )}
     </>
   );
