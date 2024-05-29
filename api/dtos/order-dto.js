@@ -18,6 +18,12 @@ export default class OrderDto {
     price;
     salary;
     km;
+    tarifklHors;
+    tarifklKm;
+    tarifispHors;
+    tarifispKm;
+    paidKl;
+    paidIsp;
     status;
     constructor(model) {
         this.id = model.id;
@@ -36,6 +42,12 @@ export default class OrderDto {
         this.price = model.price;
         this.salary = model.salary;
         this.km = model.km;
+        this.tarifklHors = model.tarifklHors;
+        this.tarifklKm = model.tarifklKm;
+        this.tarifispHors = model.tarifispHors;
+        this.tarifispKm = model.tarifispKm;
+        this.paidKl = model.paidKl;
+        this.paidIsp = model.paidIsp;
         this.status = model.status;
     }
 }
