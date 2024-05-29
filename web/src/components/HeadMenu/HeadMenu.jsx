@@ -23,7 +23,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
       : false;
 
   const DeleteDriver = () => {
-    console.log(context.selectedTr);
+    if(context.selectedTr != null){
     flag &&
       driverDelete(context.selectedTr).then((response) => {
         if (response.status === 200) {
@@ -37,13 +37,18 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
               context.setTableData(dataTable);
               context.setSelectedTable("Водители");
               alert("Водитель успешно удален!");
+              context.updateDataTable();
             }
           });
         }
       });
+    }else{
+      alert("Сначала выберите водителя!")
+    }
   };
 
   const DeleteCus = () => {
+    if(context.selectedTr != null){
     flag &&
       CustomersDelete(context.selectedTr).then((response) => {
         if (response.status === 200 && context.selectedTable === "Клиенты") {
@@ -52,20 +57,29 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
               context.setTableData(response.data);
               alert("Пользователь успешно удален!");
               context.setSelectedTable("Клиенты");
+              context.updateDataTable();
             }
           });
         }
       });
+    }else{
+      alert("Сначала выберите клиента!")
+    }
   };
 
   //! удалить машину
   const DeleteCar = () => {
+    if(context.selectedTr != null){
     apiDelCar(context.selectedTr).then((rs) => {
-      console.log(rs);
+      alert("Машина удалена!")
+      context.updateDataTable();
     });
     let d = [...context.tableData];
     const f = d.filter((item) => item.id !== context.selectedTr);
     context.setTableData(f);
+  }else{
+    alert("Сначала выберите машину!")
+  }
   };
 
   //! при нажатии редактировать аккаунт
@@ -74,12 +88,19 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
   };
 
   const delOrder = () => {
+    if(context.selectedTr != null){
     apiDeleteOrder(context.selectedTr).then(() => {
       // context.updateDataTable();
       context.setTableData(
         context.tableData.filter((item) => item.id !== context.selectedTr)
       );
+      context.updateDataTable();
+      alert("Заказ удален!")
+
     });
+  }else{
+    alert("Сначала выберите заказ!")
+  }
   };
 
   const funMapGo = () => {
@@ -96,25 +117,38 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
 
   //! получить файл
   const getFile = () => {
+    if(context.selectedTr != null){
     console.log(context.selectedTr);
     apiGetFile(context.selectedTr).then((response) => {
       console.log(response);
     });
+  }else{
+      alert("Сначала выберите заказ!")
+    }
   };
   //! получить файл
   const getFile2 = () => {
+    if(context.selectedTr != null){
     console.log(context.selectedTr);
     apiGetFile2(context.selectedTr).then((response) => {
       console.log(response);
     });
+  }else{
+    alert("Сначала выберите заказ!")
+  }
   };
 
   //! редактирование авто
   const editCar = () => {
-    const car = context.tableData.find((el) => el.id === context.selectedTr);
-    context.setCarData({ ...car });
-    context.setEditCarData(true);
-    context.setpopUp("PopUpNewCar");
+    if(context.selectedTr != null){
+      const car = context.tableData.find((el) => el.id === context.selectedTr);
+      context.setCarData({ ...car });
+      context.setEditCarData(true);
+      context.setpopUp("PopUpNewCar");
+    }else{
+      alert("Сначала выберите машину!")
+    }
+   
   };
 
   return (
@@ -125,12 +159,19 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Создать заказ
           </button>
-          <Link to={flag && "./EditOrder"}>
-            <button>
+          {context.selectedTr != null ? (
+            <Link to="./EditOrder">
+              <button>
+                <img src="./img/Edit.png" alt="View" />
+                Редактировать
+              </button>
+            </Link>
+          ) : (
+            <button onClick={() => alert('Сначала выберите заказ!')}>
               <img src="./img/Edit.png" alt="View" />
               Редактировать
             </button>
-          </Link>
+          )}
           <button onClick={delOrder}>
             <img src="./img/Trash.png" alt="View" />
             Удалить заказ
@@ -146,18 +187,21 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
         </div>
       ) : context.selectedTable === "Клиенты" && state === "home" ? (
         <div className={styles.HeadMenu}>
-          <button onClick={() => context.setpopUp("PopUpNewAplication")}>
-            <img src="./img/add.svg" alt="View" />
-            Создать заказ
-          </button>
           <button onClick={() => context.setpopUp("PopUpNewClient")}>
             <img src="./img/add.svg" alt="View" />
             Добавить клиента
           </button>
-          <button onClick={() => context.setpopUp("PopUpEditClient")}>
-            <img src="./img/Edit.png" alt="View" />
-            Редактировать
-          </button>
+          {context.selectedTr != null ? (
+            <button onClick={() => context.setpopUp("PopUpEditClient")}>
+              <img src="./img/Edit.png" alt="View" />
+              Редактировать
+            </button>
+          ) : (
+            <button onClick={() => alert('Сначала выберите клиента!')}>
+              <img src="./img/Edit.png" alt="View" />
+              Редактировать
+            </button>
+          )}
           <button onClick={DeleteCus}>
             <img src="./img/Trash.png" alt="View" />
             Удалить клиента
@@ -165,15 +209,17 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
         </div>
       ) : context.selectedTable === "Водители" && state === "home" ? (
         <div className={styles.HeadMenu}>
-          <button onClick={() => context.setpopUp("PopUpNewAplication")}>
-            <img src="./img/add.svg" alt="View" />
-            Создать заказ
-          </button>
-
-          <button onClick={() => context.setpopUp("PopUpEditDriver")}>
-            <img src="./img/Edit.png" alt="View" />
-            Редактировать
-          </button>
+          {context.selectedTr != null ? (
+            <button onClick={() => context.setpopUp("PopUpEditDriver")}>
+              <img src="./img/Edit.png" alt="View" />
+              Редактировать
+            </button>
+          ) : (
+            <button onClick={() => alert('Сначала выберите водителя!')}>
+              <img src="./img/Edit.png" alt="View" />
+              Редактировать
+            </button>
+          )}
           <button onClick={DeleteDriver}>
             <img src="./img/Trash.png" alt="View" />
             Удалить водителя

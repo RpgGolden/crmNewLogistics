@@ -116,19 +116,24 @@ function PopUpNewAplication() {
           dataList={clients}
           funSetData={handleInputChange}
           itemKey={"customerId"}
+          placeholder="Выберите клиента"
+          nameList="клиента"
         />
         <List
           Textlabel={"Водитель"}
           dataList={drivers}
           funSetData={handleInputChange}
           itemKey={"driverId"}
+          placeholder="Выберите водителя"
+          nameList="водителя"
         />
-
         <List
           Textlabel={"Машина"}
           dataList={carsName}
           funSetData={handleInputChange}
           itemKey={"carId"}
+          placeholder="Выберите машину"
+          nameList="машину"
         />
         <h3>Период выполнения заказа:</h3>
         <InputTimeStamp
@@ -148,22 +153,29 @@ function PopUpNewAplication() {
           Textlabel={"Тип Груза"}
           handleInputChange={handleInputChange}
           name={"typeCargo"}
+          placeholder="Зерно"
         />
         <div className={styles.Cargo}>
           <Input
             Textlabel={"Мест:"}
             handleInputChange={handleInputChange}
             name={"places"}
+            placeholder="3"
+            type="number"
           />
           <Input
             Textlabel={"Вес, т:"}
             handleInputChange={handleInputChange}
             name={"weight"}
+            placeholder="22,5"
+            type="number"
           />
           <Input
             Textlabel={"Объем, м3:"}
             handleInputChange={handleInputChange}
             name={"volume"}
+            placeholder="56"
+            type="number"
           />
         </div>
         <div className={styles.button}>

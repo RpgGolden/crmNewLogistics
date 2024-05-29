@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import styles from "./List.module.scss";
 import DataContext from "../../context";
 
-function List({ dataList, Textlabel, defaultValue, funSetData, itemKey }) {
+function List({ dataList, Textlabel, defaultValue, funSetData, itemKey, placeholder, nameList }) {
   const { context } = React.useContext(DataContext);
 
   const [activeList, setactiveList] = useState(false);
   const [nameClient, setnameClient] = useState("");
   const addClient = (el) => {
+    context.setSelectedTr(null);
     setnameClient(el.name);
     console.log(el)
     setactiveList(!activeList);
@@ -41,6 +42,7 @@ function List({ dataList, Textlabel, defaultValue, funSetData, itemKey }) {
             readOnly
             onClick={() => setactiveList(!activeList)}
             value={nameClient}
+            placeholder={placeholder}
           />
           <span
             onClick={() => setactiveList(!activeList)}
@@ -56,15 +58,19 @@ function List({ dataList, Textlabel, defaultValue, funSetData, itemKey }) {
         </div>
         {activeList && (
           <div className={styles.ListData}>
-            {dataList.map((item) => (
-              <p
-                className={styles.NameForList}
-                onClick={() => addClient(item)}
-                key={item.id}
-              >
-                {item.name}
-              </p>
-            ))}
+            {dataList.length === 0 ? (
+              <p>Сначала создайте {nameList}!</p>
+            ) : (
+              dataList.map((item) => (
+                <p
+                  className={styles.NameForList}
+                  onClick={() => addClient(item)}
+                  key={item.id}
+                >
+                  {item.name}
+                </p>
+              ))
+            )}
           </div>
         )}
       </div>

@@ -172,6 +172,7 @@ function PopUpNewCar() {
           value={context.carData.markCar}
           itemKey={"markCar"}
           onChangeInput={onChangeInput}
+          placeholder="Выберите марку авто"
         />
 
         <Input
@@ -180,6 +181,7 @@ function PopUpNewCar() {
           itemKey={"numberCar"}
           value={context.carData.numberCar}
           onChangeInput={onChangeInput}
+          regex={/^[A-Z]\d{3}[A-Z]{2}\d{3}$/}
         />
         <Input
           placeholder="Выберите тип авто"
@@ -195,24 +197,32 @@ function PopUpNewCar() {
             itemKey={"lengthCar"}
             value={context.carData.lengthCar}
             onChangeInput={onChangeInput}
+            type="number"
+            placeholder="11"
           />
           <Input
             Textlabel={"Ширина, м:"}
             value={context.carData.widthCar}
             itemKey={"widthCar"}
+            type="number"
             onChangeInput={onChangeInput}
+            placeholder="2.8"
           />
           <Input
             Textlabel={"Высота, м:"}
             value={context.carData.heightCar}
             itemKey={"heightCar"}
             onChangeInput={onChangeInput}
+            type="number"
+            placeholder="2.5"
           />
           <Input
             Textlabel={"Объем, м3:"}
             value={context.carData.volumeCar}
             itemKey={"volumeCar"}
             onChangeInput={onChangeInput}
+            type="number"
+            placeholder="30.8"
           />
         </div>
         <div className={styles.type2}>
@@ -221,12 +231,16 @@ function PopUpNewCar() {
             value={context.carData.loadCapacity}
             itemKey={"loadCapacity"}
             onChangeInput={onChangeInput}
+            type="number"
+            placeholder="20"
           />
           <Input
             Textlabel={"Количество палет:"}
             value={context.carData.numberOfPallet}
             itemKey={"numberOfPallet"}
             onChangeInput={onChangeInput}
+            type="number"
+            placeholder="3"
           />
         </div>
         <div className={styles.button}>

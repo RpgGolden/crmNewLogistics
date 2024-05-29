@@ -40,6 +40,8 @@ function PopUpEditClient() {
           if (response) {
             context.setTableData(response.data);
             context.setpopUp("");
+            context.updateDataTable();
+            alert("Данные клиента изменены!")
           }
         });
       }
@@ -55,24 +57,31 @@ function PopUpEditClient() {
             handleInputChange={handleInputChange}
             name="fio"
             value={dataNewClient.fio}
+            placeholder="Иванов Иван Иванович"
           />
           <Input
             Textlabel={"Телефон"}
             handleInputChange={handleInputChange}
             name="phoneNumber"
             value={dataNewClient.phoneNumber}
+            regex={/^(\+7|8)[0-9]{10}$/} 
+            placeholder="+79508999999"
           />
           <Input
             Textlabel={"Доп.Телефон"}
             handleInputChange={handleInputChange}
             name="additionalPhoneNumber"
             value={dataNewClient.additionalPhoneNumber}
+            regex={/^(\+7|8)[0-9]{10}$/} 
+            placeholder="+79508999999"
           />
           <Input
             Textlabel={"E-mail"}
             handleInputChange={handleInputChange}
             name="login"
             value={dataNewClient.login}
+            regex={/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/} 
+            placeholder="aaa@gmail.com"
           />
           <Input
             Textlabel={"Наименование организации"}
@@ -81,7 +90,6 @@ function PopUpEditClient() {
             value={dataNewClient.nameCompany}
           />
         </div>
-
         <div className={styles.popRigth}>
           <Input
             Textlabel={"Адрес клиента"}
@@ -94,24 +102,32 @@ function PopUpEditClient() {
             handleInputChange={handleInputChange}
             name="inn"
             value={dataNewClient.inn}
+            regex={/^\d{12}$/}
+            placeholder="111111111111"     
           />
           <Input
             Textlabel={"К/С"}
             handleInputChange={handleInputChange}
             name="kc"
             value={dataNewClient.kc}
+            regex={/^\d{9}$/}
+            placeholder="332258769"
           />
           <Input
             Textlabel={"БИК"}
             handleInputChange={handleInputChange}
             name="bik"
             value={dataNewClient.bik}
+            regex={/^\d{9}$/}
+            placeholder="044525974"
           />
           <Input
             Textlabel={"КПП"}
             handleInputChange={handleInputChange}
             name="kpp"
             value={dataNewClient.kpp}
+            regex={/^\d{9}$/}
+            placeholder="332258769"
           />
         </div>
       </div>

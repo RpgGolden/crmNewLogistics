@@ -11,6 +11,7 @@ function Input({
   value,
   onChangeInput,
   itemKey,
+  type="text"
 }) {
   // const [textInput, settextInput] = useState("");
 
@@ -121,6 +122,7 @@ function Input({
             value={value}
             onChange={(e) => onChangeInput(e, itemKey)}
             placeholder={placeholder}
+            type={type}
           />
         </div>
       )}
