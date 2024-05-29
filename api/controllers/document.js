@@ -56,6 +56,7 @@ export default {
                     dateContract.getDate() + ' ' + getMonthStr(dateContract) + ' ' + dateContract.getFullYear(),
                 customerCompany: data.customer.nameCompany,
                 loading: JSON.parse(data.loading).adress,
+                num: data.numberOrder,
                 unloading: JSON.parse(data.unloading).adress,
                 dateBegin: data.dateBegin.split(' ')[0],
                 dateEnd: data.dateEnd.split(' ')[0],

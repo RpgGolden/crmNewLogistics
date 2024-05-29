@@ -11,6 +11,10 @@ export default class Order extends Model {
                     allowNull: false,
                     primaryKey: true,
                 },
+                numberOrder: {
+                    type: DataTypes.INTEGER,
+                    allowNull: false,
+                },
                 customerId: {
                     type: DataTypes.UUID,
                     allowNull: false,
@@ -66,6 +70,36 @@ export default class Order extends Model {
                 km: {
                     type: DataTypes.FLOAT,
                     allowNull: false,
+                },
+                tarifklHors: {
+                    type: DataTypes.FLOAT,
+                    allowNull: false,
+                    defaultValue: 1000,
+                },
+                tarifklKm: {
+                    type: DataTypes.FLOAT,
+                    allowNull: false,
+                    defaultValue: 25,
+                },
+                tarifispHors: {
+                    type: DataTypes.FLOAT,
+                    allowNull: false,
+                    defaultValue: 400,
+                },
+                tarifispKm: {
+                    type: DataTypes.FLOAT,
+                    allowNull: false,
+                    defaultValue: 25,
+                },
+                paidKl: {
+                    type: DataTypes.BOOLEAN,
+                    allowNull: false,
+                    defaultValue: false,
+                },
+                paidIsp: {
+                    type: DataTypes.BOOLEAN,
+                    allowNull: false,
+                    defaultValue: false,
                 },
                 status: {
                     type: DataTypes.SMALLINT,

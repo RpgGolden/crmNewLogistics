@@ -10,6 +10,7 @@ export default {
     async createOrder(req, res) {
         const data = req.body;
         const {
+            numberOrder,
             customerId,
             driverId,
             carId,
@@ -23,7 +24,13 @@ export default {
             volume,
             price,
             salary,
-            km
+            tarifklHors,
+            tarifklKm,
+            tarifispHors,
+            tarifispKm,
+            paidKl,
+            paidIsp,
+            km,
         } = data;
 
         const customer = await Customer.findOne({ where: { id: customerId } });
@@ -40,6 +47,7 @@ export default {
         }
 
         const order = await Order.create({
+            numberOrder,
             customerId: customer.id,
             driverId: driver.id,
             carId: car.id,
@@ -53,7 +61,13 @@ export default {
             volume,
             price,
             salary,
-            km
+            tarifklHors,
+            tarifklKm,
+            tarifispHors,
+            tarifispKm,
+            paidKl,
+            paidIsp,
+            km,
         });
 
         await order.reload({ include: [Customer, Driver, Car] });
@@ -88,7 +102,13 @@ export default {
                 volume,
                 price,
                 salary,
-                km
+                tarifklHors,
+                tarifklKm,
+                tarifispHors,
+                tarifispKm,
+                paidKl,
+                paidIsp,
+                km,
             },
         },
         res
@@ -125,7 +145,13 @@ export default {
             volume,
             price,
             salary,
-            km
+            tarifklHors,
+            tarifklKm,
+            tarifispHors,
+            tarifispKm,
+            paidKl,
+            paidIsp,
+            km,
         });
 
         await order.reload({ include: [Customer, Driver, Car] });

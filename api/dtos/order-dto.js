@@ -3,6 +3,7 @@ import DriverDto from './profile-dto.js';
 import CarDto from './car-dto.js';
 export default class OrderDto {
     id;
+    numberOrder;
     customer;
     driver;
     car;
@@ -17,9 +18,16 @@ export default class OrderDto {
     price;
     salary;
     km;
+    tarifklHors;
+    tarifklKm;
+    tarifispHors;
+    tarifispKm;
+    paidKl;
+    paidIsp;
     status;
     constructor(model) {
         this.id = model.id;
+        this.numberOrder = model.numberOrder;
         this.customer = model.Customer ? new CustomerDto(model.Customer) : null;
         this.driver = model.Driver ? new DriverDto(model.Driver) : null;
         this.car = model.Car ? new CarDto(model.Car) : null;
@@ -34,6 +42,12 @@ export default class OrderDto {
         this.price = model.price;
         this.salary = model.salary;
         this.km = model.km;
+        this.tarifklHors = model.tarifklHors;
+        this.tarifklKm = model.tarifklKm;
+        this.tarifispHors = model.tarifispHors;
+        this.tarifispKm = model.tarifispKm;
+        this.paidKl = model.paidKl;
+        this.paidIsp = model.paidIsp;
         this.status = model.status;
     }
 }

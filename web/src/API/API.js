@@ -194,6 +194,23 @@ export const editDriverInfo = async (idSelectDriver, data) => {
   }
 };
 
+//! Запрос на обновление статуса
+export const apiUpdateStatus = async (orderId, status) => {
+  console.log("Обновление статуса ", orderId, status);
+  try {
+    const response = await axios.post(
+      `${server}/order/changeStatus/${orderId}`,
+      { status },
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {}
+};
+
 //! Запрос на обновление данных драйвера
 export const editDriverDriv = async (data) => {
   console.log("Обновление вызвал данных ");

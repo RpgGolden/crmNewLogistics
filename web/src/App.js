@@ -32,7 +32,7 @@ function App() {
   const [tableHeader, settableHeader] = useState(tableHeadAppoint);
 
   const ud = JSON.parse(localStorage.getItem("userData"));
-  const [carData, setCarData] = useState({
+  const carDataObj = {
     numberCar: null,
     markCar: null,
     typeCar: null,
@@ -42,7 +42,8 @@ function App() {
     volumeCar: null,
     loadCapacity: null,
     numberOfPallet: null,
-  });
+  };
+  const [carData, setCarData] = useState(carDataObj);
   const [dataAppoints, setdataAppoint] = useState([]);
   const [dataClients, setdataClient] = useState([]);
   const [dataDrivers, setdataDriver] = useState([]);
@@ -83,8 +84,8 @@ function App() {
     apiGetAllCarsLogistic().then((response) => {
       setdataCar(response.data);
     });
-    console.log('ud.role', ud.role)
-    console.log('ud', ud)
+    console.log("ud.role", ud.role);
+    console.log("ud", ud);
     if (ud.role === "DRIVER") {
       getProfileDriver().then((response) => {
         apiGetAllCar(response.data.id).then((resp) => {
@@ -99,6 +100,7 @@ function App() {
   const [editCarData, setEditCarData] = useState(false);
 
   const context = {
+    carDataObj,
     tableData,
     setTableData,
     selectedTr,
@@ -150,7 +152,15 @@ function App() {
     places: null,
     weight: null,
     volume: null,
-    price: null,
+    price: 0,
+    km: 0,
+    numberOrder: 1,
+    paidIsp: false,
+    paidKl: false,
+    tarifklHors: 1000,
+    tarifklKm: 25,
+    tarifispHors: 400,
+    tarifispKm: 25,
   };
 
   const [orderData, setOrderData] = useState(orderObj);

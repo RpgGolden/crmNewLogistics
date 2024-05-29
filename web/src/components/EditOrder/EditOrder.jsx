@@ -46,8 +46,36 @@ const EditOredr = () => {
   const [adressA, setAdressA] = useState("");
   const [adressB, setAdressB] = useState("");
   const [pointCoor, setpointCoor] = useState([]); //! местки
+
+  const [isChackIsp, setisChackIsp] = useState(false);
+  const [isChackKl, setisChackKl] = useState(false);
+
   //! сохраняем заказ
   const navigate = useNavigate();
+
+  const [tarif, setTarif] = useState({
+    klHors: 1000,
+    klKm: 25,
+    ispHors: 400,
+    ispKm: 25,
+  });
+
+  // useEffect(() => {
+  //   setTarif({
+  //     klHors: orderCon.orderData?.tarifklHors,
+  //     klKm: orderCon.orderData?.tarifklKm,
+  //     ispHors: orderCon.orderData?.tarifispHors,
+  //     ispKm: orderCon.orderData?.tarifispKm,
+  //   });
+  // }, [
+  //   orderCon.orderData?.tarifklHors,
+  //   orderCon.orderData?.tarifklKm,
+  //   orderCon.orderData?.tarifispKm,
+  // ]);
+  // useEffect(() => {
+  //   setisChackIsp(orderCon.orderData?.paidIsp);
+  //   setisChackKl(orderCon.orderData?.paidKl);
+  // }, [orderCon.orderData?.paidIsp, orderCon.orderData?.paidKl]);
 
   useEffect(() => {
     console.log(context.selectedTr);
@@ -63,6 +91,15 @@ const EditOredr = () => {
         setAdressB(dat.unloading.adress);
         setpointCoor([dat.loading?.geo, dat.unloading?.geo]);
         orderCon.setOrderData({ ...dat });
+
+        // setTarif({
+        //   klHors: orderCon.orderData?.tarifklHors,
+        //   klKm: orderCon.orderData?.tarifklKm,
+        //   ispHors: orderCon.orderData?.tarifispHors,
+        //   ispKm: orderCon.orderData?.tarifispKm,
+        // });
+        // setisChackIsp(orderCon.orderData?.paidIsp);
+        // setisChackKl(orderCon.orderData?.paidKl);
       }
     });
   }, []);
@@ -124,15 +161,32 @@ const EditOredr = () => {
     datareq.driverId = md.driver.id;
     datareq.carId = md.car.id;
     datareq.typeCargo = md.typeCargo;
+    datareq.numberOrder = orderCon.orderData.length
+      ? orderCon.orderData.length
+      : 1;
+
+    datareq.tarifklHors = md.tarifklHors;
+    datareq.tarifklKm = md.tarifklKm;
+    datareq.tarifispHors = md.tarifispHors;
+    datareq.tarifispKm = md.tarifispKm;
+
+    datareq.paidIsp = md.paidIsp;
+    datareq.paidKl = md.paidKl;
+
     console.log(datareq);
+
     if (context.selectedTr) {
       apiUpdateOrder(datareq, md.id).then((resp) => {
         console.log(resp);
+        if (resp?.status === 200) {
+          orderCon.setOrderData({ ...orderCon.orderObj });
+          navigate("..");
+        }
       });
     } else {
       apiAddOrder(datareq).then((resp) => {
         console.log(resp);
-        if (resp.status === 200) {
+        if (resp?.status === 200) {
           orderCon.setOrderData({ ...orderCon.orderObj });
           navigate("..");
         }
@@ -160,7 +214,27 @@ const EditOredr = () => {
   const handleInput = (el, key) => {
     const query = el.target.value;
     let date = { ...orderCon.orderData };
+    console.log("e", query, key);
     date[key] = query;
+
+    if (
+      route &&
+      (key === "tarifklHors" ||
+        key === "tarifklKm" ||
+        key === "tarifispHors" ||
+        key === "tarifispKm" ||
+        key === "price" ||
+        key === "km")
+    ) {
+      funPrice({ ...date });
+    } else {
+      orderCon.setOrderData({ ...date });
+    }
+  };
+
+  const funsetisChack = (key, value) => {
+    let date = { ...orderCon.orderData };
+    date[key] = value;
     orderCon.setOrderData({ ...date });
   };
 
@@ -260,7 +334,8 @@ const EditOredr = () => {
           setRoute(e.routes[0]);
         });
 
-        if (mapRef.current) {
+        console.log("mapRef.current", mapRef.current);
+        if (mapRef.current !== null && mapRef.current !== undefined) {
           // Добавляем новый routingControl на карту
           newRoutingControl.addTo(mapRef.current);
           setRoutingControl(newRoutingControl);
@@ -282,13 +357,6 @@ const EditOredr = () => {
     }
   }, [mapRef]);
 
-  const [tarif, setTarif] = useState({
-    klHors: 1000,
-    klKm: 25,
-    ispHors: 400,
-    ispKm: 25,
-  });
-
   const [summZakaz, setSummZakaz] = useState({
     kl: 0,
     isp: 0,
@@ -299,34 +367,41 @@ const EditOredr = () => {
     prc: 30,
   });
 
+  //! функция обновления прайса
+  const funPrice = (data) => {
+    const km = (route.summary.totalDistance / 1000).toFixed(2);
+    const hours = (route.summary.totalTime / 60 / 60).toFixed(2);
+    let sz = { ...summZakaz };
+    // sz.kl = hours * tarif.klHors + km * tarif.klKm;
+    sz.kl = hours * data?.tarifklHors + km * data?.tarifklKm;
+    // sz.isp = hours * tarif.ispHors + km * tarif.ispKm;
+    sz.isp = hours * data?.tarifispHors + km * data?.tarifispKm;
+    console.log("Sz", sz, data?.tarifklHors);
+    let prib = { ...pribil };
+    prib.sum = (sz.kl - sz.isp).toFixed(2);
+    prib.prc = (prib.sum / (sz.kl / 100)).toFixed(2);
+    setSummZakaz(sz);
+    setPribil(prib);
+    const md = { ...data };
+    md.price = sz.kl;
+    orderCon.setOrderData(md);
+    console.log(md);
+  };
   useEffect(() => {
     if (route) {
-      const km = (route.summary.totalDistance / 1000).toFixed(2);
-      const hours = (route.summary.totalTime / 60 / 60).toFixed(2);
-      let sz = { ...summZakaz };
-      sz.kl = hours * tarif.klHors + km * tarif.klKm;
-      sz.isp = hours * tarif.ispHors + km * tarif.ispKm;
-      let prib = { ...pribil };
-      prib.sum = (sz.kl - sz.isp).toFixed(2);
-      prib.prc = (prib.sum / (sz.kl / 100)).toFixed(2);
-      setSummZakaz(sz);
-      setPribil(prib);
-      const md = { ...orderCon.orderData };
-      md.price = sz.kl;
-      orderCon.setOrderData(md);
-      console.log(md);
+      funPrice({ ...orderCon.orderData });
     }
-  }, [route, tarif]);
+  }, [route]);
 
-  const funSetTarif = (el, key) => {
-    let tr = { ...tarif };
-    if (Number(el.target.value)) {
-      tr[key] = Number(el.target.value);
-    } else {
-      tr[key] = 0;
-    }
-    setTarif(tr);
-  };
+  // const funSetTarif = (el, key) => {
+  //   let tr = { ...tarif };
+  //   if (Number(el.target.value)) {
+  //     tr[key] = Number(el.target.value);
+  //   } else {
+  //     tr[key] = 0;
+  //   }
+  //   setTarif(tr);
+  // };
 
   const funSetSumZakaz = (el, key) => {
     let tr = { ...summZakaz };
@@ -338,9 +413,9 @@ const EditOredr = () => {
     setSummZakaz(tr);
   };
 
-  useEffect(() => {
-    console.log("c", center);
-  }, [center]);
+  // useEffect(() => {
+  //   console.log("c", center);
+  // }, [center]);
 
   const typeCar = {
     1: "Тентовый 5т",
@@ -495,14 +570,22 @@ const EditOredr = () => {
                           1 час
                           <input
                             type="text"
-                            onChange={(el) => funSetTarif(el, "klHors")}
-                            value={tarif.klHors}
+                            onChange={(el) => {
+                              // funSetTarif(el, "klHors");
+                              handleInput(el, "tarifklHors");
+                            }}
+                            value={orderCon.orderData.tarifklHors}
+                            // value={tarif.klHors}
                           />
                           1 км
                           <input
                             type="text"
-                            onChange={(el) => funSetTarif(el, "klKm")}
-                            value={tarif.klKm}
+                            onChange={(el) => {
+                              // funSetTarif(el, "tarifklKm");
+                              handleInput(el, "tarifklKm");
+                            }}
+                            value={orderCon.orderData.tarifklKm}
+                            // value={tarif.klKm}
                           />
                         </div>
                       </div>
@@ -512,14 +595,22 @@ const EditOredr = () => {
                           1 час
                           <input
                             type="text"
-                            onChange={(el) => funSetTarif(el, "ispHors")}
-                            value={tarif.ispHors}
+                            onChange={(el) => {
+                              // funSetTarif(el, "ispHors");
+                              handleInput(el, "tarifispHors");
+                            }}
+                            value={orderCon.orderData.tarifispHors}
+                            // value={tarif.ispHors}
                           />
                           1 км
                           <input
                             type="text"
-                            onChange={(el) => funSetTarif(el, "ispKm")}
-                            value={tarif.ispKm}
+                            onChange={(el) => {
+                              // funSetTarif(el, "ispKm");
+                              handleInput(el, "tarifispKm");
+                            }}
+                            value={orderCon.orderData.tarifispKm}
+                            // value={tarif.ispKm}
                           />
                         </div>
                       </div>
@@ -535,7 +626,16 @@ const EditOredr = () => {
                           />
                           <div className={styles.checkbox}>
                             <span>Оплачено</span>
-                            <input type="checkbox" />
+                            <input
+                              onChange={() =>
+                                funsetisChack(
+                                  "paidKl",
+                                  !orderCon.orderData?.paidKl
+                                )
+                              }
+                              type="checkbox"
+                              checked={orderCon.orderData?.paidKl}
+                            />
                           </div>
                         </div>
                       </div>
@@ -549,7 +649,16 @@ const EditOredr = () => {
                           />
                           <div className={styles.checkbox}>
                             <span>Оплачено</span>
-                            <input type="checkbox" />
+                            <input
+                              type="checkbox"
+                              checked={orderCon.orderData?.paidIsp}
+                              onChange={() =>
+                                funsetisChack(
+                                  "paidIsp",
+                                  !orderCon.orderData?.paidIsp
+                                )
+                              }
+                            />
                           </div>
                         </div>
                       </div>
