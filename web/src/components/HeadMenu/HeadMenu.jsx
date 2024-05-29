@@ -191,7 +191,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
             <img src="./img/add.svg" alt="View" />
             Добавить машину
           </button>
-          <button onClick={editCar}>
+          <button onClick={context.selectedTr ? editCar : null}>
             <img src="./img/Edit.png" alt="View" />
             Редактировать машину
           </button>
