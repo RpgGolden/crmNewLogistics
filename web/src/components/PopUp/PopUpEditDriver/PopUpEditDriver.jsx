@@ -74,7 +74,6 @@ function PopUpEditDriver() {
     console.log("idSelectDriver", idSelectDriver);
     console.log("dataNewClient", dataNewClient);
     editDriverInfo(idSelectDriver, dataNewClient).then((response) => {
-      console.log(response);
       if (response) {
         getAllDriver().then((response) => {
           if (response) {
@@ -92,6 +91,7 @@ function PopUpEditDriver() {
       }
     });
   };
+
   return (
     <PopUpContainer title={"Редактирование водителя"} mT={50}>
       <div className={styles.newCarInDriver}>

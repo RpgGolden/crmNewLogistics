@@ -124,15 +124,22 @@ const EditOredr = () => {
     datareq.driverId = md.driver.id;
     datareq.carId = md.car.id;
     datareq.typeCargo = md.typeCargo;
+    datareq.numberOrder = orderCon.orderData.length
+      ? orderCon.orderData.length + 1
+      : 1;
     console.log(datareq);
     if (context.selectedTr) {
       apiUpdateOrder(datareq, md.id).then((resp) => {
         console.log(resp);
+        if (resp?.status === 200) {
+          orderCon.setOrderData({ ...orderCon.orderObj });
+          navigate("..");
+        }
       });
     } else {
       apiAddOrder(datareq).then((resp) => {
         console.log(resp);
-        if (resp.status === 200) {
+        if (resp?.status === 200) {
           orderCon.setOrderData({ ...orderCon.orderObj });
           navigate("..");
         }
