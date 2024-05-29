@@ -14,21 +14,21 @@ function GruzForm(props) {
       />
       <label>Мест</label>
       <input
-        type="text"
+        type="number"
         placeholder="Мест"
         onChange={(el) => props.handleInput(el, "places")}
         value={props.orderCon.orderData.places}
       />
       <label>Вес</label>
       <input
-        type="text"
+        type="number"
         placeholder="Вес"
         onChange={(el) => props.handleInput(el, "weight")}
         value={props.orderCon.orderData.weight}
       />
       <label>Объем</label>
       <input
-        type="text"
+        type="number"
         placeholder="Объем"
         onChange={(el) => props.handleInput(el, "volume")}
         value={props.orderCon.orderData.volume}
