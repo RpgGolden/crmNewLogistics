@@ -83,8 +83,8 @@ function App() {
     apiGetAllCarsLogistic().then((response) => {
       setdataCar(response.data);
     });
-    console.log('ud.role', ud.role)
-    console.log('ud', ud)
+    console.log("ud.role", ud.role);
+    console.log("ud", ud);
     if (ud.role === "DRIVER") {
       getProfileDriver().then((response) => {
         apiGetAllCar(response.data.id).then((resp) => {
@@ -150,7 +150,15 @@ function App() {
     places: null,
     weight: null,
     volume: null,
-    price: null,
+    price: 0,
+    km: 0,
+    numberOrder: 1,
+    paidIsp: false,
+    paidKl: false,
+    tarifklHors: 1000,
+    tarifklKm: 25,
+    tarifispHors: 400,
+    tarifispKm: 25,
   };
 
   const [orderData, setOrderData] = useState(orderObj);

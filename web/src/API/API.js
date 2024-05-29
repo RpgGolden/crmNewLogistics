@@ -199,7 +199,7 @@ export const apiUpdateStatus = async (orderId, status) => {
   console.log("Обновление статуса ", orderId, status);
   try {
     const response = await axios.post(
-      `${server}/changeStatus/${orderId}`,
+      `${server}/order/changeStatus/${orderId}`,
       { status },
       {
         headers: {

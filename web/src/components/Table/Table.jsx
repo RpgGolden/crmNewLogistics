@@ -89,12 +89,31 @@ function Table() {
     3: "Отклонен",
     4: "Завершен",
   };
-  const [shovStatusPop, setshovStatusPop] = useState(false);
+  const [shovStatusPop, setshovStatusPop] = useState("");
   const editStatus = (value) => {
     console.log(value);
-    apiUpdateStatus(context.selectedTr, value).then(() => {
+    apiUpdateStatus(context.selectedTr, value).then((res) => {
       console.log("ss");
+      if (res?.status === 200) {
+        let dat = [...context.tableData];
+        dat = dat.map((item) => {
+          if (item.id === context.selectedTr) {
+            return { ...item, status: value };
+          } else {
+            return item;
+          }
+        });
+        context.setTableData(dat);
+      }
     });
+  };
+
+  const funSetStatus = (data) => {
+    if (shovStatusPop === "") {
+      setshovStatusPop(data);
+    } else {
+      setshovStatusPop("");
+    }
   };
 
   return (
@@ -124,11 +143,11 @@ function Table() {
                         index + 1
                       ) : headerItem.key === "status" ? (
                         <div
-                          onClick={() => setshovStatusPop(!shovStatusPop)}
+                          onClick={() => funSetStatus(row.id)}
                           className={styles.statusClick}
                         >
                           {status[row[headerItem.key]]}
-                          {shovStatusPop && (
+                          {shovStatusPop === row.id && (
                             <div className={styles.shovStatusPop}>
                               <ul>
                                 {Object.values(status).map((value, index) => (
