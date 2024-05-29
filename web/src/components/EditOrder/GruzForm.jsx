@@ -8,28 +8,28 @@ function GruzForm(props) {
       <label>Тип груза</label>
       <input
         type="text"
-        placeholder="Тип груза"
+        placeholder="Зерно"
         onChange={(el) => props.handleInput(el, "typeCargo")}
         value={props.orderCon.orderData.typeCargo}
       />
       <label>Мест</label>
       <input
         type="number"
-        placeholder="Мест"
+        placeholder="2"
         onChange={(el) => props.handleInput(el, "places")}
         value={props.orderCon.orderData.places}
       />
       <label>Вес</label>
       <input
         type="number"
-        placeholder="Вес"
+        placeholder="23.4"
         onChange={(el) => props.handleInput(el, "weight")}
         value={props.orderCon.orderData.weight}
       />
       <label>Объем</label>
       <input
         type="number"
-        placeholder="Объем"
+        placeholder="55.5"
         onChange={(el) => props.handleInput(el, "volume")}
         value={props.orderCon.orderData.volume}
       />
