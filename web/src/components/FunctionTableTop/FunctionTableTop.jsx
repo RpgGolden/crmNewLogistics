@@ -4,7 +4,14 @@ import List from "../../UI/List/List";
 import Input from "../../UI/Input/Input";
 import DataContext from "../../context";
 import { testData } from "../../DataApi";
-import { apiGetAllCar, apiGetAllOrders, apiGetAllOrdersDriver, getAllCustomers, getAllDriver, getProfileDriver } from "../../API/API";
+import {
+  apiGetAllCar,
+  apiGetAllOrders,
+  apiGetAllOrdersDriver,
+  getAllCustomers,
+  getAllDriver,
+  getProfileDriver,
+} from "../../API/API";
 
 function FunctionTableTop(props) {
   const defaultValue = "Заказы";
@@ -51,10 +58,11 @@ function FunctionTableTop(props) {
     if (context.selectedTable === "Заказы" && ud.role != "DRIVER") {
       tableData = context.dataAppoints;
     }
+
     // if (context.selectedTable === "Заказы" && ud.role === "DRIVER") {
     //   apiGetAllOrdersDriver(id).then((data) => {
     //     console.log("заказы", data);
-  
+
     //     // drivCon.setOrdersTableData([data]);
     //     // settableHeader(tableHeadOrders);
     //   });
@@ -66,9 +74,8 @@ function FunctionTableTop(props) {
     if (context.selectedTable === "Машины" && ud.role != "DRIVER") {
       tableData = context.dataCar;
     }
-    if ((ud.role === "DRIVER") && (context.selectedTable === "Машины")) {
+    if (ud.role === "DRIVER" && context.selectedTable === "Машины") {
       tableData = context.dataCarDriver;
-
     }
 
     const filteredData = tableData.filter((item) => {
@@ -122,7 +129,6 @@ function FunctionTableTop(props) {
             }
           });
         });
-       
       }
     }
   }, [textSearchTableData]);
