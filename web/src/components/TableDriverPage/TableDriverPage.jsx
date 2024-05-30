@@ -39,7 +39,19 @@ function TableDriverPage() {
         apiGetAllCar(response.data.id).then((resp) => {
           if (resp) {
             console.log("Машины", resp.data);
-            context.setTableData(resp.data);
+            const type = {
+              1: "Тентовый 5т",
+              2: "Контейнер",
+              4: "Микро автобус",
+              5: "Газель 6м",
+              6: "Еврофура 82м",
+            };
+
+            let cd = [...resp.data];
+            cd.map((item) => {
+              item.typeCar = type[Number(item.typeCar)];
+            });
+            context.setTableData(cd);
             settableHeader(tableHeadCar);
           }
         });

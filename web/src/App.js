@@ -90,7 +90,21 @@ function App() {
       getProfileDriver().then((response) => {
         apiGetAllCar(response.data.id).then((resp) => {
           if (resp) {
-            setdataCarDriver(resp.data);
+            // setdataCarDriver(resp.data);
+            console.log("Машины", resp.data);
+            const type = {
+              1: "Тентовый 5т",
+              2: "Контейнер",
+              4: "Микро автобус",
+              5: "Газель 6м",
+              6: "Еврофура 82м",
+            };
+
+            let cd = [...resp.data];
+            cd.map((item) => {
+              item.typeCar = type[Number(item.typeCar)];
+            });
+            setdataCarDriver(cd);
           }
         });
       });

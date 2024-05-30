@@ -139,7 +139,6 @@ function PopUpNewCar() {
               cd.map((item) => {
                 item.typeCar = type[Number(item.typeCar)];
               });
-
               context.setTableData(cd);
             }
           });
