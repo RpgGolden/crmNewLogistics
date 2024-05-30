@@ -153,6 +153,12 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
     }
   };
 
+  const carClicfun = () => {
+    context.setCarData(context.carDataObj);
+    context.setSelectedTr(null);
+    context.setpopUp("PopUpNewCar");
+  };
+
   return (
     <>
       {state === "home" && context.selectedTable === "Заказы" ? (
@@ -270,13 +276,7 @@ function HeadMenu({ state, setFiltredData, filtredData }) {
         state === "driverPage" &&
         context.selectedTable === "Машины" && (
           <div className={styles.HeadMenu}>
-            <button
-              onClick={() => {
-                context.setCarData(context.carDataObj);
-                context.setSelectedTr(null);
-                context.setpopUp("PopUpNewCar");
-              }}
-            >
+            <button onClick={carClicfun}>
               <img src="./img/add.svg" alt="View" />
               Добавить машину
             </button>

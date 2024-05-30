@@ -48,9 +48,9 @@ function Table() {
         const type = {
           1: "Тентовый 5т",
           2: "Контейнер",
-          4: "Микро автобус",
-          5: "Газель 6м",
-          6: "Еврофура 82м",
+          3: "Микро автобус",
+          4: "Газель 6м",
+          5: "Еврофура 82м",
         };
 
         let cd = [...response.data];
@@ -69,7 +69,7 @@ function Table() {
         const dat = [...resp.data];
 
         dat.map((item) => {
-          item.car = item.car.markCar;
+          item.car = item.car?.markCar;
           item.customer = item.customer.fio;
           if (item.driver !== null) {
             item.driver = `${item.driver.surname} ${item.driver.name} ${item.driver.patronymic}`;

@@ -12,6 +12,7 @@ import {
   getAllDriver,
   getProfileDriver,
 } from "../../API/API";
+import { tableHeadAppoint } from "../TableDriverPage/Data";
 
 function FunctionTableTop(props) {
   const defaultValue = "Заказы";
@@ -66,10 +67,10 @@ function FunctionTableTop(props) {
     }
 
     if (context.selectedTable === "Заказы" && ud.role === "DRIVER") {
-        getProfileDriver().then((response) => {
+      getProfileDriver().then((response) => {
         apiGetAllOrdersDriver(response.data?.id).then((data) => {
-          console.log("заказы", data);
-          tableData = data;
+          console.log("заказы", data.data);
+          tableData = data.data;
         });
       });
     }
@@ -77,37 +78,58 @@ function FunctionTableTop(props) {
       getProfileDriver().then((response) => {
         apiGetAllCar(response.data?.id).then((resp) => {
           if (resp) {
-            console.log("Машины", resp.data);
-            tableData = resp.data;
+            // console.log("Машины", resp.data);
+            const type = {
+              1: "Тентовый 5т",
+              2: "Контейнер",
+              3: "Микро автобус",
+              4: "Газель 6м",
+              5: "Еврофура 82м",
+            };
+            let cd = [...resp.data];
+            cd.map((item) => {
+              item.typeCar = type[Number(item.typeCar)];
+            });
+            tableData = cd;
+            // console.log("cd", cd);
+
+            const filteredData = tableData.filter((item) => {
+              for (let key in item) {
+                if (
+                  key !== "id" &&
+                  (item[key] + "")
+                    .toLowerCase()
+                    .includes((searchText + "").toLowerCase())
+                ) {
+                  return true;
+                }
+              }
+              return false;
+            });
+            console.log("filteredData", filteredData);
+            context.setTableData(filteredData);
           }
         });
       });
     }
 
-   
- 
-
+    console.log("tableData", tableData);
     const filteredData = tableData.filter((item) => {
       for (let key in item) {
         if (
-          typeof item[key] === "string" &&
-          item[key].toLowerCase().includes(searchText.toLowerCase())
+          key !== "id" &&
+          (item[key] + "")
+            .toLowerCase()
+            .includes((searchText + "").toLowerCase())
         ) {
           return true;
         }
       }
       return false;
     });
+    console.log("filteredData", filteredData);
     context.setTableData(filteredData);
   };
-
-  useEffect(() => {
-    if (textSearchTableData) {
-      filteredData(textSearchTableData);
-    } else {
-      context.setTableData(testData);
-    }
-  }, [textSearchTableData]);
 
   useEffect(() => {
     context.updateDataTable();
@@ -134,19 +156,41 @@ function FunctionTableTop(props) {
         getProfileDriver().then((response) => {
           apiGetAllCar(response.data.id).then((resp) => {
             if (resp) {
-              context.setTableData(resp.data);
+              const type = {
+                1: "Тентовый 5т",
+                2: "Контейнер",
+                3: "Микро автобус",
+                4: "Газель 6м",
+                5: "Еврофура 82м",
+              };
+
+              let cd = [...resp.data];
+              cd.map((item) => {
+                item.typeCar = type[Number(item.typeCar)];
+              });
+              context.setTableData(cd);
             }
           });
         });
       }
       if (context.selectedTable === "Заказы" && ud.role === "DRIVER") {
-          getProfileDriver().then((response) => {
-            apiGetAllOrdersDriver(response.data?.id).then((data) => {
-              context.setTableData(data);
+        getProfileDriver().then((response) => {
+          apiGetAllOrdersDriver(response.data?.id).then((resp) => {
+            const dat = [...resp.data];
+            dat.map((item) => {
+              item.car = item.car?.markCar;
+              item.customer = item.customer.fio;
+              if (item.driver !== null) {
+                item.driver = `${item.driver.surname} ${item.driver.name} ${item.driver.patronymic}`;
+              }
+              item.loading = JSON.parse(item.loading).adress;
+              item.unloading = JSON.parse(item.unloading).adress;
             });
+            context.setTableData(dat);
           });
-        }
+        });
       }
+    }
   }, [textSearchTableData]);
 
   return (

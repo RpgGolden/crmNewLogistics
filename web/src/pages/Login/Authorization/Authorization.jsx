@@ -3,6 +3,7 @@ import styles from "./Authorization.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { Login } from "../../../API/API";
 import DataContext from "../../../context";
+import { tableHeadAppoint } from "../../../components/Table/Data";
 function Authorization() {
   const { context } = React.useContext(DataContext);
 
@@ -22,7 +23,7 @@ function Authorization() {
 
   const handleLogin = () => {
     Login(formData).then((LoginUserData) => {
-      if(LoginUserData){
+      if (LoginUserData) {
         if (LoginUserData.role === "DRIVER") {
           navigate("/DriverPage");
         } else {
@@ -34,6 +35,8 @@ function Authorization() {
 
   useEffect(() => {
     context.setTableData([]);
+    context.settableHeader(tableHeadAppoint);
+    context.setSelectedTable("Заказы");
   }, []);
 
   return (

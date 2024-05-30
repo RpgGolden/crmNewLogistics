@@ -63,7 +63,18 @@ function PopUpNewCar() {
           apiGetAllCarsLogistic().then((resp) => {
             if (resp) {
               console.log("Машины", resp.data);
-              context.setTableData(resp.data);
+              const type = {
+                1: "Тентовый 5т",
+                2: "Контейнер",
+                3: "Микро автобус",
+                4: "Газель 6м",
+                5: "Еврофура 82м",
+              };
+              let cd = [...resp.data];
+              cd.map((item) => {
+                item.typeCar = type[Number(item.typeCar)];
+              });
+              context.setTableData(cd);
             }
           });
         }
@@ -71,7 +82,7 @@ function PopUpNewCar() {
     } else {
       getProfileDriver().then((response) => {
         const ud = JSON.parse(localStorage.getItem("userData"));
-        console.log(ud);
+        console.log("context.carData", context.carData);
         apiAddCar({ ...context.carData, driverId: response.data.id }).then(
           (resp) => {
             console.log("response", resp);
@@ -93,7 +104,19 @@ function PopUpNewCar() {
                 apiGetAllCar(response.data.id).then((resp) => {
                   if (resp) {
                     console.log("Машины", resp.data);
-                    context.setTableData(resp.data);
+                    const type = {
+                      1: "Тентовый 5т",
+                      2: "Контейнер",
+                      3: "Микро автобус",
+                      4: "Газель 6м",
+                      5: "Еврофура 82м",
+                    };
+                    let cd = [...resp.data];
+                    cd.map((item) => {
+                      item.typeCar = type[Number(item.typeCar)];
+                    });
+                    context.setTableData(cd);
+                    // context.updateDataTable();
                   }
                 });
               });
@@ -130,9 +153,9 @@ function PopUpNewCar() {
               const type = {
                 1: "Тентовый 5т",
                 2: "Контейнер",
-                4: "Микро автобус",
-                5: "Газель 6м",
-                6: "Еврофура 82м",
+                3: "Микро автобус",
+                4: "Газель 6м",
+                5: "Еврофура 82м",
               };
 
               let cd = [...resp.data];

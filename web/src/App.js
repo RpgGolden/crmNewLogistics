@@ -70,7 +70,7 @@ function App() {
       if (resp) {
         const dat = [...resp.data];
         dat.map((item) => {
-          item.car = item.car.markCar;
+          item.car = item.car?.markCar;
           item.customer = item.customer.fio;
           if (item.driver !== null) {
             item.driver = `${item.driver.surname} ${item.driver.name} ${item.driver.patronymic}`;
@@ -81,8 +81,20 @@ function App() {
         setdataAppoint(dat);
       }
     });
-    apiGetAllCarsLogistic().then((response) => {
-      setdataCar(response.data);
+    apiGetAllCarsLogistic().then((resp) => {
+      const type = {
+        1: "Тентовый 5т",
+        2: "Контейнер",
+        3: "Микро автобус",
+        4: "Газель 6м",
+        5: "Еврофура 82м",
+      };
+      let cd = [...resp.data];
+      cd.map((item) => {
+        item.typeCar = type[Number(item.typeCar)];
+      });
+      console.log("Машины", resp);
+      setdataCar(cd);
     });
     console.log("ud.role", ud.role);
     console.log("ud", ud);
@@ -95,9 +107,9 @@ function App() {
             const type = {
               1: "Тентовый 5т",
               2: "Контейнер",
-              4: "Микро автобус",
-              5: "Газель 6м",
-              6: "Еврофура 82м",
+              3: "Микро автобус",
+              4: "Газель 6м",
+              5: "Еврофура 82м",
             };
 
             let cd = [...resp.data];

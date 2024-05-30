@@ -42,9 +42,9 @@ function TableDriverPage() {
             const type = {
               1: "Тентовый 5т",
               2: "Контейнер",
-              4: "Микро автобус",
-              5: "Газель 6м",
-              6: "Еврофура 82м",
+              3: "Микро автобус",
+              4: "Газель 6м",
+              5: "Еврофура 82м",
             };
 
             let cd = [...resp.data];
@@ -66,9 +66,9 @@ function TableDriverPage() {
             let zak = [...resp.data];
             zak.map((item) => {
               console.log(item);
-              item.car = item.car.markCar;
-              item.customer = item.customer.fio;
-              item.driver = item.driver.name;
+              item.car = item.car?.markCar;
+              item.customer = item.customer?.fio;
+              item.driver = item.driver?.name;
               const l = JSON.parse(item.loading);
               const u = JSON.parse(item.unloading);
               item.loading = l.adress;
@@ -84,6 +84,13 @@ function TableDriverPage() {
       // context.setTableData(testData);
     }
   }, [context.selectedTable]);
+
+  const status = {
+    1: "Создан",
+    2: "Подтвержден",
+    3: "Отклонен",
+    4: "Завершен",
+  };
 
   return (
     <div className={styles.Table}>
@@ -107,7 +114,11 @@ function TableDriverPage() {
               >
                 {tableHeader.map((headerItem) => (
                   <td key={headerItem.key}>
-                    {headerItem.key === "id" ? index + 1 : row[headerItem.key]}
+                    {headerItem.key === "id"
+                      ? index + 1
+                      : headerItem.key === "status"
+                      ? status[row[headerItem.key]]
+                      : row[headerItem.key]}
                   </td>
                 ))}
               </tr>

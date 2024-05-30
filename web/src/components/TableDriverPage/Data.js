@@ -28,7 +28,6 @@ export const tableHeadAppoint = [
   { key: "id", value: "Номер" },
   { key: "status", value: "Статус" },
   { key: "customer", value: "Клиент" },
-  { key: "car", value: "Марка" },
   { key: "dateBegin", value: "Отправка" },
   { key: "dateEnd", value: "Прибытие" },
   { key: "loading", value: "Загрузка" },

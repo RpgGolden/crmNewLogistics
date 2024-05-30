@@ -3,6 +3,7 @@ import styles from "./Register.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterApi } from "../../../API/API";
 import DataContext from "../../../context";
+import { tableHeadAppoint } from "../../../components/Table/Data";
 
 function Register() {
   const { context } = React.useContext(DataContext);
@@ -26,6 +27,8 @@ function Register() {
 
   useEffect(() => {
     context.setTableData([]);
+    context.settableHeader(tableHeadAppoint);
+    context.setSelectedTable("Заказы");
   }, []);
 
   const handleRegistration = () => {
