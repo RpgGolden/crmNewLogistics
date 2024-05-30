@@ -17,7 +17,14 @@ function PopUpContainer({ children, title, mT, width }) {
               <h2>{title}</h2>
             </div>
             <div>
-              <button onClick={() => context.setpopUp("")}>X</button>
+              <button
+                onClick={() => {
+                  context.setEditCarData(false);
+                  context.setpopUp("");
+                }}
+              >
+                X
+              </button>
             </div>
           </div>
 
