@@ -14,8 +14,13 @@
         display: flex;
         margin: 0 25px;
         justify-content: space-between;
+        // input{ 
+        //     @include input-text(100px, 8px);  
+        // }
         input{ 
-            @include input-text(100px, 8px);  
+            @include input-text(120px, 8px);  
+            padding-right: 8px;
+            padding-left: 8px;
         }
     }
     .button{
