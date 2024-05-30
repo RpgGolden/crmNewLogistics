@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styles from "./Header.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../API/API";
+import { tableHeadAppoint } from "../Table/Data";
+import DataContext from "../../context";
 function Header() {
   const userDataapi = JSON.parse(localStorage.getItem("userData"));
   const [userData, setuserData] = useState({
@@ -9,12 +11,14 @@ function Header() {
     surname: userDataapi.surname,
   });
   const navigate = useNavigate();
+  const { context } = React.useContext(DataContext);
 
   const Exit =()=>{
     logout().then((resp)=>{
       if(resp.status === 200){
         console.log(resp)
         navigate("/");
+        // context.settableHeader(null); ???
       }
     })
   }
