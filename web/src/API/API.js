@@ -58,6 +58,19 @@ window.addEventListener("unload", () => {
   clearTimeout(refreshTokensTimeout);
 });
 
+//! Запрос на Выход
+export const logout = async () => {
+  const data = {refreshToken:localStorage.getItem("refreshToken")}
+  console.log(data)
+  try {
+    const response = await axios.post(`${server}/auth/logout`, data);
+   
+    return response;
+  } catch (error) {
+    alert("Ошибка при выходе из системы !");
+  }
+};
+
 //! Запрос на регистрацию
 export const RegisterApi = async (UserData) => {
   try {
