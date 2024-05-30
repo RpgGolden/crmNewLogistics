@@ -52,31 +52,40 @@ function FunctionTableTop(props) {
 
   const filteredData = (searchText) => {
     let tableData = [];
-    if (context.selectedTable === "Клиенты") {
+    if (context.selectedTable === "Клиенты" && ud.role != "DRIVER") {
       tableData = context.dataClients;
     }
     if (context.selectedTable === "Заказы" && ud.role != "DRIVER") {
       tableData = context.dataAppoints;
     }
-
-    // if (context.selectedTable === "Заказы" && ud.role === "DRIVER") {
-    //   apiGetAllOrdersDriver(id).then((data) => {
-    //     console.log("заказы", data);
-
-    //     // drivCon.setOrdersTableData([data]);
-    //     // settableHeader(tableHeadOrders);
-    //   });
-    //   // tableData = drivCon.ordersTableData;
-    // }
-    if (context.selectedTable === "Водители") {
+    if (context.selectedTable === "Водители" && ud.role != "DRIVER") {
       tableData = context.dataDrivers;
     }
     if (context.selectedTable === "Машины" && ud.role != "DRIVER") {
       tableData = context.dataCar;
     }
-    if (ud.role === "DRIVER" && context.selectedTable === "Машины") {
-      tableData = context.dataCarDriver;
+
+    if (context.selectedTable === "Заказы" && ud.role === "DRIVER") {
+        getProfileDriver().then((response) => {
+        apiGetAllOrdersDriver(response.data?.id).then((data) => {
+          console.log("заказы", data);
+          tableData = data;
+        });
+      });
     }
+    if (ud.role === "DRIVER" && context.selectedTable === "Машины") {
+      getProfileDriver().then((response) => {
+        apiGetAllCar(response.data?.id).then((resp) => {
+          if (resp) {
+            console.log("Машины", resp.data);
+            tableData = resp.data;
+          }
+        });
+      });
+    }
+
+   
+ 
 
     const filteredData = tableData.filter((item) => {
       for (let key in item) {
@@ -108,19 +117,19 @@ function FunctionTableTop(props) {
     if (textSearchTableData) {
       filteredData(textSearchTableData);
     } else {
-      if (context.selectedTable === "Клиенты") {
+      if (context.selectedTable === "Клиенты" && ud.role != "DRIVER") {
         context.setTableData([...context.dataClients]);
       }
-      if (context.selectedTable === "Водители") {
+      if (context.selectedTable === "Водители" && ud.role != "DRIVER") {
         context.setTableData([...context.dataDrivers]);
       }
-      if (context.selectedTable === "Заказы") {
+      if (context.selectedTable === "Заказы" && ud.role != "DRIVER") {
         context.setTableData([...context.dataAppoints]);
       }
-      if (ud.role != "DRIVER" && context.selectedTable === "Машины") {
+      if (context.selectedTable === "Машины" && ud.role != "DRIVER") {
         context.setTableData([...context.dataCar]);
       }
-      console.log(ud);
+
       if (ud.role === "DRIVER" && context.selectedTable === "Машины") {
         getProfileDriver().then((response) => {
           apiGetAllCar(response.data.id).then((resp) => {
@@ -130,7 +139,14 @@ function FunctionTableTop(props) {
           });
         });
       }
-    }
+      if (context.selectedTable === "Заказы" && ud.role === "DRIVER") {
+          getProfileDriver().then((response) => {
+            apiGetAllOrdersDriver(response.data?.id).then((data) => {
+              context.setTableData(data);
+            });
+          });
+        }
+      }
   }, [textSearchTableData]);
 
   return (

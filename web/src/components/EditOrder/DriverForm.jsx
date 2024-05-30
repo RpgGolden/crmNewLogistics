@@ -45,7 +45,14 @@ function DriverForm(props) {
         type="text"
         placeholder="Телефон"
         onChange={(el) => props.handleInput(el, "tel")}
-        value={props.orderCon.orderData.driver?.phoneNumber}
+        value={props.orderCon.orderData.customer?.phoneNumber}
+        style={{
+          borderColor: !/^(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/.test(
+            props.orderCon.orderData.customer?.phoneNumber
+          )
+            ? "red"
+            : ""
+        }}
       />
     </div>
   );
