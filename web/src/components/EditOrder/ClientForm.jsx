@@ -35,16 +35,19 @@ function ClientForm(props) {
       <label>Телефон</label>
       <input
         type="text"
+        style={{ backgroundColor: "#eee" }}
         placeholder="Телефон"
-        onChange={(el) => props.handleInput(el, "tel")}
+        onChange={(el) => props.handleInput(el, "telcustomer")}
+        readOnly
         value={props.orderCon.orderData.customer?.phoneNumber}
-        style={{
-          borderColor: !/^(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/.test(
-            props.orderCon.orderData.customer?.phoneNumber
-          )
-            ? "red"
-            : ""
-        }}
+        // style={{
+        //   borderColor:
+        //     !/^(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/.test(
+        //       props.orderCon.orderData.customer?.phoneNumber
+        //     )
+        //       ? "red"
+        //       : "",
+        // }}
       />
     </div>
   );

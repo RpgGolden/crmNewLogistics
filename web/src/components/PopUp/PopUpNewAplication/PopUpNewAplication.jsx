@@ -70,6 +70,8 @@ function PopUpNewAplication() {
       setCarsName(mass);
       orderCon.setCars(response.data);
     });
+
+    orderCon.setOrderData(orderCon.orderObj);
   }, []);
 
   const handleInputChange = (itemKey, value) => {

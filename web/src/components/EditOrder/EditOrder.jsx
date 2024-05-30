@@ -212,11 +212,11 @@ const EditOredr = () => {
   }, [rotPan, pointCoor]);
 
   const handleInput = (el, key) => {
+    console.log(el, key);
     const query = el.target.value;
     let date = { ...orderCon.orderData };
     console.log("e", query, key);
     date[key] = query;
-
     if (
       route &&
       (key === "tarifklHors" ||

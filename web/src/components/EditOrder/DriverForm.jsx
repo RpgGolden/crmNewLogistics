@@ -42,17 +42,20 @@ function DriverForm(props) {
       />
       <label>Телефон</label>
       <input
+        style={{ backgroundColor: "#eee" }}
+        readOnly
         type="text"
         placeholder="Телефон"
         onChange={(el) => props.handleInput(el, "tel")}
         value={props.orderCon.orderData.customer?.phoneNumber}
-        style={{
-          borderColor: !/^(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/.test(
-            props.orderCon.orderData.customer?.phoneNumber
-          )
-            ? "red"
-            : ""
-        }}
+        // style={{
+        //   borderColor:
+        //     !/^(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/.test(
+        //       props.orderCon.orderData.customer?.phoneNumber
+        //     )
+        //       ? "red"
+        //       : "",
+        // }}
       />
     </div>
   );
